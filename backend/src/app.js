@@ -8,7 +8,7 @@ import authRouter from '../src/routes/auth.routes.js'
 const app = express();
 
 
-
+app.use(express.static("src/public"));
 app.use(express.json());
 
 app.use('/api',userRouter);
