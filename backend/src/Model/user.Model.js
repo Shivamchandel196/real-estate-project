@@ -4,15 +4,20 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: true,
+      required: [true, "Username is required"],
       trim: true,
+      minlength: 3,
+      maxlength: 20,
+      unique: true,
     },
 
     email: {
       type: String,
-      required: true,
+      required: [true, "Email is required"],
       unique: true,
       lowercase: true,
+      trim: true,
+      match: [/^\S+@\S+\.\S+$/, "Please enter a valid email"],
     },
 
     password: {
@@ -20,17 +25,41 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 6,
     },
-    image:{
-      type:String,
-    },
-    
+
     avatar: {
-   type: String,
-   default: "/profile.png"
-},
-   
-  },{  timestamps: true, }
+      type: String,
+      default: "/default_profile.png",
+    },
+
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
+
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+
+    favorites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Listing",
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
 );
+
+
+userSchema.methods.toJSON = function () {
+  const user = this.toObject();
+  delete user.password;
+  return user;
+};
 
 const User = mongoose.model("User", userSchema);
 

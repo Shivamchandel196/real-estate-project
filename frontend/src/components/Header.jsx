@@ -130,19 +130,14 @@ const Header = () => {
 
             {currentUser ? (
 
-              <img
-                src={
-                  currentUser?.avatar
-                    ? currentUser.avatar.startsWith(
-                        "http"
-                      )
-                      ? currentUser.avatar
-                      : `http://localhost:8000${currentUser.avatar}`
-                    : "http://localhost:8000/profile.png"
-                }
-                alt="profile"
-                className="rounded-full h-8 w-8 object-cover"
-              />
+          <img
+  src={currentUser?.avatar || "/default_profile.png"}
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = "/default_profile.png";
+  }}
+  alt="profile"
+  className="rounded-full h-8 w-8 object-cover"/>
 
             ) : (
 

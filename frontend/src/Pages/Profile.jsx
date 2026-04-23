@@ -255,9 +255,17 @@ const Profile = () => {
           accept="image/*"
         />
 
-   <img
+              <img
   onClick={() => fileRef.current.click()}
-  src={formData.avatar || currentUser.avatar}
+  src={
+    formData.avatar ||
+    currentUser?.avatar ||
+    "/default_profile.png"
+  }
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = "/default_profile.png";
+  }}
   alt="profile"
   className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2"
 />

@@ -7,6 +7,7 @@ import authRouter from "./routes/auth.routes.js";
 
 import uploadFile from "./services/storage.service.js";
 import cookieParser from "cookie-parser";
+import listingRouter from '../src/routes/listing.route.js'
 
 const app = express();
 
@@ -68,6 +69,7 @@ app.post(
 app.use('/api/user',userRouter)
 app.use("/api", userRouter);
 app.use("/api/auth", authRouter);
+app.use('/api/listing',listingRouter)
 
 app.use((err, req, res, next) => {
 
