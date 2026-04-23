@@ -5,11 +5,12 @@ import  jwt    from 'jsonwebtoken'
 import bcryptjs from "bcryptjs";
 
 export const signup = async (req, res,next) => {
+  console.log(req.body);
   try {
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
 
     
-    if (!name || !email || !password) {
+    if (!username || !email || !password) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",
@@ -28,7 +29,7 @@ export const signup = async (req, res,next) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
-      name,
+      username,
       email,
       password: hashedPassword,
     });

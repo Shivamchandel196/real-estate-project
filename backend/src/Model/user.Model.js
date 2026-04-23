@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
       required: true,
       trim: true,
@@ -20,11 +20,15 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 6,
     },
+    image:{
+      type:String,
+    },
+    
     avatar: {
    type: String,
    default: "/profile.png"
 },
-
+   
   },{  timestamps: true, }
 );
 
