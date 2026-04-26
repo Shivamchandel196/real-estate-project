@@ -20,6 +20,15 @@ const listingSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    contactNumber: {
+  type: String,
+  required: true,
+},
+
+contactEmail: {
+  type: String,
+  required: true,
+},
 
     regularPrice: {
       type: Number,
@@ -27,7 +36,7 @@ const listingSchema = new mongoose.Schema(
       min: 0,
     },
 
-    discountedPrice: {
+    discountPrice: {
       type: Number,
       min: 0,
     },
@@ -80,6 +89,7 @@ const listingSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
 
 const Listing = mongoose.model(
   "Listing",

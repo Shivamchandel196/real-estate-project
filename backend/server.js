@@ -14,7 +14,7 @@ app.use(morgan("dev"));
 
 
 
-const PORT = 8000;
+const PORT = process.env.PORT;
 app.listen(PORT,()=>{
     console.log("server started")
 })

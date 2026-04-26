@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../Model/user.Model.js";
 import { errorHandler } from "../utils/error.js";
-
+import Listing from "../Model/listing.model.js";
 
 export const test = (req, res) => {
   res.send("Test route being called!!!");
