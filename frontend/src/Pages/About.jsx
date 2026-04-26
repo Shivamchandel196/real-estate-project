@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   FaHome,
   FaHandshake,
@@ -9,363 +10,279 @@ import {
 } from "react-icons/fa";
 
 const features = [
+
   {
     icon: <FaHome />,
-    color: "#c9a84c",
-    bg: "rgba(201,168,76,0.1)",
-    border: "rgba(201,168,76,0.2)",
     title: "Smart Property Listings",
-    desc: "Explore premium properties with detailed descriptions, images, pricing, and advanced search functionality.",
+
+    desc:
+      "Explore premium properties with detailed descriptions, pricing, and advanced search features.",
+
+    color:
+      "text-yellow-500",
+
+    bg:
+      "bg-yellow-500/10",
+
   },
+
   {
-    icon: <FaSearchLocation />,
-    color: "#4a8fe8",
-    bg: "rgba(74,143,232,0.1)",
-    border: "rgba(74,143,232,0.2)",
-    title: "Easy Property Search",
-    desc: "Quickly search and filter properties based on type, pricing, location, and facilities.",
+    icon:
+      <FaSearchLocation />,
+
+    title:
+      "Easy Property Search",
+
+    desc:
+      "Search and filter properties based on location, type, pricing, and facilities.",
+
+    color:
+      "text-blue-400",
+
+    bg:
+      "bg-blue-500/10",
+
   },
+
   {
-    icon: <FaBuilding />,
-    color: "#9b6fe8",
-    bg: "rgba(155,111,232,0.1)",
-    border: "rgba(155,111,232,0.2)",
-    title: "Buy • Sell • Rent",
-    desc: "Users can easily list properties for sale or rent and connect directly with interested clients.",
+    icon:
+      <FaBuilding />,
+
+    title:
+      "Buy • Sell • Rent",
+
+    desc:
+      "List properties for sale or rent and connect directly with interested clients.",
+
+    color:
+      "text-violet-400",
+
+    bg:
+      "bg-violet-500/10",
+
   },
+
   {
-    icon: <FaHandshake />,
-    color: "#e8a84c",
-    bg: "rgba(232,168,76,0.1)",
-    border: "rgba(232,168,76,0.2)",
-    title: "Trusted Experience",
-    desc: "We provide a reliable platform designed to create trust between buyers, sellers, and renters.",
+    icon:
+      <FaHandshake />,
+
+    title:
+      "Trusted Experience",
+
+    desc:
+      "A reliable platform designed to build trust between buyers and sellers.",
+
+    color:
+      "text-orange-400",
+
+    bg:
+      "bg-orange-500/10",
+
   },
+
   {
-    icon: <FaUsers />,
-    color: "#e86ba8",
-    bg: "rgba(232,107,168,0.1)",
-    border: "rgba(232,107,168,0.2)",
-    title: "User Friendly",
-    desc: "Clean design and smooth navigation make the platform simple and enjoyable for every user.",
+    icon:
+      <FaUsers />,
+
+    title:
+      "User Friendly",
+
+    desc:
+      "Clean design and smooth navigation for a better user experience.",
+
+    color:
+      "text-pink-400",
+
+    bg:
+      "bg-pink-500/10",
+
   },
+
   {
-    icon: <FaShieldAlt />,
-    color: "#e86b6b",
-    bg: "rgba(232,107,107,0.1)",
-    border: "rgba(232,107,107,0.2)",
-    title: "Secure Platform",
-    desc: "Authentication and protected routes ensure safe account access and secure property management.",
+    icon:
+      <FaShieldAlt />,
+
+    title:
+      "Secure Platform",
+
+    desc:
+      "Protected routes and authentication keep accounts and listings secure.",
+
+    color:
+      "text-red-400",
+
+    bg:
+      "bg-red-500/10",
+
   },
+
 ];
 
-export default function About() {
+const About = () => {
+
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
 
-        .about-page {
-          font-family: 'DM Sans', sans-serif;
-          background: #0b0c0e;
-          min-height: 100vh;
-          color: #f0ece4;
-        }
+    <main className="min-h-screen bg-black text-white">
 
-        /* ── HERO BAND ── */
-        .about-hero {
-          position: relative;
-          padding: 100px 2rem 80px;
-          overflow: hidden;
-          border-bottom: 1px solid rgba(201,168,76,0.1);
-        }
-        .about-hero::before {
-          content: '';
-          position: absolute;
-          top: -120px; left: -120px;
-          width: 500px; height: 500px;
-          background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
-          pointer-events: none;
-        }
-        .about-hero::after {
-          content: '';
-          position: absolute;
-          bottom: -1px; left: 0; right: 0;
-          height: 1px;
-          background: linear-gradient(90deg,
-            transparent 0%,
-            rgba(201,168,76,0.7) 40%,
-            rgba(232,201,122,0.9) 55%,
-            rgba(201,168,76,0.5) 75%,
-            transparent 100%
-          );
-        }
+      <section className="border-b border-yellow-500/10 px-6 py-24">
 
-        .about-hero-inner {
-          max-width: 1100px;
-          margin: 0 auto;
-        }
+        <div className="max-w-6xl mx-auto">
 
-        .about-eyebrow {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          font-size: 0.68rem;
-          font-weight: 600;
-          letter-spacing: 0.22em;
-          text-transform: uppercase;
-          color: #c9a84c;
-          margin-bottom: 18px;
-        }
-        .about-eyebrow::before,
-        .about-eyebrow::after {
-          content: '';
-          display: block;
-          width: 28px; height: 1px;
-          background: #c9a84c;
-          opacity: 0.5;
-        }
+          <p className="uppercase tracking-[0.3em] text-yellow-500 text-xs font-semibold mb-6">
 
-        .about-h1 {
-          font-family: 'Playfair Display', serif;
-          font-size: clamp(2.8rem, 6vw, 5rem);
-          font-weight: 900;
-          line-height: 1.05;
-          color: #f0ece4;
-          margin-bottom: 1.4rem;
-        }
-        .about-h1 em {
-          font-style: italic;
-          color: #c9a84c;
-        }
+            Who We Are
 
-        .about-lead {
-          color: #64748b;
-          font-size: 1.05rem;
-          line-height: 1.85;
-          max-width: 680px;
-        }
+          </p>
 
-        /* ── MISSION / WHY ── */
-        .about-cards-section {
-          max-width: 1100px;
-          margin: 0 auto;
-          padding: 72px 2rem;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
-        }
-        @media(max-width: 680px) {
-          .about-cards-section { grid-template-columns: 1fr; }
-        }
+          <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
 
-        .about-info-card {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.06);
-          border-radius: 18px;
-          padding: 36px 32px;
-          position: relative;
-          overflow: hidden;
-          transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-        }
-        .about-info-card::before {
-          content: '';
-          position: absolute;
-          top: 0; left: 0; right: 0;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, rgba(201,168,76,0.5), transparent);
-          opacity: 0;
-          transition: opacity 0.35s;
-        }
-        .about-info-card:hover {
-          border-color: rgba(201,168,76,0.22);
-          transform: translateY(-5px);
-          box-shadow: 0 24px 60px rgba(0,0,0,0.5);
-        }
-        .about-info-card:hover::before { opacity: 1; }
+            About{" "}
 
-        .gold-divider {
-          width: 40px; height: 2px;
-          background: #c9a84c;
-          border-radius: 2px;
-          margin-bottom: 14px;
-        }
+            <span className="text-yellow-500">
 
-        .about-info-card h2 {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: #f0ece4;
-          margin-bottom: 14px;
-        }
+              RoyalEstate
 
-        .about-info-card p {
-          color: #64748b;
-          line-height: 1.8;
-          font-size: 0.92rem;
-        }
+            </span>
 
-        /* ── FEATURES ── */
-        .about-features-section {
-          border-top: 1px solid rgba(255,255,255,0.05);
-          padding: 72px 2rem 90px;
-        }
-        .about-features-inner { max-width: 1100px; margin: 0 auto; }
+          </h1>
 
-        .about-features-header {
-          text-align: center;
-          margin-bottom: 56px;
-        }
-        .about-features-header h2 {
-          font-family: 'Playfair Display', serif;
-          font-size: clamp(2rem, 4vw, 3rem);
-          font-weight: 700;
-          color: #f0ece4;
-        }
-        .about-features-header p {
-          color: #475569;
-          font-size: 0.9rem;
-          margin-top: 8px;
-        }
+          <p className="text-zinc-400 text-lg leading-8 max-w-3xl">
 
-        .features-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-          gap: 1.4rem;
-        }
+            RoyalEstate is a modern real estate platform built to simplify the way people buy, sell, and rent properties. We connect property owners with buyers and renters through a fast, secure, and user-friendly experience.
 
-        .feature-card {
-          background: #111318;
-          border: 1px solid rgba(255,255,255,0.05);
-          border-radius: 16px;
-          padding: 32px 28px;
-          position: relative;
-          overflow: hidden;
-          transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-        }
-        .feature-card::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(135deg, var(--card-glow) 0%, transparent 60%);
-          opacity: 0;
-          transition: opacity 0.35s;
-          pointer-events: none;
-        }
-        .feature-card:hover {
-          transform: translateY(-6px);
-          border-color: var(--card-border);
-          box-shadow: 0 20px 50px rgba(0,0,0,0.55);
-        }
-        .feature-card:hover::after { opacity: 1; }
+          </p>
 
-        .feature-icon-wrap {
-          width: 48px; height: 48px;
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.2rem;
-          margin-bottom: 18px;
-          border: 1px solid var(--card-border);
-          background: var(--card-bg);
-          color: var(--card-color);
-          position: relative;
-          z-index: 1;
-        }
-
-        .feature-card h3 {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.15rem;
-          font-weight: 700;
-          color: #e8e4dc;
-          margin-bottom: 10px;
-          position: relative;
-          z-index: 1;
-        }
-
-        .feature-card p {
-          color: #475569;
-          font-size: 0.875rem;
-          line-height: 1.75;
-          position: relative;
-          z-index: 1;
-        }
-      `}</style>
-
-      <div className="about-page">
-
-        {/* ── HERO ── */}
-        <div className="about-hero">
-          <div className="about-hero-inner">
-            <div className="about-eyebrow">Who We Are</div>
-            <h1 className="about-h1">
-              About <em>Royal</em>Estate
-            </h1>
-            <p className="about-lead">
-              RoyalEstate is a modern real estate platform built to simplify the way
-              people buy, sell, and rent properties. We connect property owners with
-              buyers and renters through a fast, secure, and user-friendly experience.
-            </p>
-          </div>
         </div>
 
-        {/* ── MISSION / WHY ── */}
-        <div className="about-cards-section">
-          <div className="about-info-card">
-            <div className="gold-divider" />
-            <h2>Our Mission</h2>
-            <p>
-              Our mission is to make real estate simple, transparent, and accessible
-              for everyone. Whether you're searching for your dream home, looking for
-              rental properties, or planning to sell — RoyalEstate provides all the
-              tools and support you need.
-            </p>
-          </div>
-          <div className="about-info-card">
-            <div className="gold-divider" />
-            <h2>Why Choose Us?</h2>
-            <p>
-              We focus on delivering trusted listings, easy property management,
-              secure communication, and a smooth browsing experience. Our goal is to
-              help users save time and make confident real estate decisions.
-            </p>
-          </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-8">
+
+        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 hover:border-yellow-500/30 transition">
+
+          <div className="w-12 h-1 bg-yellow-500 rounded mb-6"></div>
+
+          <h2 className="text-3xl font-bold mb-4">
+
+            Our Mission
+
+          </h2>
+
+          <p className="text-zinc-400 leading-8">
+
+            Our mission is to make real estate simple, transparent, and accessible for everyone. Whether you're searching for your dream home, rental property, or planning to sell, RoyalEstate provides all the tools you need.
+
+          </p>
+
         </div>
 
-        {/* ── FEATURES ── */}
-        <div className="about-features-section">
-          <div className="about-features-inner">
-            <div className="about-features-header">
-              <div className="about-eyebrow" style={{ justifyContent: "center" }}>
-                What We Offer
-              </div>
-              <h2>Platform Features</h2>
-              <p>Everything you need to find, list, or manage properties</p>
-            </div>
+        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 hover:border-yellow-500/30 transition">
 
-            <div className="features-grid">
-              {features.map(({ icon, color, bg, border, title, desc }) => (
+          <div className="w-12 h-1 bg-yellow-500 rounded mb-6"></div>
+
+          <h2 className="text-3xl font-bold mb-4">
+
+            Why Choose Us?
+
+          </h2>
+
+          <p className="text-zinc-400 leading-8">
+
+            We focus on trusted listings, secure communication, easy property management, and a smooth browsing experience to help users make confident real estate decisions.
+
+          </p>
+
+        </div>
+
+      </section>
+
+      <section className="border-t border-zinc-900 px-6 py-20">
+
+        <div className="max-w-6xl mx-auto">
+
+          <div className="text-center mb-14">
+
+            <p className="uppercase tracking-[0.3em] text-yellow-500 text-xs font-semibold mb-4">
+
+              What We Offer
+
+            </p>
+
+            <h2 className="text-5xl font-bold mb-4">
+
+              Platform Features
+
+            </h2>
+
+            <p className="text-zinc-500">
+
+              Everything you need to find or manage properties
+
+            </p>
+
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            {features.map(
+              (
+                feature
+              ) => (
+
                 <div
-                  className="feature-card"
-                  key={title}
-                  style={{
-                    "--card-color": color,
-                    "--card-bg": bg,
-                    "--card-border": border,
-                    "--card-glow": bg,
-                  }}
+
+                  key={
+                    feature.title
+                  }
+
+                  className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 hover:-translate-y-2 hover:border-yellow-500/20 transition duration-300"
+
                 >
-                  <div className="feature-icon-wrap">{icon}</div>
-                  <h3>{title}</h3>
-                  <p>{desc}</p>
+
+                  <div
+
+                    className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-6 ${feature.bg} ${feature.color}`}
+
+                  >
+
+                    {
+                      feature.icon
+                    }
+
+                  </div>
+
+                  <h3 className="text-2xl font-semibold mb-4">
+
+                    {
+                      feature.title
+                    }
+
+                  </h3>
+
+                  <p className="text-zinc-400 leading-7">
+
+                    {
+                      feature.desc
+                    }
+
+                  </p>
+
                 </div>
-              ))}
-            </div>
+
+              )
+
+            )}
+
           </div>
+
         </div>
 
-      </div>
-    </>
+      </section>
+
+    </main>
+
   );
-}
+
+};
+
+export default About;

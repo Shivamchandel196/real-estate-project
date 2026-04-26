@@ -1,13 +1,7 @@
 import User from "../Model/user.Model.js";
 import bcrypt from "bcryptjs";
-import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-
 import { errorHandler } from "../utils/error.js";
-
-/* ─────────────────────────────────────────
-   SIGN UP
-───────────────────────────────────────── */
 
 export const signup = async (
   req,
@@ -23,7 +17,6 @@ export const signup = async (
       password,
     } = req.body;
 
-    /* Validation */
     if (
       !username ||
       !email ||
@@ -41,7 +34,6 @@ export const signup = async (
 
     }
 
-    /* Check existing user */
     const existingUser =
       await User.findOne({
         email,
@@ -60,14 +52,12 @@ export const signup = async (
 
     }
 
-    /* Hash password */
     const hashedPassword =
       await bcrypt.hash(
         password,
         10
       );
 
-    /* Create user */
     const newUser =
       await User.create({
 
@@ -83,7 +73,6 @@ export const signup = async (
 
       });
 
-    /* Remove password */
     newUser.password =
       undefined;
 
@@ -111,10 +100,6 @@ export const signup = async (
 
 };
 
-/* ─────────────────────────────────────────
-   SIGN IN
-───────────────────────────────────────── */
-
 export const signin = async (
   req,
   res,
@@ -128,7 +113,6 @@ export const signin = async (
 
   try {
 
-    /* Find user */
     const validUser =
       await User.findOne({
         email,
@@ -145,11 +129,13 @@ export const signin = async (
 
     }
 
-    /* Check password */
     const validPassword =
       bcrypt.compareSync(
+
         password,
+
         validUser.password
+
       );
 
     if (!validPassword) {
@@ -163,46 +149,42 @@ export const signin = async (
 
     }
 
-    /* Generate token */
-    const token = jwt.sign(
+    const token =
+      jwt.sign(
 
-      {
-        id:
-          validUser._id,
-      },
+        {
+          id:
+            validUser._id,
+        },
 
-      process.env.JWT_SECRET
+        process.env
+          .JWT_SECRET
 
-    );
+      );
 
-    /* Remove password */
     const {
       password: pass,
-
       ...rest
-
     } = validUser._doc;
 
-    /* Send cookie */
     return res
+
+      .status(200)
 
       .cookie(
         "access_token",
-
         token,
-
         {
 
           httpOnly: true,
 
-          secure: false,
+          secure: true,
 
-          sameSite: "lax",
+          sameSite:
+            "none",
 
         }
       )
-
-      .status(200)
 
       .json(rest);
 
@@ -213,10 +195,6 @@ export const signin = async (
   }
 
 };
-
-/* ─────────────────────────────────────────
-   GOOGLE AUTH
-───────────────────────────────────────── */
 
 export const google = async (
   req,
@@ -234,68 +212,60 @@ export const google = async (
 
       });
 
-    /* Existing User */
     if (user) {
 
       const token =
         jwt.sign(
 
           {
-            id:
-              user._id,
+            id: user._id,
           },
 
-          process.env.JWT_SECRET
+          process.env
+            .JWT_SECRET
 
         );
 
       const {
         password: pass,
-
         ...rest
-
       } = user._doc;
 
       return res
 
+        .status(200)
+
         .cookie(
           "access_token",
-
           token,
-
           {
 
             httpOnly: true,
 
-            secure: false,
+            secure: true,
 
-            sameSite: "lax",
+            sameSite:
+              "none",
 
           }
         )
-
-        .status(200)
 
         .json(rest);
 
     }
 
-    /* New Google User */
     const generatedPassword =
 
       Math.random()
         .toString(36)
-        .slice(-8)
-
-      +
+        .slice(-8) +
 
       Math.random()
         .toString(36)
         .slice(-8);
 
     const hashedPassword =
-
-      bcryptjs.hashSync(
+      bcrypt.hashSync(
         generatedPassword,
         10
       );
@@ -306,14 +276,17 @@ export const google = async (
         username:
 
           req.body.name
-            .split(" ")
-            .join("")
-            .toLowerCase()
 
-          +
+            .split(" ")
+
+            .join("")
+
+            .toLowerCase() +
 
           Math.random()
+
             .toString(36)
+
             .slice(-4),
 
         email:
@@ -329,43 +302,42 @@ export const google = async (
 
     await newUser.save();
 
-    const token = jwt.sign(
+    const token =
+      jwt.sign(
 
-      {
-        id:
-          newUser._id,
-      },
+        {
+          id:
+            newUser._id,
+        },
 
-      process.env.JWT_SECRET
+        process.env
+          .JWT_SECRET
 
-    );
+      );
 
     const {
       password: pass,
-
       ...rest
-
     } = newUser._doc;
 
     return res
 
+      .status(200)
+
       .cookie(
         "access_token",
-
         token,
-
         {
 
           httpOnly: true,
 
-          secure: false,
+          secure: true,
 
-          sameSite: "lax",
+          sameSite:
+            "none",
 
         }
       )
-
-      .status(200)
 
       .json(rest);
 
@@ -376,10 +348,6 @@ export const google = async (
   }
 
 };
-
-/* ─────────────────────────────────────────
-   SIGN OUT
-───────────────────────────────────────── */
 
 export const signOut = async (
   req,
@@ -393,16 +361,14 @@ export const signOut = async (
       "access_token"
     );
 
-    return res
-      .status(200)
-      .json({
+    return res.status(200).json({
 
-        success: true,
+      success: true,
 
-        message:
-          "User logged out successfully",
+      message:
+        "User logged out successfully",
 
-      });
+    });
 
   } catch (error) {
 

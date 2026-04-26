@@ -1,129 +1,172 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
+
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+
+import {
+  useSelector,
+} from "react-redux";
+
+import {
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 
 const UpdateListing = () => {
 
-  const { listingId } = useParams();
+  const { listingId } =
+    useParams();
 
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
-  const { currentUser } = useSelector(
-    (state) => state.user
-  );
+  const { currentUser } =
+    useSelector(
+      (state) => state.user
+    );
 
-  const [files, setFiles] = useState([]);
+  const [
+    files,
+    setFiles,
+  ] = useState([]);
 
-  const [loading, setLoading] =
-    useState(false);
+  const [
+    loading,
+    setLoading,
+  ] = useState(false);
 
-  const [uploading, setUploading] =
-    useState(false);
+  const [
+    uploading,
+    setUploading,
+  ] = useState(false);
 
-  const [error, setError] =
-    useState("");
+  const [
+    error,
+    setError,
+  ] = useState("");
 
   const [
     imageUploadError,
     setImageUploadError,
   ] = useState("");
 
-  const [formData, setFormData] =
-    useState({
+  const [
+    formData,
+    setFormData,
+  ] = useState({
 
-      imageUrls: [],
+    imageUrls: [],
 
-      name: "",
+    name: "",
 
-      description: "",
+    description: "",
 
-      address: "",
+    address: "",
 
-      type: "rent",
+    type: "rent",
 
-      bedrooms: 1,
+    bedrooms: 1,
 
-      bathrooms: 1,
+    bathrooms: 1,
 
-      regularPrice: 0,
+    regularPrice: 0,
 
-      discountPrice: 0,
+    discountPrice: 0,
 
-      offer: false,
+    offer: false,
 
-      parking: false,
+    parking: false,
 
-      furnished: false,
+    furnished: false,
 
-    });
-
-  /* FETCH LISTING */
+  });
 
   useEffect(() => {
 
-    const fetchListing = async () => {
+    const fetchListing =
+      async () => {
 
-      try {
+        try {
 
-        const res = await fetch(
-          `http://localhost:8000/api/listing/get/${listingId}`
-        );
+          const res =
+            await fetch(
 
-        const data =
-          await res.json();
+              `http://localhost:8000/api/listing/get/${listingId}`
 
-        if (
-          data.success === false
-        ) {
+            );
 
-          setError(
-            data.message
+          const data =
+            await res.json();
+
+          if (
+            data.success ===
+            false
+          ) {
+
+            setError(
+              data.message
+            );
+
+            return;
+
+          }
+
+          setFormData(
+            data
           );
 
-          return;
+        } catch {
+
+          setError(
+            "Failed to fetch listing"
+          );
 
         }
 
-        setFormData(data);
+      };
 
-      } catch (error) {
+    if (
+      listingId
+    ) {
 
-        console.log(error);
-
-        setError(
-          "Failed to fetch listing"
-        );
-
-      }
-
-    };
-
-    if (listingId)
       fetchListing();
+
+    }
 
   }, [listingId]);
 
-  /* HANDLE CHANGE */
-
-  const handleChange = (e) => {
+  const handleChange = (
+    e
+  ) => {
 
     if (
-      e.target.id === "sale" ||
-      e.target.id === "rent"
+
+      [
+        "sale",
+        "rent",
+      ].includes(
+        e.target.id
+      )
+
     ) {
 
-      setFormData({
+      return setFormData(
+        (prev) => ({
 
-        ...formData,
+          ...prev,
 
-        type: e.target.id,
+          type:
+            e.target.id,
 
-      });
+        })
+      );
 
     }
 
     if (
+
       [
         "parking",
         "furnished",
@@ -131,31 +174,26 @@ const UpdateListing = () => {
       ].includes(
         e.target.id
       )
+
     ) {
 
-      setFormData({
+      return setFormData(
+        (prev) => ({
 
-        ...formData,
+          ...prev,
 
-        [e.target.id]:
-          e.target.checked,
+          [e.target.id]:
+            e.target.checked,
 
-      });
+        })
+      );
 
     }
 
-    if (
-      e.target.type ===
-        "number" ||
-      e.target.type ===
-        "text" ||
-      e.target.tagName ===
-        "TEXTAREA"
-    ) {
+    setFormData(
+      (prev) => ({
 
-      setFormData({
-
-        ...formData,
+        ...prev,
 
         [e.target.id]:
 
@@ -168,19 +206,17 @@ const UpdateListing = () => {
 
             : e.target.value,
 
-      });
-
-    }
+      })
+    );
 
   };
-
-  /* IMAGE UPLOAD */
 
   const handleImageSubmit =
     async () => {
 
       if (
-        files.length === 0
+        files.length ===
+        0
       ) {
 
         return setImageUploadError(
@@ -190,10 +226,12 @@ const UpdateListing = () => {
       }
 
       if (
+
         files.length +
           formData.imageUrls
             .length >
         6
+
       ) {
 
         return setImageUploadError(
@@ -204,13 +242,16 @@ const UpdateListing = () => {
 
       try {
 
-        setUploading(true);
+        setUploading(
+          true
+        );
 
         setImageUploadError(
           ""
         );
 
-        const urls = [];
+        const urls =
+          [];
 
         for (
           let i = 0;
@@ -252,27 +293,31 @@ const UpdateListing = () => {
 
         }
 
-        setFormData({
+        setFormData(
+          (prev) => ({
 
-          ...formData,
+            ...prev,
 
-          imageUrls: [
+            imageUrls: [
 
-            ...formData.imageUrls,
+              ...prev.imageUrls,
 
-            ...urls,
+              ...urls,
 
-          ],
+            ],
 
-        });
+          })
+        );
 
-        setUploading(false);
+        setUploading(
+          false
+        );
 
-      } catch (error) {
+      } catch {
 
-        console.log(error);
-
-        setUploading(false);
+        setUploading(
+          false
+        );
 
         setImageUploadError(
           "Image upload failed"
@@ -282,65 +327,67 @@ const UpdateListing = () => {
 
     };
 
-  /* REMOVE IMAGE */
-
   const handleRemoveImage =
     (index) => {
 
-      setFormData({
+      setFormData(
+        (prev) => ({
 
-        ...formData,
+          ...prev,
 
-        imageUrls:
-          formData.imageUrls.filter(
+          imageUrls:
+            prev.imageUrls.filter(
 
-            (_, i) =>
-              i !== index
+              (_, i) =>
+                i !== index
 
-          ),
+            ),
 
-      });
+        })
+      );
 
     };
-
-  /* SUBMIT */
 
   const handleSubmit =
     async (e) => {
 
       e.preventDefault();
 
+      if (
+
+        formData.imageUrls
+          .length < 1
+
+      ) {
+
+        return setError(
+          "Upload at least one image"
+        );
+
+      }
+
+      if (
+
+        formData.offer &&
+
+        formData.discountPrice >=
+          formData.regularPrice
+
+      ) {
+
+        return setError(
+
+          "Discount price must be less than regular price"
+
+        );
+
+      }
+
       try {
 
-        if (
-          formData.imageUrls
-            .length < 1
-        ) {
-
-          return setError(
-            "Upload at least one image"
-          );
-
-        }
-
-        if (
-
-          formData.offer &&
-
-          formData.discountPrice >=
-            formData.regularPrice
-
-        ) {
-
-          return setError(
-
-            "Discount price must be less than regular price"
-
-          );
-
-        }
-
-        setLoading(true);
+        setLoading(
+          true
+        );
 
         setError("");
 
@@ -380,7 +427,9 @@ const UpdateListing = () => {
         const data =
           await res.json();
 
-        setLoading(false);
+        setLoading(
+          false
+        );
 
         if (
           data.success ===
@@ -397,11 +446,11 @@ const UpdateListing = () => {
           `/listing/${data._id}`
         );
 
-      } catch (error) {
+      } catch {
 
-        console.log(error);
-
-        setLoading(false);
+        setLoading(
+          false
+        );
 
         setError(
           "Something went wrong"
@@ -415,322 +464,387 @@ const UpdateListing = () => {
 
     <main className="min-h-screen bg-black text-white px-4 py-10">
 
-      <div className="max-w-4xl mx-auto bg-zinc-900 border border-zinc-800 rounded-3xl p-8 shadow-2xl">
+      <div className="max-w-5xl mx-auto bg-gradient-to-b from-zinc-900 to-zinc-950 border border-zinc-800 rounded-[2rem] p-8 md:p-10 shadow-2xl">
 
-        <h1 className="text-4xl font-bold text-center mb-2">
+        <div className="mb-10 text-center">
 
-          Update{" "}
+          <p className="uppercase tracking-[0.3em] text-yellow-500 text-xs font-semibold mb-4">
 
-          <span className="text-yellow-500">
-            Listing
-          </span>
+            Edit Property
 
-        </h1>
+          </p>
 
-        <p className="text-center text-zinc-400 mb-10">
+          <h1 className="text-5xl font-black mb-3">
 
-          Edit your property details
+            Update{" "}
 
-        </p>
+            <span className="text-yellow-500">
+
+              Listing
+
+            </span>
+
+          </h1>
+
+          <p className="text-zinc-500">
+
+            Update your property information
+
+          </p>
+
+        </div>
 
         <form
+
           onSubmit={
             handleSubmit
           }
-          className="flex flex-col gap-6"
+
+          className="grid lg:grid-cols-2 gap-10"
+
         >
 
-          <input
-            type="text"
-            id="name"
-            placeholder="Property Name"
-            required
-            value={formData.name}
-            onChange={
-              handleChange
-            }
-            className="w-full bg-zinc-800 border border-zinc-700 p-4 rounded-xl outline-none focus:border-yellow-500"
-          />
-
-          <textarea
-            id="description"
-            placeholder="Description"
-            required
-            value={
-              formData.description
-            }
-            onChange={
-              handleChange
-            }
-            className="w-full bg-zinc-800 border border-zinc-700 p-4 rounded-xl outline-none focus:border-yellow-500 min-h-[120px]"
-          />
-
-          <input
-            type="text"
-            id="address"
-            placeholder="Address"
-            required
-            value={
-              formData.address
-            }
-            onChange={
-              handleChange
-            }
-            className="w-full bg-zinc-800 border border-zinc-700 p-4 rounded-xl outline-none focus:border-yellow-500"
-          />
-
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-5">
 
             <input
-              type="number"
-              id="bedrooms"
-              placeholder="Bedrooms"
+              type="text"
+              id="name"
+              placeholder="Property Name"
+              required
               value={
-                formData.bedrooms
+                formData.name
               }
               onChange={
                 handleChange
               }
-              className="bg-zinc-800 border border-zinc-700 p-4 rounded-xl outline-none focus:border-yellow-500"
+              className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
             />
 
-            <input
-              type="number"
-              id="bathrooms"
-              placeholder="Bathrooms"
+            <textarea
+              id="description"
+              placeholder="Description"
+              required
               value={
-                formData.bathrooms
+                formData.description
               }
               onChange={
                 handleChange
               }
-              className="bg-zinc-800 border border-zinc-700 p-4 rounded-xl outline-none focus:border-yellow-500"
+              className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 min-h-[140px] outline-none focus:border-yellow-500"
             />
 
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-
             <input
-              type="number"
-              id="regularPrice"
-              placeholder="Regular Price"
+              type="text"
+              id="address"
+              placeholder="Address"
+              required
               value={
-                formData.regularPrice
+                formData.address
               }
               onChange={
                 handleChange
               }
-              className="bg-zinc-800 border border-zinc-700 p-4 rounded-xl outline-none focus:border-yellow-500"
+              className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
             />
 
-            {formData.offer && (
+            <div className="grid grid-cols-2 gap-4">
 
               <input
                 type="number"
-                id="discountPrice"
-                placeholder="Discount Price"
+                id="bedrooms"
+                placeholder="Bedrooms"
                 value={
-                  formData.discountPrice
+                  formData.bedrooms
                 }
                 onChange={
                   handleChange
                 }
-                className="bg-zinc-800 border border-zinc-700 p-4 rounded-xl outline-none focus:border-yellow-500"
+                className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
               />
-
-            )}
-
-          </div>
-
-          <div className="flex flex-wrap gap-4">
-
-            <label className="flex items-center gap-2 bg-zinc-800 px-4 py-3 rounded-xl border border-zinc-700">
 
               <input
-                type="radio"
-                id="sale"
-                name="type"
-                checked={
-                  formData.type ===
-                  "sale"
+                type="number"
+                id="bathrooms"
+                placeholder="Bathrooms"
+                value={
+                  formData.bathrooms
                 }
                 onChange={
                   handleChange
                 }
+                className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
               />
 
-              Sale
+            </div>
 
-            </label>
-
-            <label className="flex items-center gap-2 bg-zinc-800 px-4 py-3 rounded-xl border border-zinc-700">
+            <div className="grid grid-cols-2 gap-4">
 
               <input
-                type="radio"
-                id="rent"
-                name="type"
-                checked={
-                  formData.type ===
-                  "rent"
+                type="number"
+                id="regularPrice"
+                placeholder="Regular Price"
+                value={
+                  formData.regularPrice
                 }
                 onChange={
                   handleChange
                 }
+                className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
               />
 
-              Rent
-
-            </label>
-
-          </div>
-
-          <div className="flex flex-wrap gap-4">
-
-            {[
-              "offer",
-              "parking",
-              "furnished",
-            ].map((item) => (
-
-              <label
-                key={item}
-                className="flex items-center gap-2 bg-zinc-800 px-4 py-3 rounded-xl border border-zinc-700 capitalize"
-              >
+              {formData.offer && (
 
                 <input
-                  type="checkbox"
-                  id={item}
-                  checked={
-                    formData[item]
+                  type="number"
+                  id="discountPrice"
+                  placeholder="Discount Price"
+                  value={
+                    formData.discountPrice
                   }
                   onChange={
                     handleChange
                   }
+                  className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
                 />
 
-                {item}
+              )}
 
-              </label>
-
-            ))}
+            </div>
 
           </div>
 
-          <input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={(e) =>
+          <div className="flex flex-col gap-6">
 
-              setFiles(
-                Array.from(
-                  e.target.files
-                )
-              )
+            <div className="flex gap-4">
 
-            }
-
-            className="bg-zinc-800 border border-zinc-700 p-4 rounded-xl"
-          />
-
-          <button
-            type="button"
-            onClick={
-              handleImageSubmit
-            }
-            disabled={
-              uploading
-            }
-            className="bg-blue-600 hover:bg-blue-500 p-4 rounded-xl font-semibold"
-          >
-
-            {uploading
-
-              ? "Uploading..."
-
-              : "Upload Images"}
-
-          </button>
-
-          {formData.imageUrls?.map(
-
-            (
-              url,
-              index
-            ) => (
-
-              <div
-                key={index}
-                className="flex items-center justify-between bg-zinc-800 p-4 rounded-xl"
-              >
-
-                <img
-                  src={url}
-                  alt="listing"
-                  className="w-24 h-24 object-cover rounded-lg"
-                />
+              {[
+                "sale",
+                "rent",
+              ].map((type) => (
 
                 <button
+
+                  key={type}
+
                   type="button"
+
                   onClick={() =>
 
-                    handleRemoveImage(
-                      index
-                    )
+                    setFormData({
+                      ...formData,
+                      type,
+                    })
 
                   }
 
-                  className="bg-red-600 hover:bg-red-500 px-4 py-2 rounded-lg"
+                  className={`flex-1 p-4 rounded-2xl border font-semibold uppercase transition ${
+                    formData.type ===
+                    type
+
+                      ? "bg-yellow-500 text-black border-yellow-500"
+
+                      : "bg-zinc-800 border-zinc-700"
+
+                  }`}
+
                 >
 
-                  Remove
+                  {type}
 
                 </button>
 
-              </div>
+              ))}
 
-            )
+            </div>
 
-          )}
+            <div className="flex flex-wrap gap-4">
 
-          {imageUploadError && (
+              {[
+                "offer",
+                "parking",
+                "furnished",
+              ].map((item) => (
 
-            <p className="text-red-500">
+                <label
 
-              {
-                imageUploadError
+                  key={item}
+
+                  className={`px-5 py-3 rounded-2xl border capitalize cursor-pointer transition ${
+                    formData[item]
+
+                      ? "bg-yellow-500 text-black border-yellow-500"
+
+                      : "bg-zinc-800 border-zinc-700"
+
+                  }`}
+
+                >
+
+                  <input
+                    type="checkbox"
+                    id={item}
+                    checked={
+                      formData[item]
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    className="hidden"
+                  />
+
+                  {item}
+
+                </label>
+
+              ))}
+
+            </div>
+
+            <div className="bg-zinc-800 border-2 border-dashed border-zinc-700 rounded-3xl p-8 text-center">
+
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={(e) =>
+
+                  setFiles(
+                    Array.from(
+                      e.target.files
+                    )
+                  )
+
+                }
+
+                className="w-full"
+
+              />
+
+              <p className="text-zinc-500 mt-4">
+
+                Upload up to 6 images
+
+              </p>
+
+            </div>
+
+            <button
+
+              type="button"
+
+              onClick={
+                handleImageSubmit
               }
 
-            </p>
+              disabled={
+                uploading
+              }
 
-          )}
+              className="bg-blue-600 hover:bg-blue-500 rounded-2xl p-4 font-bold transition"
 
-          {error && (
+            >
 
-            <p className="text-red-500">
+              {uploading
 
-              {error}
+                ? "Uploading..."
 
-            </p>
+                : "Upload Images"}
 
-          )}
+            </button>
 
-          <button
-            disabled={
-              loading ||
-              uploading
-            }
-            className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold p-4 rounded-xl uppercase tracking-wider"
-          >
+            <div className="flex flex-col gap-4">
 
-            {loading
+              {formData.imageUrls?.map(
 
-              ? "Updating..."
+                (
+                  url,
+                  index
+                ) => (
 
-              : "Update Listing"}
+                  <div
 
-          </button>
+                    key={index}
+
+                    className="flex items-center justify-between bg-zinc-800 border border-zinc-700 rounded-2xl p-4"
+
+                  >
+
+                    <img
+                      src={url}
+                      alt="listing"
+                      className="w-24 h-24 rounded-xl object-cover"
+                    />
+
+                    <button
+
+                      type="button"
+
+                      onClick={() =>
+
+                        handleRemoveImage(
+                          index
+                        )
+
+                      }
+
+                      className="bg-red-600 hover:bg-red-500 px-4 py-2 rounded-xl transition"
+
+                    >
+
+                      Remove
+
+                    </button>
+
+                  </div>
+
+                )
+
+              )}
+
+            </div>
+
+            {imageUploadError && (
+
+              <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-2xl">
+
+                {
+                  imageUploadError
+                }
+
+              </div>
+
+            )}
+
+            {error && (
+
+              <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-2xl">
+
+                {error}
+
+              </div>
+
+            )}
+
+            <button
+
+              disabled={
+                loading ||
+                uploading
+              }
+
+              className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-[0.2em] rounded-2xl p-5 transition"
+
+            >
+
+              {loading
+
+                ? "Updating..."
+
+                : "Update Listing"}
+
+            </button>
+
+          </div>
 
         </form>
 

@@ -1,502 +1,627 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+} from "react";
+
 import { useParams } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
+
+import {
+  Swiper,
+  SwiperSlide,
+} from "swiper/react";
+
+import {
+  Navigation,
+  Autoplay,
+} from "swiper/modules";
+
 import "swiper/css";
 import "swiper/css/navigation";
+
 import {
-  FaBath, FaBed, FaChair,
-  FaMapMarkerAlt, FaParking, FaShare, FaTag,
+  FaBath,
+  FaBed,
+  FaChair,
+  FaMapMarkerAlt,
+  FaParking,
+  FaShare,
+  FaTag,
 } from "react-icons/fa";
+
 import Contact from "../components/Contact";
 
 const Listing = () => {
-  const params = useParams();
-  const [listing, setListing] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const [contact, setContact] = useState(false);
+
+  const params =
+    useParams();
+
+  const [
+    listing,
+    setListing,
+  ] = useState(null);
+
+  const [
+    loading,
+    setLoading,
+  ] = useState(true);
+
+  const [
+    error,
+    setError,
+  ] = useState(false);
+
+  const [
+    copied,
+    setCopied,
+  ] = useState(false);
+
+  const [
+    contact,
+    setContact,
+  ] = useState(false);
 
   useEffect(() => {
-    const fetchListing = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(`/api/listing/get/${params.listingId}`);
-        const data = await res.json();
-        if (data.success === false) { setError(true); setLoading(false); return; }
-        setListing(data);
-        setError(false);
-      } catch  {
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
+
+    const fetchListing =
+      async () => {
+
+        try {
+
+          setLoading(true);
+
+          const res =
+            await fetch(
+
+              `/api/listing/get/${params.listingId}`
+
+            );
+
+          const data =
+            await res.json();
+
+          if (
+            data.success ===
+            false
+          ) {
+
+            setError(true);
+
+            setLoading(
+              false
+            );
+
+            return;
+
+          }
+
+          setListing(data);
+
+          setError(false);
+
+        } catch {
+
+          setError(true);
+
+        } finally {
+
+          setLoading(false);
+
+        }
+
+      };
+
     fetchListing();
+
   }, [params.listingId]);
 
-  if (loading) return (
-    <div style={{ background: "#0b0c0e", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ textAlign: "center" }}>
-        <div style={{ width: 48, height: 48, border: "2px solid rgba(201,168,76,0.2)", borderTop: "2px solid #c9a84c", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
-        <p style={{ color: "#475569", fontFamily: "'DM Sans',sans-serif", fontSize: "0.9rem", letterSpacing: "0.12em", textTransform: "uppercase" }}>Loading Property…</p>
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-      </div>
-    </div>
-  );
+  if (loading) {
 
-  if (error) return (
-    <div style={{ background: "#0b0c0e", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <p style={{ color: "#f87171", fontFamily: "'DM Sans',sans-serif", fontSize: "1rem" }}>Something went wrong. Please try again.</p>
-    </div>
-  );
+    return (
+
+      <div className="bg-black min-h-screen flex items-center justify-center">
+
+        <div className="text-center">
+
+          <div className="w-12 h-12 border-2 border-yellow-500/20 border-t-yellow-500 rounded-full animate-spin mx-auto mb-4"></div>
+
+          <p className="text-zinc-500 uppercase tracking-[0.2em] text-sm">
+
+            Loading Property...
+
+          </p>
+
+        </div>
+
+      </div>
+
+    );
+
+  }
+
+  if (error) {
+
+    return (
+
+      <div className="bg-black min-h-screen flex items-center justify-center">
+
+        <p className="text-red-400 text-lg">
+
+          Something went wrong
+
+        </p>
+
+      </div>
+
+    );
+
+  }
 
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
 
-        .lst-page {
-          font-family: 'DM Sans', sans-serif;
-          background: #0b0c0e;
-          min-height: 100vh;
-          padding-bottom: 80px;
-          color: #f0ece4;
-        }
+    <main className="bg-black text-white min-h-screen pb-20">
 
-        /* ── SWIPER ── */
-        .lst-swiper-wrap { position: relative; }
-        .lst-slide {
-          height: 620px;
-          background-size: cover !important;
-          background-position: center !important;
-          position: relative;
-        }
-        .lst-slide-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(to top, rgba(11,12,14,0.9) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
-        }
+      {listing && (
 
-        /* swiper nav gold */
-        .lst-swiper-wrap .swiper-button-next,
-        .lst-swiper-wrap .swiper-button-prev {
-          color: #c9a84c !important;
-          background: rgba(0,0,0,0.5);
-          border-radius: 50%;
-          width: 44px; height: 44px;
-          padding: 0.4rem;
-        }
-        .lst-swiper-wrap .swiper-button-next::after,
-        .lst-swiper-wrap .swiper-button-prev::after { font-size: 1rem !important; }
+        <>
 
-        /* ── SHARE BTN ── */
-        .lst-share {
-          position: fixed;
-          top: 18%;
-          right: 3%;
-          z-index: 30;
-          width: 48px; height: 48px;
-          border-radius: 50%;
-          background: rgba(17,19,24,0.9);
-          border: 1px solid rgba(201,168,76,0.3);
-          display: flex; align-items: center; justify-content: center;
-          color: #c9a84c;
-          font-size: 1rem;
-          cursor: pointer;
-          backdrop-filter: blur(12px);
-          transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-        .lst-share:hover {
-          transform: scale(1.1);
-          border-color: #c9a84c;
-          box-shadow: 0 4px 24px rgba(201,168,76,0.2);
-        }
+          {/* SWIPER */}
 
-        .lst-copied {
-          position: fixed;
-          top: calc(18% + 60px);
-          right: 3%;
-          z-index: 30;
-          background: #111318;
-          border: 1px solid rgba(201,168,76,0.3);
-          color: #c9a84c;
-          padding: 8px 16px;
-          border-radius: 8px;
-          font-size: 0.8rem;
-          font-weight: 600;
-          letter-spacing: 0.06em;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-          backdrop-filter: blur(12px);
-        }
+          <section className="relative">
 
-        /* ── CONTENT CARD ── */
-        .lst-card {
-          max-width: 920px;
-          margin: -80px auto 0;
-          position: relative;
-          z-index: 10;
-          padding: 0 1.5rem;
-        }
+            <Swiper
 
-        .lst-card-inner {
-          background: #111318;
-          border: 1px solid rgba(201,168,76,0.13);
-          border-radius: 24px;
-          padding: 44px 40px;
-          box-shadow: 0 32px 80px rgba(0,0,0,0.7);
-          position: relative;
-          overflow: hidden;
-        }
+              modules={[
+                Navigation,
+                Autoplay,
+              ]}
 
-        /* gold top line */
-        .lst-card-inner::before {
-          content: '';
-          position: absolute;
-          top: 0; left: 0; right: 0;
-          height: 1px;
-          background: linear-gradient(90deg,
-            transparent 0%, rgba(201,168,76,0.7) 40%,
-            rgba(232,201,122,0.9) 55%, rgba(201,168,76,0.5) 75%, transparent 100%
-          );
-        }
+              navigation
 
-        /* ambient glow */
-        .lst-card-inner::after {
-          content: '';
-          position: absolute;
-          top: -80px; right: -80px;
-          width: 300px; height: 300px;
-          background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%);
-          pointer-events: none;
-        }
-
-        /* ── TITLE ── */
-        .lst-eyebrow {
-          font-size: 0.65rem;
-          font-weight: 600;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: #c9a84c;
-          margin-bottom: 10px;
-          display: flex; align-items: center; gap: 8px;
-        }
-        .lst-eyebrow::before, .lst-eyebrow::after {
-          content: ''; display: block;
-          width: 20px; height: 1px;
-          background: #c9a84c; opacity: 0.5;
-        }
-
-        .lst-title {
-          font-family: 'Playfair Display', serif;
-          font-size: clamp(1.8rem, 4vw, 3rem);
-          font-weight: 900;
-          color: #f0ece4;
-          line-height: 1.1;
-          margin-bottom: 24px;
-        }
-
-        /* ── PRICE BADGES ── */
-        .lst-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
-
-        .lst-price-badge {
-          background: rgba(201,168,76,0.12);
-          border: 1px solid rgba(201,168,76,0.3);
-          color: #e8c97a;
-          padding: 10px 22px;
-          border-radius: 8px;
-          font-weight: 700;
-          font-size: 1.1rem;
-          letter-spacing: 0.02em;
-        }
-
-        .lst-discount-badge {
-          background: rgba(34,197,94,0.08);
-          border: 1px solid rgba(34,197,94,0.2);
-          color: #4ade80;
-          padding: 10px 18px;
-          border-radius: 8px;
-          font-weight: 700;
-          font-size: 0.9rem;
-          display: flex; align-items: center; gap: 7px;
-        }
-
-        .lst-type-badge {
-          padding: 8px 16px;
-          border-radius: 6px;
-          font-weight: 600;
-          font-size: 0.78rem;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-        }
-        .badge-rent {
-          background: rgba(74,143,232,0.1);
-          border: 1px solid rgba(74,143,232,0.25);
-          color: #60a5fa;
-        }
-        .badge-sale {
-          background: rgba(201,168,76,0.1);
-          border: 1px solid rgba(201,168,76,0.25);
-          color: #c9a84c;
-        }
-        .badge-furnished {
-          background: rgba(155,111,232,0.1);
-          border: 1px solid rgba(155,111,232,0.2);
-          color: #a78bfa;
-        }
-
-        /* ── ADDRESS ── */
-        .lst-address {
-          display: flex; align-items: center; gap: 10px;
-          color: #64748b;
-          font-size: 0.9rem;
-          margin-bottom: 20px;
-        }
-        .lst-address svg { color: #c9a84c; flex-shrink: 0; }
-
-        /* ── DIVIDER ── */
-        .lst-divider {
-          border: none;
-          border-top: 1px solid rgba(255,255,255,0.06);
-          margin: 28px 0;
-        }
-
-        /* ── SECTION HEADING ── */
-        .lst-section-h {
-          font-family: 'Playfair Display', serif;
-          font-size: 1.4rem;
-          font-weight: 700;
-          color: #e8e4dc;
-          margin-bottom: 14px;
-        }
-
-        /* ── DESCRIPTION ── */
-        .lst-desc {
-          color: #64748b;
-          line-height: 1.85;
-          font-size: 0.92rem;
-        }
-
-        /* ── FEATURES GRID ── */
-        .lst-features-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-          gap: 12px;
-          margin-top: 4px;
-        }
-
-        .lst-feat-card {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.06);
-          border-radius: 14px;
-          padding: 22px 16px;
-          display: flex; flex-direction: column; align-items: center; gap: 10px;
-          transition: border-color 0.25s, transform 0.25s;
-        }
-        .lst-feat-card:hover {
-          border-color: rgba(201,168,76,0.25);
-          transform: translateY(-3px);
-        }
-
-        .lst-feat-icon {
-          font-size: 1.6rem;
-        }
-
-        .lst-feat-val {
-          font-weight: 700;
-          font-size: 1.1rem;
-          color: #f0ece4;
-        }
-
-        .lst-feat-label {
-          font-size: 0.75rem;
-          color: #475569;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-        }
-
-        /* ── CONTACT BUTTON ── */
-        .btn-contact {
-          width: 100%;
-          background: #c9a84c;
-          color: #0b0c0e;
-          border: none;
-          padding: 18px;
-          border-radius: 12px;
-          font-family: 'DM Sans', sans-serif;
-          font-weight: 700;
-          font-size: 0.95rem;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          cursor: pointer;
-          transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
-          box-shadow: 0 4px 24px rgba(201,168,76,0.25);
-        }
-        .btn-contact:hover {
-          background: #e8c97a;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 36px rgba(201,168,76,0.35);
-        }
-
-        @media (max-width: 600px) {
-          .lst-card-inner { padding: 28px 20px; }
-        }
-      `}</style>
-
-      <main className="lst-page">
-        {listing && (
-          <>
-            {/* ── SWIPER ── */}
-            <div className="lst-swiper-wrap">
-              <Swiper
-                modules={[Navigation, Autoplay]}
-                navigation
-                autoplay={{ delay: 3500, disableOnInteraction: false }}
-                loop={true}
-                speed={800}
-              >
-                {listing.imageUrls?.map((url, i) => (
-                  <SwiperSlide key={i}>
-                    <div className="lst-slide" style={{ background: `url(${url})` }}>
-                      <div className="lst-slide-overlay" />
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
-
-            {/* ── SHARE ── */}
-            <button
-              className="lst-share"
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                setCopied(true);
-                setTimeout(() => setCopied(false), 2000);
+              autoplay={{
+                delay: 3500,
+                disableOnInteraction: false,
               }}
+
+              loop={true}
+
+              speed={800}
+
             >
-              <FaShare />
-            </button>
-            {copied && <div className="lst-copied">Link Copied ✓</div>}
 
-            {/* ── CARD ── */}
-            <div className="lst-card">
-              <div className="lst-card-inner">
+              {listing.imageUrls?.map(
+                (
+                  url,
+                  index
+                ) => (
 
-                {/* eyebrow + title */}
-                <div className="lst-eyebrow">Property Details</div>
-                <h1 className="lst-title">{listing.name}</h1>
+                  <SwiperSlide
+                    key={index}
+                  >
 
-              
-               {/* price */}
-<div className="lst-badges">
+                    <div
 
-  <div className="lst-price-badge">
+                      className="h-[650px] bg-cover bg-center relative"
 
-    ₹{
-      (
-        listing.offer
-          ? (listing.discountPrice || 0)
-          : (listing.regularPrice || 0)
-      ).toLocaleString("en-IN")
-    }
+                      style={{
 
-    {listing.type === "rent" && (
+                        backgroundImage:
 
-      <span
-        style={{
-          fontSize: "0.75rem",
-          opacity: 0.7,
-        }}
-      >
-        {" "} / month
-      </span>
+                          `url(${url})`,
 
-    )}
+                      }}
 
-  </div>
+                    >
 
-  {listing.offer && (
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
 
-    <div className="lst-discount-badge">
-
-      <FaTag
-        style={{
-          fontSize: "0.8rem",
-        }}
-      />
-
-      ₹{
-        (
-          (+listing.regularPrice || 0) -
-          (+listing.discountPrice || 0)
-        ).toLocaleString("en-IN")
-      } OFF
-
-    </div>
-
-  )}
-
-</div>
-
-                {/* type badges */}
-                <div className="lst-badges">
-                  <span className={`lst-type-badge ${listing.type === "rent" ? "badge-rent" : "badge-sale"}`}>
-                    {listing.type === "rent" ? "For Rent" : "For Sale"}
-                  </span>
-                  {listing.furnished && <span className="lst-type-badge badge-furnished">Furnished</span>}
-                </div>
-
-                {/* address */}
-                <div className="lst-address">
-                  <FaMapMarkerAlt />
-                  <span>{listing.address}</span>
-                </div>
-
-                <hr className="lst-divider" />
-
-                {/* description */}
-                <h2 className="lst-section-h">Description</h2>
-                <p className="lst-desc">{listing.description}</p>
-
-                <hr className="lst-divider" />
-
-                {/* features */}
-                <h2 className="lst-section-h">Property Features</h2>
-                <div className="lst-features-grid">
-                  {[
-                    { icon: <FaBed />,     color: "#c9a84c", val: listing.bedrooms,               label: "Bedrooms"  },
-                    { icon: <FaBath />,    color: "#4a8fe8", val: listing.bathrooms,              label: "Bathrooms" },
-                    { icon: <FaParking />, color: "#e8a84c", val: listing.parking ? "Yes" : "No", label: "Parking"   },
-                    { icon: <FaChair />,   color: "#9b6fe8", val: listing.furnished ? "Yes" : "No", label: "Furnished" },
-                  ].map(({ icon, color, val, label }) => (
-                    <div className="lst-feat-card" key={label}>
-                      <span className="lst-feat-icon" style={{ color }}>{icon}</span>
-                      <span className="lst-feat-val">{val}</span>
-                      <span className="lst-feat-label">{label}</span>
                     </div>
-                  ))}
+
+                  </SwiperSlide>
+
+                )
+
+              )}
+
+            </Swiper>
+
+            <button
+
+              onClick={() => {
+
+                navigator.clipboard.writeText(
+
+                  window.location.href
+
+                );
+
+                setCopied(true);
+
+                setTimeout(
+                  () =>
+
+                    setCopied(
+                      false
+                    ),
+
+                  2000
+                );
+
+              }}
+
+              className="fixed top-24 right-6 z-50 bg-zinc-900 border border-yellow-500/30 hover:border-yellow-500 text-yellow-500 w-12 h-12 rounded-full flex items-center justify-center transition"
+
+            >
+
+              <FaShare />
+
+            </button>
+
+            {copied && (
+
+              <div className="fixed top-40 right-6 z-50 bg-zinc-900 border border-yellow-500/30 text-yellow-500 px-4 py-2 rounded-xl text-sm">
+
+                Link Copied ✓
+
+              </div>
+
+            )}
+
+          </section>
+
+          {/* CONTENT */}
+
+          <section className="max-w-5xl mx-auto px-4 -mt-20 relative z-10">
+
+            <div className="bg-zinc-900 border border-zinc-800 rounded-[2rem] p-8 md:p-12 shadow-2xl">
+
+              <p className="uppercase tracking-[0.3em] text-yellow-500 text-xs font-semibold mb-4">
+
+                Property Details
+
+              </p>
+
+              <h1 className="text-4xl md:text-6xl font-black leading-tight mb-8">
+
+                {listing.name}
+
+              </h1>
+
+              {/* PRICE */}
+
+              <div className="flex flex-wrap gap-4 mb-6">
+
+                <div className="bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 px-6 py-4 rounded-xl text-2xl font-bold">
+
+                  ₹
+
+                  {(
+                    listing.offer
+
+                      ? (
+                          listing.discountPrice ||
+                          0
+                        )
+
+                      : (
+                          listing.regularPrice ||
+                          0
+                        )
+
+                  ).toLocaleString(
+                    "en-IN"
+                  )}
+
+                  {listing.type ===
+                    "rent" && (
+
+                    <span className="text-sm opacity-70 ml-2">
+
+                      / month
+
+                    </span>
+
+                  )}
+
                 </div>
 
-                <hr className="lst-divider" />
+                {listing.offer && (
 
-                {/* contact */}
-                {!contact ? (
-                  <button className="btn-contact" onClick={() => setContact(true)}>
-                    Contact Owner
-                  </button>
-                ) : (
-                  <Contact listing={listing} />
+                  <div className="bg-green-500/10 border border-green-500/20 text-green-400 px-5 py-4 rounded-xl flex items-center gap-2 font-semibold">
+
+                    <FaTag />
+
+                    ₹
+
+                    {(
+                      (
+                        +listing.regularPrice ||
+                        0
+                      ) -
+
+                      (
+                        +listing.discountPrice ||
+                        0
+                      )
+
+                    ).toLocaleString(
+                      "en-IN"
+                    )}
+
+                    OFF
+
+                  </div>
+
                 )}
 
               </div>
+
+              {/* BADGES */}
+
+              <div className="flex flex-wrap gap-3 mb-6">
+
+                <span
+
+                  className={`px-5 py-2 rounded-xl text-sm uppercase tracking-wider font-semibold ${
+                    listing.type ===
+                    "rent"
+
+                      ? "bg-blue-500/10 text-blue-400 border border-blue-500/20"
+
+                      : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
+
+                  }`}
+
+                >
+
+                  {listing.type ===
+                  "rent"
+
+                    ? "For Rent"
+
+                    : "For Sale"}
+
+                </span>
+
+                {listing.furnished && (
+
+                  <span className="bg-violet-500/10 text-violet-400 border border-violet-500/20 px-5 py-2 rounded-xl text-sm uppercase tracking-wider font-semibold">
+
+                    Furnished
+
+                  </span>
+
+                )}
+
+              </div>
+
+              {/* ADDRESS */}
+
+              <div className="flex items-center gap-3 text-zinc-400 mb-10">
+
+                <FaMapMarkerAlt className="text-yellow-500" />
+
+                <p>
+
+                  {listing.address}
+
+                </p>
+
+              </div>
+
+              <div className="border-t border-zinc-800 my-10"></div>
+
+              {/* DESCRIPTION */}
+
+              <div className="mb-10">
+
+                <h2 className="text-3xl font-bold mb-6">
+
+                  Description
+
+                </h2>
+
+                <p className="text-zinc-400 leading-8">
+
+                  {
+                    listing.description
+                  }
+
+                </p>
+
+              </div>
+
+              <div className="border-t border-zinc-800 my-10"></div>
+
+              {/* FEATURES */}
+
+              <div className="mb-10">
+
+                <h2 className="text-3xl font-bold mb-8">
+
+                  Property Features
+
+                </h2>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+
+                  {[
+                    {
+                      icon:
+                        <FaBed />,
+
+                      value:
+                        listing.bedrooms,
+
+                      label:
+                        "Bedrooms",
+
+                      color:
+                        "text-yellow-500",
+
+                      bg:
+                        "bg-yellow-500/10",
+
+                    },
+
+                    {
+                      icon:
+                        <FaBath />,
+
+                      value:
+                        listing.bathrooms,
+
+                      label:
+                        "Bathrooms",
+
+                      color:
+                        "text-blue-400",
+
+                      bg:
+                        "bg-blue-500/10",
+
+                    },
+
+                    {
+                      icon:
+                        <FaParking />,
+
+                      value:
+                        listing.parking
+
+                          ? "Yes"
+
+                          : "No",
+
+                      label:
+                        "Parking",
+
+                      color:
+                        "text-orange-400",
+
+                      bg:
+                        "bg-orange-500/10",
+
+                    },
+
+                    {
+                      icon:
+                        <FaChair />,
+
+                      value:
+                        listing.furnished
+
+                          ? "Yes"
+
+                          : "No",
+
+                      label:
+                        "Furnished",
+
+                      color:
+                        "text-violet-400",
+
+                      bg:
+                        "bg-violet-500/10",
+
+                    },
+
+                  ].map(
+                    (
+                      item
+                    ) => (
+
+                      <div
+
+                        key={
+                          item.label
+                        }
+
+                        className="bg-zinc-800 border border-zinc-700 rounded-3xl p-6 text-center hover:border-yellow-500/20 transition"
+
+                      >
+
+                        <div
+
+                          className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 ${item.bg} ${item.color}`}
+
+                        >
+
+                          {
+                            item.icon
+                          }
+
+                        </div>
+
+                        <h3 className="text-2xl font-bold mb-2">
+
+                          {
+                            item.value
+                          }
+
+                        </h3>
+
+                        <p className="text-zinc-500 uppercase tracking-wider text-xs">
+
+                          {
+                            item.label
+                          }
+
+                        </p>
+
+                      </div>
+
+                    )
+
+                  )}
+
+                </div>
+
+              </div>
+
+              {/* CONTACT */}
+
+              {!contact ? (
+
+                <button
+
+                  onClick={() =>
+
+                    setContact(
+                      true
+                    )
+
+                  }
+
+                  className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-[0.2em] py-5 rounded-2xl transition"
+
+                >
+
+                  Contact Owner
+
+                </button>
+
+              ) : (
+
+                <Contact
+                  listing={
+                    listing
+                  }
+                />
+
+              )}
+
             </div>
-          </>
-        )}
-      </main>
-    </>
+
+          </section>
+
+        </>
+
+      )}
+
+    </main>
+
   );
+
 };
 
 export default Listing;

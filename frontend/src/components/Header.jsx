@@ -41,7 +41,7 @@ const Header = () => {
     >
       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-[68px]">
 
-        {/* LOGO */}
+  
         <Link to="/" className="flex flex-col leading-none gap-[3px]">
           <h1 className="font-black text-2xl tracking-wide" style={{ fontFamily: "'Playfair Display', serif" }}>
             <span className="text-yellow-500">Royal</span>
@@ -52,7 +52,10 @@ const Header = () => {
           </span>
         </Link>
 
-        {/* SEARCH — desktop */}
+
+        
+
+      
         <form
           onSubmit={handleSubmit}
           className="hidden md:flex items-center bg-[#1a1d24] border border-white/[0.07]
@@ -76,7 +79,7 @@ const Header = () => {
           </button>
         </form>
 
-        {/* NAV */}
+      
         <ul className="flex items-center gap-1">
           {[
             { to: "/",       label: "Home"    },
@@ -97,7 +100,7 @@ const Header = () => {
             </Link>
           ))}
 
-          {/* PROFILE / SIGN IN */}
+     
           <li className="ml-2">
             <Link to="/profile">
               {currentUser ? (
@@ -111,7 +114,7 @@ const Header = () => {
                       hover:scale-110 hover:shadow-[0_0_0_3px_rgba(201,168,76,0.25)]
                       transition-all duration-300"
                   />
-                  {/* Dropdown */}
+               
                   <div className="absolute hidden group-hover:block right-0 top-[calc(100%+10px)]
                     bg-[#1a1d24] border border-yellow-900/30 rounded-xl p-4 w-52
                     shadow-[0_20px_60px_rgba(0,0,0,0.7)] z-50">
@@ -143,7 +146,7 @@ const Header = () => {
         </ul>
       </div>
 
-      {/* MOBILE SEARCH */}
+      
       <div className="md:hidden px-4 pb-3 border-t border-white/[0.04]">
         <form
           onSubmit={handleSubmit}

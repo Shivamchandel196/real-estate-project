@@ -263,7 +263,7 @@ export default function ListingItem({ listing }) {
       <div className="li-card">
         <Link to={`/listing/${listing._id}`}>
 
-          {/* ── IMAGE ── */}
+         
           <div className="li-img-wrap">
             <img
               src={
@@ -274,33 +274,33 @@ export default function ListingItem({ listing }) {
               className="li-img"
             />
 
-            {/* TYPE BADGE */}
+          
             <span className="li-badge-type">
               {listing.type === "rent" ? "For Rent" : "For Sale"}
             </span>
 
-            {/* OFFER BADGE */}
+        
             {listing.offer && (
               <span className="li-badge-offer">Offer 🔥</span>
             )}
           </div>
 
-          {/* ── CONTENT ── */}
+       
           <div className="li-content">
 
-            {/* TITLE */}
+       
             <h2 className="li-title">{listing.name}</h2>
 
-            {/* LOCATION */}
+      
             <div className="li-location">
               <MdLocationOn className="li-location-icon" />
               <p>{listing.address}</p>
             </div>
 
-            {/* DESCRIPTION */}
+     
             <p className="li-desc">{listing.description}</p>
 
-            {/* PRICE ROW */}
+  
             <div className="li-price-row">
               <div>
                 <p className="li-price">
@@ -329,7 +329,7 @@ export default function ListingItem({ listing }) {
               </div>
             </div>
 
-            {/* FEATURES */}
+         
             <div className="li-features">
               <div className="li-feature-pill">
                 <FaBed className="li-feat-bed" />
@@ -341,7 +341,7 @@ export default function ListingItem({ listing }) {
               </div>
             </div>
 
-            {/* VIEW BUTTON */}
+           
             <button className="li-view-btn">View Property</button>
 
           </div>
