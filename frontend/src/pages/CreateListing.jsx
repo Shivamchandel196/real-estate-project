@@ -6,27 +6,32 @@ import { useNavigate } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const CreateListing = () => {
-  const [files, setFiles] = useState([]);
 
-  const [formData, setFormData] = useState({
-    imageUrls: [],
-    name: "",
-    description: "",
-    address: "",
-    contactNumber: "",
-    contactEmail: "",
-    regularPrice: "",
-    discountPrice: "",
-    type: "rent",
-    bedrooms: 1,
-    bathrooms: 1,
-    offer: false,
-    parking: false,
-    furnished: false,
-  });
+  const [files, setFiles] =
+    useState([]);
 
-  const [imageUploadError, setImageUploadError] =
-    useState("");
+  const [formData, setFormData] =
+    useState({
+      imageUrls: [],
+      name: "",
+      description: "",
+      address: "",
+      contactEmail: "",
+      contactNumber: "",
+      type: "rent",
+      bedrooms: 1,
+      bathrooms: 1,
+      regularPrice: "",
+      discountPrice: "",
+      offer: false,
+      parking: false,
+      furnished: false,
+    });
+
+  const [
+    imageUploadError,
+    setImageUploadError,
+  ] = useState("");
 
   const [uploading, setUploading] =
     useState(false);
@@ -38,33 +43,90 @@ const CreateListing = () => {
     useState(false);
 
   const { currentUser } =
-    useSelector((state) => state.user);
+    useSelector(
+      (state) => state.user
+    );
 
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]:
-        e.target.value,
-    });
-  };
+  const handleChange =
+    (e) => {
+
+      const {
+        id,
+        value,
+        type,
+        checked,
+      } = e.target;
+
+      if (
+        type ===
+        "checkbox"
+      ) {
+
+        if (
+          id ===
+            "sale" ||
+          id ===
+            "rent"
+        ) {
+
+          setFormData({
+            ...formData,
+
+            type: id,
+          });
+
+        } else {
+
+          setFormData({
+            ...formData,
+
+            [id]:
+              checked,
+          });
+
+        }
+
+      } else {
+
+        setFormData({
+          ...formData,
+
+          [id]:
+            value,
+        });
+
+      }
+
+    };
+
+  /* IMAGEKIT / BACKEND IMAGE UPLOAD */
 
   const handleImageSubmit =
     async () => {
 
-      if (files.length === 0) {
+      if (
+        files.length === 0
+      ) {
+
         return setImageUploadError(
           "Please select images"
         );
+
       }
 
       try {
 
         setUploading(true);
-        setImageUploadError("");
 
-        const uploadedUrls = [];
+        setImageUploadError(
+          ""
+        );
+
+        const uploadedUrls =
+          [];
 
         for (
           let i = 0;
@@ -93,26 +155,54 @@ const CreateListing = () => {
             );
 
           uploadedUrls.push(
-            res.data.imageUrl
+            res.data
+              .imageUrl
           );
+
         }
 
-        setFormData((prev) => ({
-          ...prev,
+        setFormData({
+          ...formData,
+
           imageUrls:
             uploadedUrls,
-        }));
+        });
 
-        setUploading(false);
+        setUploading(
+          false
+        );
 
       } catch {
 
-        setUploading(false);
+        setUploading(
+          false
+        );
 
         setImageUploadError(
           "Image upload failed"
         );
+
       }
+
+    };
+
+  const handleRemoveImage =
+    (index) => {
+
+      setFormData({
+        ...formData,
+
+        imageUrls:
+          formData.imageUrls.filter(
+            (
+              _,
+              i
+            ) =>
+              i !==
+              index
+          ),
+      });
+
     };
 
   const handleSubmit =
@@ -122,44 +212,71 @@ const CreateListing = () => {
 
       try {
 
+        if (
+          formData
+            .imageUrls
+            .length < 1
+        ) {
+
+          return setError(
+            "Upload at least one image"
+          );
+
+        }
+
         setLoading(true);
+
         setError("");
 
-        const res = await fetch(
-          `${API_URL}/api/listing/create`,
-          {
-            method: "POST",
+        const res =
+          await fetch(
+            `${API_URL}/api/listing/create`,
+            {
+              method:
+                "POST",
 
-            headers: {
-              "Content-Type":
-                "application/json",
-            },
+              headers:
+                {
+                  "Content-Type":
+                    "application/json",
+                },
 
-            credentials:
-              "include",
+              credentials:
+                "include",
 
-            body: JSON.stringify({
-              ...formData,
+              body:
+                JSON.stringify(
+                  {
+                    ...formData,
 
-              userRef:
-                currentUser?._id ||
-                currentUser?.id,
-            }),
-          }
-        );
+                    userRef:
+                      currentUser?._id ||
+                      currentUser
+                        ?.id ||
+                      currentUser
+                        ?.user
+                        ?._id,
+                  }
+                ),
+            }
+          );
 
         const data =
           await res.json();
 
-        setLoading(false);
+        setLoading(
+          false
+        );
 
         if (
-          data.success === false
+          data.success ===
+          false
         ) {
 
           return setError(
             data.message
           );
+
         }
 
         navigate(
@@ -168,328 +285,383 @@ const CreateListing = () => {
 
       } catch (err) {
 
-        setLoading(false);
+        setLoading(
+          false
+        );
 
         setError(
           err.message
         );
+
       }
+
     };
 
   return (
 
     <main className="min-h-screen bg-gradient-to-b from-black via-[#020617] to-black text-white px-4 py-10">
 
-      <div className="max-w-5xl mx-auto bg-[#08122b] border border-yellow-500/10 rounded-[35px] p-6 md:p-10 shadow-[0_0_40px_rgba(255,196,0,0.08)]">
+      <div className="max-w-6xl mx-auto bg-[#08122b] border border-yellow-500/10 rounded-[35px] p-6 md:p-10 shadow-[0_0_40px_rgba(255,196,0,0.08)]">
 
-        <div className="mb-10">
+        <h1 className="text-5xl font-black text-center mb-10">
 
-          <h1 className="text-4xl md:text-5xl font-black">
-            Create Listing
-          </h1>
+          Create Listing
 
-          <p className="text-zinc-400 mt-3">
-            Add your property details.
-          </p>
-
-        </div>
+        </h1>
 
         <form
-          onSubmit={handleSubmit}
-          className="space-y-7"
+          onSubmit={
+            handleSubmit
+          }
+          className="grid md:grid-cols-2 gap-10"
         >
 
-          <div className="grid md:grid-cols-2 gap-6">
+          {/* LEFT */}
 
-            <div>
+          <div className="space-y-5">
 
-              <label className="text-sm text-zinc-400 mb-2 block">
-                Property Name
-              </label>
-
-              <input
-                id="name"
-                type="text"
-                placeholder="Enter property name"
-                value={formData.name}
-                onChange={
-                  handleChange
-                }
-                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
-              />
-
-            </div>
-
-            <div>
-
-              <label className="text-sm text-zinc-400 mb-2 block">
-                Address
-              </label>
-
-              <input
-                id="address"
-                type="text"
-                placeholder="Enter property address"
-                value={
-                  formData.address
-                }
-                onChange={
-                  handleChange
-                }
-                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
-              />
-
-            </div>
-
-          </div>
-
-          <div>
-
-            <label className="text-sm text-zinc-400 mb-2 block">
-              Description
-            </label>
+            <input
+              type="text"
+              placeholder="Property Name"
+              id="name"
+              required
+              value={
+                formData.name
+              }
+              onChange={
+                handleChange
+              }
+              className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
+            />
 
             <textarea
+              placeholder="Description"
               id="description"
-              rows="5"
-              placeholder="Describe your property..."
+              required
               value={
                 formData.description
               }
               onChange={
                 handleChange
               }
-              className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl resize-none"
+              className="w-full h-40 resize-none bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
             />
 
-          </div>
+            <input
+              type="text"
+              placeholder="Address"
+              id="address"
+              required
+              value={
+                formData.address
+              }
+              onChange={
+                handleChange
+              }
+              className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
+            />
 
-          <div className="grid md:grid-cols-2 gap-6">
+            <input
+              type="email"
+              placeholder="Contact Email"
+              id="contactEmail"
+              required
+              value={
+                formData.contactEmail
+              }
+              onChange={
+                handleChange
+              }
+              className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
+            />
 
-            <div>
+            <input
+              type="tel"
+              placeholder="Phone Number"
+              id="contactNumber"
+              required
+              value={
+                formData.contactNumber
+              }
+              onChange={
+                handleChange
+              }
+              className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
+            />
 
-              <label className="text-sm text-zinc-400 mb-2 block">
-                Contact Email
-              </label>
-
-              <input
-                id="contactEmail"
-                type="email"
-                placeholder="Enter email"
-                value={
-                  formData.contactEmail
-                }
-                onChange={
-                  handleChange
-                }
-                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
-              />
-
-            </div>
-
-            <div>
-
-              <label className="text-sm text-zinc-400 mb-2 block">
-                Phone Number
-              </label>
-
-              <input
-                id="contactNumber"
-                type="tel"
-                placeholder="Enter phone number"
-                value={
-                  formData.contactNumber
-                }
-                onChange={
-                  handleChange
-                }
-                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
-              />
-
-            </div>
-
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-
-            <div>
-
-              <label className="text-sm text-zinc-400 mb-2 block">
-                Regular Price
-              </label>
+            <div className="grid grid-cols-2 gap-4">
 
               <input
-                id="regularPrice"
                 type="number"
-                placeholder="Enter regular price"
+                placeholder="Bedrooms"
+                id="bedrooms"
+                min="1"
+                value={
+                  formData.bedrooms
+                }
+                onChange={
+                  handleChange
+                }
+                className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
+              />
+
+              <input
+                type="number"
+                placeholder="Bathrooms"
+                id="bathrooms"
+                min="1"
+                value={
+                  formData.bathrooms
+                }
+                onChange={
+                  handleChange
+                }
+                className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
+              />
+
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+
+              <input
+                type="number"
+                placeholder="Regular Price"
+                id="regularPrice"
+                required
                 value={
                   formData.regularPrice
                 }
                 onChange={
                   handleChange
                 }
-                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
+                className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
               />
 
-            </div>
-
-            <div>
-
-              <label className="text-sm text-zinc-400 mb-2 block">
-                Discount Price
-              </label>
-
               <input
-                id="discountPrice"
                 type="number"
-                placeholder="Enter discount price"
+                placeholder="Discount Price"
+                id="discountPrice"
                 value={
                   formData.discountPrice
                 }
                 onChange={
                   handleChange
                 }
-                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
+                className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
               />
+
+            </div>
+
+            <div className="flex flex-wrap gap-5">
+
+              {[
+                "sale",
+                "rent",
+                "parking",
+                "furnished",
+                "offer",
+              ].map(
+                (
+                  item
+                ) => (
+
+                  <label
+                    key={
+                      item
+                    }
+                    className="flex items-center gap-2"
+                  >
+
+                    <input
+                      type="checkbox"
+                      id={
+                        item
+                      }
+                      checked={
+                        item ===
+                          "sale" ||
+                        item ===
+                          "rent"
+                          ? formData.type ===
+                            item
+                          : formData[
+                              item
+                            ]
+                      }
+                      onChange={
+                        handleChange
+                      }
+                      className="w-5 h-5 accent-yellow-400"
+                    />
+
+                    <span className="capitalize">
+                      {
+                        item
+                      }
+                    </span>
+
+                  </label>
+
+                )
+              )}
 
             </div>
 
           </div>
 
-          <div className="border border-dashed border-zinc-700 bg-black/30 rounded-3xl p-6">
+          {/* RIGHT */}
 
-            <h2 className="text-2xl font-bold mb-5">
-              Upload Property Images
-            </h2>
+          <div>
 
-            <input
-              type="file"
-              multiple
-              onChange={(e) => {
+            <div className="border border-dashed border-zinc-700 bg-black/30 rounded-3xl p-6">
 
-                const selectedFiles =
-                  Array.from(
-                    e.target.files
-                  );
+              <h2 className="text-3xl font-black mb-6">
 
-                setFiles(
-                  selectedFiles
-                );
+                Upload Images
 
-              }}
-              className="w-full bg-zinc-900 border border-zinc-700 p-4 rounded-2xl text-zinc-300"
-            />
+              </h2>
 
-            <button
-              type="button"
-              onClick={
-                handleImageSubmit
-              }
-              className="w-full mt-6 bg-yellow-400 hover:bg-yellow-300 text-black font-black py-4 rounded-2xl transition-all"
-            >
+              <div className="flex gap-4">
 
-              {uploading
-                ? "Uploading..."
-                : "Upload Images"}
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={(
+                    e
+                  ) =>
+                    setFiles(
+                      Array.from(
+                        e.target
+                          .files
+                      )
+                    )
+                  }
+                  className="w-full bg-zinc-900 border border-zinc-700 p-4 rounded-2xl"
+                />
 
-            </button>
+                <button
+                  type="button"
+                  onClick={
+                    handleImageSubmit
+                  }
+                  disabled={
+                    uploading
+                  }
+                  className="bg-yellow-400 hover:bg-yellow-300 text-black font-black px-6 rounded-2xl"
+                >
 
-            {/* ONLY SHOW AFTER UPLOAD */}
+                  {uploading
+                    ? "..."
+                    : "Upload"}
 
-            {
-              formData.imageUrls
-                .length > 0 && (
+                </button>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              </div>
+
+              {imageUploadError && (
+
+                <p className="text-red-400 mt-3">
 
                   {
-                    formData.imageUrls.map(
+                    imageUploadError
+                  }
+
+                </p>
+
+              )}
+
+              {/* SHOW ONLY AFTER UPLOAD */}
+
+              {
+                formData
+                  .imageUrls
+                  .length >
+                  0 && (
+
+                  <div className="grid grid-cols-2 gap-4 mt-6">
+
+                    {formData.imageUrls.map(
                       (
                         url,
                         index
                       ) => (
 
                         <div
-                          key={index}
+                          key={
+                            index
+                          }
                           className="relative"
                         >
 
                           <img
-                            src={url}
+                            src={
+                              url
+                            }
                             alt="listing"
-                            className="h-36 w-full object-cover rounded-2xl border border-zinc-700"
+                            className="h-40 w-full object-cover rounded-2xl"
                           />
 
                           <button
                             type="button"
-                            onClick={() => {
-
-                              const updatedImages =
-                                formData.imageUrls.filter(
-                                  (
-                                    _,
-                                    i
-                                  ) =>
-                                    i !==
-                                    index
-                                );
-
-                              setFormData({
-                                ...formData,
-                                imageUrls:
-                                  updatedImages,
-                              });
-
-                            }}
-                            className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white text-xs px-2 py-1 rounded-lg"
+                            onClick={() =>
+                              handleRemoveImage(
+                                index
+                              )
+                            }
+                            className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-lg text-xs"
                           >
+
                             X
+
                           </button>
 
                         </div>
-                      )
-                    )
-                  }
 
-                </div>
-              )
-            }
+                      )
+                    )}
+
+                  </div>
+
+                )
+              }
+
+            </div>
+
+            <button
+              disabled={
+                loading ||
+                uploading
+              }
+              className="w-full mt-8 bg-yellow-400 hover:bg-yellow-300 text-black font-black py-5 rounded-2xl text-xl"
+            >
+
+              {loading
+                ? "Creating..."
+                : "Create Listing"}
+
+            </button>
+
+            {error && (
+
+              <div className="bg-red-500/10 border border-red-500 text-red-400 p-4 rounded-2xl mt-5">
+
+                {error}
+
+              </div>
+
+            )}
 
           </div>
-
-          <button
-            type="submit"
-            className="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-black text-lg py-4 rounded-2xl transition-all"
-          >
-
-            {loading
-              ? "Creating..."
-              : "Create Listing"}
-
-          </button>
-
-          {
-            error && (
-              <div className="bg-red-500/10 border border-red-500 text-red-400 p-4 rounded-2xl">
-                {error}
-              </div>
-            )
-          }
-
-          {
-            imageUploadError && (
-              <div className="bg-red-500/10 border border-red-500 text-red-400 p-4 rounded-2xl">
-                {imageUploadError}
-              </div>
-            )
-          }
 
         </form>
 
       </div>
 
     </main>
+
   );
+
 };
 
 export default CreateListing;

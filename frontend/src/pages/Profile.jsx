@@ -1,10 +1,5 @@
 import { useRef, useState } from "react";
-const API_URL =import.meta.env.VITE_API_URL;
-
-import {
-  useSelector,
-  useDispatch,
-} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
   updateUserStart,
@@ -19,8 +14,10 @@ import {
 } from "../redux/user/userSlice";
 
 import axios from "axios";
-
 import { Link } from "react-router-dom";
+
+const API_URL =
+  import.meta.env.VITE_API_URL;
 
 export default function Profile() {
 
@@ -36,45 +33,42 @@ export default function Profile() {
   const dispatch =
     useDispatch();
 
-  const [filePerc,
-    setFilePerc] =
-    useState(0);
+  const [
+    filePerc,
+    setFilePerc,
+  ] = useState(0);
 
   const [
     fileUploadError,
-
     setFileUploadError,
-
   ] = useState(false);
 
-  const [formData,
-    setFormData] =
-    useState({});
+  const [
+    formData,
+    setFormData,
+  ] = useState({});
 
   const [
     updateSuccess,
-
     setUpdateSuccess,
-
   ] = useState(false);
 
   const [
     showListingsError,
-
     setShowListingsError,
-
   ] = useState(false);
 
   const [
     userListings,
-
     setUserListings,
-
   ] = useState([]);
 
-  /* ─────────────────────────────
-     IMAGE UPLOAD
-  ───────────────────────────── */
+  const userId =
+    currentUser?._id ||
+    currentUser?.id ||
+    currentUser?.user?._id;
+
+  /* IMAGE UPLOAD */
 
   const handleFileUpload =
     async (file) => {
@@ -85,7 +79,7 @@ export default function Profile() {
           false
         );
 
-        setFilePerc(10);
+        setFilePerc(20);
 
         const imageData =
           new FormData();
@@ -97,34 +91,24 @@ export default function Profile() {
 
         const res =
           await axios.post(
-
             `${API_URL}/post`,
-
             imageData,
-
             {
-
               headers: {
-
                 "Content-Type":
                   "multipart/form-data",
-
               },
-
             }
-
           );
 
         setFilePerc(100);
 
         setFormData(
           (prev) => ({
-
             ...prev,
 
             avatar:
               res.data.imageUrl,
-
           })
         );
 
@@ -142,28 +126,21 @@ export default function Profile() {
 
     };
 
-  /* ─────────────────────────────
-     HANDLE CHANGE
-  ───────────────────────────── */
+  /* HANDLE CHANGE */
 
-  const handleChange = (
-    e
-  ) => {
+  const handleChange =
+    (e) => {
 
-    setFormData({
+      setFormData({
+        ...formData,
 
-      ...formData,
+        [e.target.id]:
+          e.target.value,
+      });
 
-      [e.target.id]:
-        e.target.value,
+    };
 
-    });
-
-  };
-
-  /* ─────────────────────────────
-     UPDATE USER
-  ───────────────────────────── */
+  /* UPDATE USER */
 
   const handleSubmit =
     async (e) => {
@@ -178,19 +155,14 @@ export default function Profile() {
 
         const res =
           await fetch(
-
-            `${API_URL}/api/user/update/${currentUser._id}`,
-
+            `${API_URL}/api/user/update/${userId}`,
             {
-
               method:
                 "POST",
 
               headers: {
-
                 "Content-Type":
                   "application/json",
-
               },
 
               credentials:
@@ -200,9 +172,7 @@ export default function Profile() {
                 JSON.stringify(
                   formData
                 ),
-
             }
-
           );
 
         const data =
@@ -214,11 +184,9 @@ export default function Profile() {
         ) {
 
           dispatch(
-
             updateUserFailure(
               data.message
             )
-
           );
 
           return;
@@ -238,20 +206,16 @@ export default function Profile() {
       } catch (error) {
 
         dispatch(
-
           updateUserFailure(
             error.message
           )
-
         );
 
       }
 
     };
 
-  /* ─────────────────────────────
-     DELETE USER
-  ───────────────────────────── */
+  /* DELETE USER */
 
   const handleDeleteUser =
     async () => {
@@ -264,19 +228,14 @@ export default function Profile() {
 
         const res =
           await fetch(
-
-          `${API_URL}/api/user/delete/${currentUser._id}`,
-
+            `${API_URL}/api/user/delete/${userId}`,
             {
-
               method:
                 "DELETE",
 
               credentials:
                 "include",
-
             }
-
           );
 
         const data =
@@ -288,11 +247,9 @@ export default function Profile() {
         ) {
 
           dispatch(
-
             deleteUserFailure(
               data.message
             )
-
           );
 
           return;
@@ -308,20 +265,16 @@ export default function Profile() {
       } catch (error) {
 
         dispatch(
-
           deleteUserFailure(
             error.message
           )
-
         );
 
       }
 
     };
 
-  /* ─────────────────────────────
-     SIGN OUT
-  ───────────────────────────── */
+  /* SIGN OUT */
 
   const handleSignOut =
     async () => {
@@ -334,16 +287,11 @@ export default function Profile() {
 
         const res =
           await fetch(
-
-          `${API_URL}/api/auth/signout`,
-
+            `${API_URL}/api/auth/signout`,
             {
-
               credentials:
                 "include",
-
             }
-
           );
 
         const data =
@@ -355,11 +303,9 @@ export default function Profile() {
         ) {
 
           dispatch(
-
             signOutUserFailure(
               data.message
             )
-
           );
 
           return;
@@ -375,20 +321,16 @@ export default function Profile() {
       } catch (error) {
 
         dispatch(
-
           signOutUserFailure(
             error.message
           )
-
         );
 
       }
 
     };
 
-  /* ─────────────────────────────
-     SHOW LISTINGS
-  ───────────────────────────── */
+  /* SHOW LISTINGS */
 
   const handleShowListings =
     async () => {
@@ -401,16 +343,11 @@ export default function Profile() {
 
         const res =
           await fetch(
-
-           `${API_URL}/api/user/listings/${currentUser._id}` ,
-
+            `${API_URL}/api/user/listings/${userId}`,
             {
-
               credentials:
                 "include",
-
             }
-
           );
 
         const data =
@@ -433,7 +370,7 @@ export default function Profile() {
           data
         );
 
-      } catch  {
+      } catch {
 
         setShowListingsError(
           true
@@ -443,9 +380,7 @@ export default function Profile() {
 
     };
 
-  /* ─────────────────────────────
-     DELETE LISTING
-  ───────────────────────────── */
+  /* DELETE LISTING */
 
   const handleListingDelete =
     async (
@@ -456,19 +391,14 @@ export default function Profile() {
 
         const res =
           await fetch(
-
             `${API_URL}/api/listing/delete/${listingId}`,
-
             {
-
               method:
                 "DELETE",
 
               credentials:
                 "include",
-
             }
-
           );
 
         const data =
@@ -479,26 +409,19 @@ export default function Profile() {
           false
         ) {
 
-          console.log(
-            data.message
-          );
-
           return;
 
         }
 
         setUserListings(
           (prev) =>
-
             prev.filter(
-
-              (listing) =>
-
+              (
+                listing
+              ) =>
                 listing._id !==
                 listingId
-
             )
-
         );
 
       } catch (error) {
@@ -515,64 +438,46 @@ export default function Profile() {
 
     <div className="min-h-screen bg-gradient-to-br from-black via-[#020617] to-[#111827] text-white px-4 py-10">
 
-      <div className="max-w-3xl mx-auto bg-[#0f172a] border border-slate-800 rounded-3xl p-8 md:p-10 shadow-2xl">
+      <div className="max-w-4xl mx-auto bg-[#08122b] border border-yellow-500/10 rounded-[35px] p-8 md:p-10 shadow-[0_0_40px_rgba(255,196,0,0.08)]">
 
-        <h1 className="text-4xl font-bold text-center mb-10">
+        <h1 className="text-5xl font-black text-center mb-10">
+
           My Profile
-        </h1>
 
-        {/* FORM */}
+        </h1>
 
         <form
           onSubmit={
             handleSubmit
           }
-
           className="flex flex-col gap-6"
         >
 
           <input
-
             onChange={(e) =>
-
               handleFileUpload(
                 e.target.files[0]
               )
-
             }
-
             type="file"
-
             ref={fileRef}
-
             hidden
-
             accept="image/*"
-
           />
 
           <div className="flex justify-center">
 
             <img
-
               onClick={() =>
-
                 fileRef.current.click()
-
               }
-
               src={
-
                 formData.avatar ||
-
-                currentUser.avatar
-
+                currentUser?.avatar ||
+                "/profile.png"
               }
-
               alt="profile"
-
-              className="rounded-full h-32 w-32 object-cover cursor-pointer border-4 border-yellow-500 shadow-lg hover:scale-105 transition duration-300"
-
+              className="rounded-full h-36 w-36 object-cover cursor-pointer border-4 border-yellow-400 shadow-lg hover:scale-105 transition duration-300"
             />
 
           </div>
@@ -582,19 +487,22 @@ export default function Profile() {
             {fileUploadError ? (
 
               <span className="text-red-500">
+
                 Error uploading image
+
               </span>
 
             ) : filePerc > 0 &&
               filePerc < 100 ? (
 
-              <span className="text-slate-300">
+              <span className="text-yellow-400">
 
                 Uploading {filePerc}%
 
               </span>
 
-            ) : filePerc === 100 ? (
+            ) : filePerc ===
+              100 ? (
 
               <span className="text-green-500">
 
@@ -609,67 +517,44 @@ export default function Profile() {
           </p>
 
           <input
-
             type="text"
-
-            placeholder="username"
-
+            placeholder="Username"
             defaultValue={
-              currentUser.username
+              currentUser?.username
             }
-
             id="username"
-
-            className="bg-[#111827] border border-slate-700 p-4 rounded-xl text-white outline-none focus:border-yellow-500"
-
+            className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none p-4 rounded-2xl"
             onChange={
               handleChange
             }
-
           />
 
           <input
-
             type="email"
-
-            placeholder="email"
-
+            placeholder="Email"
             id="email"
-
             defaultValue={
-              currentUser.email
+              currentUser?.email
             }
-
-            className="bg-[#111827] border border-slate-700 p-4 rounded-xl text-white outline-none focus:border-yellow-500"
-
+            className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none p-4 rounded-2xl"
             onChange={
               handleChange
             }
-
           />
 
           <input
-
             type="password"
-
-            placeholder="new password"
-
+            placeholder="New Password"
             id="password"
-
-            className="bg-[#111827] border border-slate-700 p-4 rounded-xl text-white outline-none focus:border-yellow-500"
-
+            className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none p-4 rounded-2xl"
             onChange={
               handleChange
             }
-
           />
 
           <button
-
             disabled={loading}
-
-            className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold p-4 rounded-xl transition duration-300 uppercase tracking-wider"
-
+            className="bg-yellow-400 hover:bg-yellow-300 text-black font-black p-4 rounded-2xl transition-all duration-300 uppercase tracking-wider"
           >
 
             {loading
@@ -683,11 +568,8 @@ export default function Profile() {
           >
 
             <button
-
               type="button"
-
-              className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold p-4 rounded-xl transition duration-300 uppercase tracking-wider"
-
+              className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black p-4 rounded-2xl transition-all duration-300 uppercase tracking-wider"
             >
 
               Create Listing
@@ -698,18 +580,13 @@ export default function Profile() {
 
         </form>
 
-        {/* ACTIONS */}
-
         <div className="flex justify-between mt-8 text-sm">
 
           <span
-
             onClick={
               handleDeleteUser
             }
-
             className="text-red-500 cursor-pointer hover:underline"
-
           >
 
             Delete Account
@@ -717,13 +594,10 @@ export default function Profile() {
           </span>
 
           <span
-
             onClick={
               handleSignOut
             }
-
             className="text-red-400 cursor-pointer hover:underline"
-
           >
 
             Sign Out
@@ -731,8 +605,6 @@ export default function Profile() {
           </span>
 
         </div>
-
-        {/* SUCCESS */}
 
         {updateSuccess && (
 
@@ -744,16 +616,11 @@ export default function Profile() {
 
         )}
 
-        {/* SHOW LISTINGS */}
-
         <button
-
           onClick={
             handleShowListings
           }
-
-          className="w-full mt-8 bg-blue-600 hover:bg-blue-500 text-white font-bold p-4 rounded-xl transition duration-300 uppercase tracking-wider"
-
+          className="w-full mt-8 bg-blue-600 hover:bg-blue-500 text-white font-black p-4 rounded-2xl transition-all duration-300 uppercase tracking-wider"
         >
 
           Show Listings
@@ -770,111 +637,99 @@ export default function Profile() {
 
         )}
 
-        {/* USER LISTINGS */}
-
         {userListings &&
-          userListings.length > 0 && (
+          userListings.length >
+            0 && (
 
-          <div className="mt-10 flex flex-col gap-5">
+            <div className="mt-10 flex flex-col gap-5">
 
-            <h2 className="text-3xl font-bold text-center">
+              <h2 className="text-3xl font-black text-center">
 
-              Your Listings
+                Your Listings
 
-            </h2>
+              </h2>
 
-            {userListings.map(
-              (listing) => (
+              {userListings.map(
+                (
+                  listing
+                ) => (
 
-                <div
-
-                  key={listing._id}
-
-                  className="bg-[#111827] border border-slate-700 rounded-2xl p-4 flex items-center justify-between gap-4"
-
-                >
-
-                  <Link
-                    to={`/listing/${listing._id}`}
+                  <div
+                    key={
+                      listing._id
+                    }
+                    className="bg-black/40 border border-zinc-700 rounded-3xl p-4 flex items-center justify-between gap-4 hover:border-yellow-400 transition-all"
                   >
-
-                    <img
-
-                      src={
-                        listing
-                          .imageUrls[0]
-                      }
-
-                      alt="listing"
-
-                      className="h-20 w-20 rounded-xl object-cover"
-
-                    />
-
-                  </Link>
-
-                  <Link
-
-                    to={`/listing/${listing._id}`}
-
-                    className="flex-1"
-
-                  >
-
-                    <p className="text-lg font-semibold hover:text-yellow-400 transition truncate">
-
-                      {listing.name}
-
-                    </p>
-
-                  </Link>
-
-                  <div className="flex flex-col gap-3">
-
-                    <button
-
-                      onClick={() =>
-
-                        handleListingDelete(
-                          listing._id
-                        )
-
-                      }
-
-                      className="bg-red-600 hover:bg-red-500 px-4 py-2 rounded-lg text-sm uppercase font-bold"
-
-                    >
-
-                      Delete
-
-                    </button>
 
                     <Link
-                      to={`/update-listing/${listing._id}`}
+                      to={`/listing/${listing._id}`}
                     >
 
-                      <button
-
-                        className="bg-green-600 hover:bg-green-500 px-4 py-2 rounded-lg text-sm uppercase font-bold w-full"
-
-                      >
-
-                        Edit
-
-                      </button>
+                      <img
+                        src={
+                          listing
+                            ?.imageUrls?.[0]
+                        }
+                        alt="listing"
+                        className="h-24 w-24 rounded-2xl object-cover"
+                      />
 
                     </Link>
 
+                    <Link
+                      to={`/listing/${listing._id}`}
+                      className="flex-1"
+                    >
+
+                      <p className="text-lg font-bold hover:text-yellow-400 truncate transition-all">
+
+                        {
+                          listing.name
+                        }
+
+                      </p>
+
+                    </Link>
+
+                    <div className="flex flex-col gap-3">
+
+                      <button
+                        onClick={() =>
+                          handleListingDelete(
+                            listing._id
+                          )
+                        }
+                        className="bg-red-600 hover:bg-red-500 px-4 py-2 rounded-xl text-sm uppercase font-bold"
+                      >
+
+                        Delete
+
+                      </button>
+
+                      <Link
+                        to={`/update-listing/${listing._id}`}
+                      >
+
+                        <button
+                          className="bg-green-600 hover:bg-green-500 px-4 py-2 rounded-xl text-sm uppercase font-bold w-full"
+                        >
+
+                          Edit
+
+                        </button>
+
+                      </Link>
+
+                    </div>
+
                   </div>
 
-                </div>
+                )
+              )}
 
-              )
-            )}
+            </div>
 
-          </div>
-
-        )}
+          )}
 
       </div>
 
