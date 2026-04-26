@@ -103,6 +103,7 @@ const CreateListing = () => {
         }));
 
         setUploading(false);
+
       } catch {
         setUploading(false);
 
@@ -157,7 +158,9 @@ const CreateListing = () => {
         navigate(
           `/listing/${data._id}`
         );
+
       } catch (err) {
+
         setLoading(false);
 
         setError(
@@ -167,9 +170,9 @@ const CreateListing = () => {
     };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-black via-zinc-950 to-black text-white px-4 py-10">
+    <main className="min-h-screen bg-gradient-to-b from-black via-[#020617] to-black text-white px-4 py-10">
 
-      <div className="max-w-5xl mx-auto bg-[#0f172a]/90 border border-yellow-500/10 backdrop-blur-md rounded-[35px] p-6 md:p-10 shadow-[0_0_40px_rgba(255,196,0,0.08)]">
+      <div className="max-w-5xl mx-auto bg-[#08122b] border border-yellow-500/10 rounded-[35px] p-6 md:p-10 shadow-[0_0_40px_rgba(255,196,0,0.08)]">
 
         <div className="mb-10">
 
@@ -191,6 +194,7 @@ const CreateListing = () => {
           <div className="grid md:grid-cols-2 gap-6">
 
             <div>
+
               <label className="text-sm text-zinc-400 mb-2 block">
                 Property Name
               </label>
@@ -205,9 +209,11 @@ const CreateListing = () => {
                 }
                 className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 outline-none px-5 py-4 rounded-2xl transition-all"
               />
+
             </div>
 
             <div>
+
               <label className="text-sm text-zinc-400 mb-2 block">
                 Address
               </label>
@@ -224,11 +230,13 @@ const CreateListing = () => {
                 }
                 className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 outline-none px-5 py-4 rounded-2xl transition-all"
               />
+
             </div>
 
           </div>
 
           <div>
+
             <label className="text-sm text-zinc-400 mb-2 block">
               Description
             </label>
@@ -245,11 +253,13 @@ const CreateListing = () => {
               }
               className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 outline-none px-5 py-4 rounded-2xl transition-all resize-none"
             />
+
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
 
             <div>
+
               <label className="text-sm text-zinc-400 mb-2 block">
                 Contact Email
               </label>
@@ -266,9 +276,11 @@ const CreateListing = () => {
                 }
                 className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 outline-none px-5 py-4 rounded-2xl transition-all"
               />
+
             </div>
 
             <div>
+
               <label className="text-sm text-zinc-400 mb-2 block">
                 Phone Number
               </label>
@@ -285,35 +297,76 @@ const CreateListing = () => {
                 }
                 className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 outline-none px-5 py-4 rounded-2xl transition-all"
               />
+
             </div>
 
           </div>
 
           <div className="border border-dashed border-zinc-700 bg-black/30 rounded-3xl p-6">
 
-            <h2 className="text-xl font-semibold mb-5">
+            <h2 className="text-2xl font-bold mb-5">
               Upload Property Images
             </h2>
 
             <input
               type="file"
               multiple
-              onChange={(e) =>
-                setFiles(
+              onChange={(e) => {
+                const selectedFiles =
                   Array.from(
                     e.target.files
-                  )
-                )
-              }
+                  );
+
+                setFiles(
+                  selectedFiles
+                );
+              }}
               className="w-full bg-zinc-900 border border-zinc-700 p-4 rounded-2xl text-zinc-300"
             />
+
+            {/* Preview Images Before Upload */}
+
+            {
+              files.length > 0 && (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+
+                  {
+                    files.map(
+                      (
+                        file,
+                        index
+                      ) => (
+
+                        <div
+                          key={index}
+                          className="relative"
+                        >
+
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt="preview"
+                            className="h-36 w-full object-cover rounded-2xl border border-zinc-700"
+                          />
+
+                          <p className="text-xs text-zinc-400 mt-2 truncate">
+                            {file.name}
+                          </p>
+
+                        </div>
+                      )
+                    )
+                  }
+
+                </div>
+              )
+            }
 
             <button
               type="button"
               onClick={
                 handleImageSubmit
               }
-              className="w-full mt-5 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:scale-[1.01] text-black font-bold py-4 rounded-2xl transition-all duration-300"
+              className="w-full mt-6 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:scale-[1.01] text-black font-black py-4 rounded-2xl transition-all duration-300"
             >
 
               {uploading
@@ -322,11 +375,71 @@ const CreateListing = () => {
 
             </button>
 
+            {/* Uploaded Images */}
+
+            {
+              formData.imageUrls
+                .length > 0 && (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+
+                  {
+                    formData.imageUrls.map(
+                      (
+                        url,
+                        index
+                      ) => (
+
+                        <div
+                          key={index}
+                          className="relative"
+                        >
+
+                          <img
+                            src={url}
+                            alt="listing"
+                            className="h-36 w-full object-cover rounded-2xl border border-zinc-700"
+                          />
+
+                          <button
+                            type="button"
+                            onClick={() => {
+
+                              const updatedImages =
+                                formData.imageUrls.filter(
+                                  (
+                                    _,
+                                    i
+                                  ) =>
+                                    i !==
+                                    index
+                                );
+
+                              setFormData({
+                                ...formData,
+                                imageUrls:
+                                  updatedImages,
+                              });
+
+                            }}
+                            className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white text-xs px-2 py-1 rounded-lg"
+                          >
+                            X
+                          </button>
+
+                        </div>
+                      )
+                    )
+                  }
+
+                </div>
+              )
+            }
+
           </div>
 
           <button
             type="submit"
-            className="w-full bg-white text-black hover:bg-yellow-400 font-black text-lg py-4 rounded-2xl transition-all duration-300"
+            className="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-black text-lg py-4 rounded-2xl transition-all duration-300"
           >
 
             {loading
@@ -335,17 +448,21 @@ const CreateListing = () => {
 
           </button>
 
-          {error && (
-            <div className="bg-red-500/10 border border-red-500 text-red-400 p-4 rounded-2xl">
-              {error}
-            </div>
-          )}
+          {
+            error && (
+              <div className="bg-red-500/10 border border-red-500 text-red-400 p-4 rounded-2xl">
+                {error}
+              </div>
+            )
+          }
 
-          {imageUploadError && (
-            <div className="bg-red-500/10 border border-red-500 text-red-400 p-4 rounded-2xl">
-              {imageUploadError}
-            </div>
-          )}
+          {
+            imageUploadError && (
+              <div className="bg-red-500/10 border border-red-500 text-red-400 p-4 rounded-2xl">
+                {imageUploadError}
+              </div>
+            )
+          }
 
         </form>
 
