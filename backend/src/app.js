@@ -1,90 +1,135 @@
 import express from "express";
 import cors from "cors";
 import multer from "multer";
+import cookieParser from "cookie-parser";
 
 import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js";
+import listingRouter from "./routes/listing.route.js";
 
 import uploadFile from "./services/storage.service.js";
-import cookieParser from "cookie-parser";
-import listingRouter from '../src/routes/listing.route.js'
 
 const app = express();
 
+// CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin:
+      process.env.NODE_ENV ===
+      "production"
+        ? "https://your-frontend-url.onrender.com"
+        : "http://localhost:5173",
+
     credentials: true,
   })
 );
 
 
-
 app.use(cookieParser());
-app.use(express.static("src/public"));
+
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+app.use(
+  express.static("src/public")
+);
+
 
 const upload = multer({
-  storage: multer.memoryStorage(),
+  storage:
+    multer.memoryStorage(),
 });
 
+// IMAGE UPLOAD ROUTE
 app.post(
   "/post",
   upload.single("image"),
 
   async (req, res) => {
-
     try {
+      if (!req.file) {
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message:
+              "No image uploaded",
+          });
+      }
 
-      console.log(req.body);
-      console.log(req.file);
+      const result =
+        await uploadFile(
+          req.file.buffer
+        );
 
-      const result = await uploadFile(
-        req.file.buffer
-      );
+      return res
+        .status(201)
+        .json({
+          success: true,
 
-      return res.status(201).json({
+          message:
+            "Image uploaded successfully",
 
-        message: "Image Uploaded successfully",
-
-        imageUrl: result.url,
-
-      });
-
+          imageUrl:
+            result.url,
+        });
     } catch (error) {
-
-      return res.status(500).json({
-
-        success: false,
-        message: error.message,
-
-      });
-
+      return res
+        .status(500)
+        .json({
+          success: false,
+          message:
+            error.message,
+        });
     }
-
   }
 );
 
-app.use('/api/user',userRouter)
-app.use("/api", userRouter);
-app.use("/api/auth", authRouter);
-app.use('/api/listing',listingRouter)
 
-app.use((err, req, res, next) => {
+app.use(
+  "/api/user",
+  userRouter
+);
 
-  const statusCode = err.statusCode || 500;
+app.use(
+  "/api/auth",
+  authRouter
+);
 
-  const message = err.message || "Internal Server Error";
+app.use(
+  "/api/listing",
+  listingRouter
+);
 
-  return res.status(statusCode).json({
 
-    success: false,
-    statusCode,
-    message,
+app.use(
+  (
+    err,
+    req,
+    res,
+    next
+  ) => {
+    const statusCode =
+      err.statusCode ||
+      500;
 
-  });
+    const message =
+      err.message ||
+      "Internal Server Error";
 
-});
+    return res
+      .status(statusCode)
+      .json({
+        success: false,
+        statusCode,
+        message,
+      });
+  }
+);
 
 export default app;
