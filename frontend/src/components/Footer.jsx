@@ -1,128 +1,128 @@
 import React from "react";
 
 const Footer = () => {
-
   return (
-
     <footer className="bg-black text-white mt-16 border-t border-zinc-800 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-
+          {/* Brand Section */}
           <div>
 
-            <h1 className="text-3xl font-bold text-yellow-500">
-
-              Royal
-
-              <span className="text-slate-400">
-                Estate
+            <h1 className="text-4xl font-extrabold tracking-wide">
+              <span className="text-yellow-500">
+                Royal
               </span>
 
+              <span className="text-slate-300">
+                Estate
+              </span>
             </h1>
 
-            <p className="text-gray-400 mt-4 leading-7 text-sm sm:text-base">
+            <p className="text-gray-400 mt-6 leading-8 text-sm sm:text-base max-w-xl">
 
-              Discover modern homes, luxury apartments,
-              and the perfect property for your future
-              all in one place.
+              Helping people discover premium homes,
+              luxury apartments, and investment-ready
+              properties with a seamless and modern
+              real estate experience.
 
             </p>
 
-          </div>
+            <div className="flex flex-wrap gap-3 mt-6">
 
-          <div>
+              <span className="px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-full text-sm text-gray-300">
+                Luxury Homes
+              </span>
 
-            <h2 className="text-lg sm:text-xl font-semibold mb-4">
+              <span className="px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-full text-sm text-gray-300">
+                Smart Investments
+              </span>
 
-              Quick Links
-
-            </h2>
-
-            <div className="flex flex-col gap-3 text-gray-400 text-sm sm:text-base">
-
-              <a
-                href="/"
-                className="hover:text-yellow-500 transition"
-              >
-                Home
-              </a>
-
-              <a
-                href="/about"
-                className="hover:text-yellow-500 transition"
-              >
-                About
-              </a>
-
-              <a
-                href="/search"
-                className="hover:text-yellow-500 transition"
-              >
-                Properties
-              </a>
-
-              <a
-                href="/contact"
-                className="hover:text-yellow-500 transition"
-              >
-                Contact
-              </a>
+              <span className="px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-full text-sm text-gray-300">
+                Trusted Listings
+              </span>
 
             </div>
 
           </div>
 
-          <div>
+          {/* Contact Section */}
+          <div className="bg-zinc-950 border border-zinc-800 rounded-3xl p-8">
 
-            <h2 className="text-lg sm:text-xl font-semibold mb-4">
-
-              Contact
-
+            <h2 className="text-2xl font-bold mb-6 text-yellow-500">
+              Get In Touch
             </h2>
 
-            <div className="space-y-3 text-gray-400 text-sm sm:text-base">
+            <div className="space-y-5 text-gray-300">
 
-              <p>
-                📍 India
-              </p>
+              <div className="flex items-start gap-4">
 
-              <p>
+                <span className="text-2xl">
+                  📍
+                </span>
 
-                X :
+                <div>
 
-                <a
-                  href="https://x.com/Shivam6473"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-yellow-500 ml-2"
-                >
+                  <p className="font-semibold text-white">
+                    Location
+                  </p>
 
-                  @Shivam6473
+                  <p className="text-gray-400">
+                    India
+                  </p>
 
-                </a>
+                </div>
 
-              </p>
+              </div>
 
-              <p>
-                📞 +91 9399898248
-              </p>
+              <div className="flex items-start gap-4">
 
-            </div>
+                <span className="text-2xl">
+                  📞
+                </span>
 
-            <div className="flex gap-4 mt-6 text-2xl">
+                <div>
 
-              <a
-                href="https://x.com/Shivam6473"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-yellow-500 transition"
-              >
+                  <p className="font-semibold text-white">
+                    Phone
+                  </p>
 
-                🐦
+                  <a
+                    href="tel:+919399898248"
+                    className="text-gray-400 hover:text-yellow-500 transition"
+                  >
+                    +91 9399898248
+                  </a>
 
-              </a>
+                </div>
+
+              </div>
+
+              <div className="flex items-start gap-4">
+
+                <span className="text-2xl">
+                  🌐
+                </span>
+
+                <div>
+
+                  <p className="font-semibold text-white">
+                    Social
+                  </p>
+
+                  <a
+                    href="https://x.com/Shivam6473"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-yellow-500 transition"
+                  >
+                    @Shivam6473
+                  </a>
+
+                </div>
+
+              </div>
 
             </div>
 
@@ -130,18 +130,22 @@ const Footer = () => {
 
         </div>
 
-        <div className="border-t border-zinc-800 mt-10 pt-6 text-center text-gray-500 text-xs sm:text-sm">
+        {/* Bottom */}
+        <div className="border-t border-zinc-800 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 text-sm">
 
-          © 2026 RoyalEstate. All rights reserved.
+          <p>
+            © 2026 RoyalEstate. All rights reserved.
+          </p>
+
+          <p className="text-center sm:text-right">
+            Built for modern real estate experiences.
+          </p>
 
         </div>
 
       </div>
-
     </footer>
-
   );
-
 };
 
 export default Footer;
