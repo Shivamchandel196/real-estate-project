@@ -1,50 +1,35 @@
 import { useState } from "react";
 import axios from "axios";
+
 import { useSelector } from "react-redux";
+
 import { useNavigate } from "react-router-dom";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const CreateListing = () => {
 
-  const [files, setFiles] =
-    useState([]);
+  const [files, setFiles] = useState([]);
 
-  const [formData, setFormData] =
-    useState({
+  const [formData, setFormData] = useState({
+    imageUrls: [],
+    name: "",
+    description: "",
+    address: "",
+    contactNumber: "",
+    contactEmail: "",
+    type: "rent",
+    bedrooms: 1,
+    bathrooms: 1,
+    regularPrice: "",
+    discountPrice: "",
+    offer: false,
+    parking: false,
+    furnished: false,
+  });
 
-      imageUrls: [],
-
-      name: "",
-
-      description: "",
-
-      address: "",
-
-      contactNumber: "",
-
-      contactEmail: "",
-
-      type: "rent",
-
-      bedrooms: 1,
-
-      bathrooms: 1,
-
-      regularPrice: "",
-
-      discountPrice: "",
-
-      offer: false,
-
-      parking: false,
-
-      furnished: false,
-
-    });
-
-  const [
-    imageUploadError,
-    setImageUploadError,
-  ] = useState("");
+  const [imageUploadError, setImageUploadError] =
+    useState("");
 
   const [uploading, setUploading] =
     useState(false);
@@ -63,16 +48,10 @@ const CreateListing = () => {
   const navigate =
     useNavigate();
 
-  const API_URL =
-    import.meta.env
-      .VITE_API_URL;
-
   const handleImageSubmit =
     async () => {
 
-      if (
-        files.length === 0
-      ) {
+      if (files.length === 0) {
 
         return setImageUploadError(
           "Please select images"
@@ -84,8 +63,9 @@ const CreateListing = () => {
 
         setUploading(true);
 
-        const uploadedUrls =
-          [];
+        setImageUploadError("");
+
+        const uploadedUrls = [];
 
         for (
           let i = 0;
@@ -103,22 +83,14 @@ const CreateListing = () => {
 
           const res =
             await axios.post(
-
               `${API_URL}/post`,
-
               imageData,
-
               {
-
                 headers: {
-
                   "Content-Type":
                     "multipart/form-data",
-
                 },
-
               }
-
             );
 
           uploadedUrls.push(
@@ -127,21 +99,13 @@ const CreateListing = () => {
 
         }
 
-        setFormData(
-          (prev) => ({
-
-            ...prev,
-
-            imageUrls: [
-
-              ...prev.imageUrls,
-
-              ...uploadedUrls,
-
-            ],
-
-          })
-        );
+        setFormData((prev) => ({
+          ...prev,
+          imageUrls: [
+            ...prev.imageUrls,
+            ...uploadedUrls,
+          ],
+        }));
 
         setUploading(false);
 
@@ -166,37 +130,28 @@ const CreateListing = () => {
 
         setLoading(true);
 
+        setError("");
+
         const res =
           await fetch(
-
             `${API_URL}/api/listing/create`,
-
             {
-
               method: "POST",
 
               headers: {
-
                 "Content-Type":
                   "application/json",
-
               },
 
               credentials:
                 "include",
 
-              body:
-                JSON.stringify({
-
-                  ...formData,
-
-                  userRef:
-                    currentUser.id,
-
-                }),
-
+              body: JSON.stringify({
+                ...formData,
+                userRef:
+                  currentUser._id,
+              }),
             }
-
           );
 
         const data =
@@ -205,8 +160,7 @@ const CreateListing = () => {
         setLoading(false);
 
         if (
-          data.success ===
-          false
+          data.success === false
         ) {
 
           return setError(
@@ -238,55 +192,36 @@ const CreateListing = () => {
       <div className="max-w-4xl mx-auto bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
 
         <h1 className="text-4xl font-black mb-8">
-
           Create Listing
-
         </h1>
 
         <form
-          onSubmit={
-            handleSubmit
-          }
+          onSubmit={handleSubmit}
           className="flex flex-col gap-5"
         >
 
           <input
             type="text"
             placeholder="Property Name"
-            value={
-              formData.name
-            }
+            value={formData.name}
             onChange={(e) =>
-
               setFormData({
-
                 ...formData,
-
-                name:
-                  e.target.value,
-
+                name: e.target.value,
               })
-
             }
             className="bg-zinc-800 p-4 rounded-2xl"
           />
 
           <textarea
             placeholder="Description"
-            value={
-              formData.description
-            }
+            value={formData.description}
             onChange={(e) =>
-
               setFormData({
-
                 ...formData,
-
                 description:
                   e.target.value,
-
               })
-
             }
             className="bg-zinc-800 p-4 rounded-2xl"
           />
@@ -295,11 +230,11 @@ const CreateListing = () => {
             type="file"
             multiple
             onChange={(e) =>
-
               setFiles(
-                e.target.files
+                Array.from(
+                  e.target.files
+                )
               )
-
             }
             className="bg-zinc-800 p-4 rounded-2xl"
           />
@@ -313,9 +248,7 @@ const CreateListing = () => {
           >
 
             {uploading
-
               ? "Uploading..."
-
               : "Upload Images"}
 
           </button>
@@ -326,33 +259,21 @@ const CreateListing = () => {
           >
 
             {loading
-
               ? "Creating..."
-
               : "Create Listing"}
 
           </button>
 
           {error && (
-
             <p className="text-red-500">
-
               {error}
-
             </p>
-
           )}
 
           {imageUploadError && (
-
             <p className="text-red-500">
-
-              {
-                imageUploadError
-              }
-
+              {imageUploadError}
             </p>
-
           )}
 
         </form>
