@@ -69,12 +69,12 @@ const Listing = () => {
 
           setLoading(true);
 
-          const res =
-            await fetch(
+         const res =
+  await fetch(
 
-              `/api/listing/get/${params.listingId}`
+    `${import.meta.env.VITE_API_URL}/api/listing/get/${params.listingId}`
 
-            );
+  );
 
           const data =
             await res.json();
@@ -268,7 +268,6 @@ const Listing = () => {
 
           </section>
 
-          {/* CONTENT */}
 
           <section className="max-w-5xl mx-auto px-4 -mt-20 relative z-10">
 
@@ -286,7 +285,7 @@ const Listing = () => {
 
               </h1>
 
-              {/* PRICE */}
+             
 
               <div className="flex flex-wrap gap-4 mb-6">
 
@@ -355,7 +354,7 @@ const Listing = () => {
 
               </div>
 
-              {/* BADGES */}
+             
 
               <div className="flex flex-wrap gap-3 mb-6">
 

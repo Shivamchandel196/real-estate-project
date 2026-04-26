@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+const API_URL =import.meta.env.VITE_API_URL;
 
 import {
   useSelector,
@@ -97,7 +98,7 @@ export default function Profile() {
         const res =
           await axios.post(
 
-            "http://localhost:8000/post",
+            `${API_URL}/post`,
 
             imageData,
 
@@ -178,7 +179,7 @@ export default function Profile() {
         const res =
           await fetch(
 
-            `/api/user/update/${currentUser._id}`,
+            `${API_URL}/api/user/update/${currentUser._id}`,
 
             {
 
@@ -264,7 +265,7 @@ export default function Profile() {
         const res =
           await fetch(
 
-            `/api/user/delete/${currentUser._id}`,
+          `${API_URL}/api/user/delete/${currentUser._id}`,
 
             {
 
@@ -334,7 +335,7 @@ export default function Profile() {
         const res =
           await fetch(
 
-            "/api/auth/signout",
+          `${API_URL}/api/auth/signout`,
 
             {
 
@@ -401,7 +402,7 @@ export default function Profile() {
         const res =
           await fetch(
 
-            `/api/user/listings/${currentUser._id}`,
+           `${API_URL}/api/user/listings/${currentUser._id}` ,
 
             {
 
@@ -456,7 +457,7 @@ export default function Profile() {
         const res =
           await fetch(
 
-            `/api/listing/delete/${listingId}`,
+            `${API_URL}/api/listing/delete/${listingId}`,
 
             {
 

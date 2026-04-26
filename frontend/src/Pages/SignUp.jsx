@@ -53,30 +53,33 @@ const SignUp = () => {
 
         setLoading(true);
 
-        const res =
-          await fetch(
+       const res =
+  await fetch(
 
-            "/api/auth/signup",
+    `${import.meta.env.VITE_API_URL}/api/auth/signup`,
 
-            {
+    {
 
-              method: "POST",
+      method: "POST",
 
-              headers: {
+      headers: {
 
-                "Content-Type":
-                  "application/json",
+        "Content-Type":
+          "application/json",
 
-              },
+      },
 
-              body:
-                JSON.stringify(
-                  formData
-                ),
+      credentials:
+        "include",
 
-            }
+      body:
+        JSON.stringify(
+          formData
+        ),
 
-          );
+    }
+
+  );
 
         const data =
           await res.json();

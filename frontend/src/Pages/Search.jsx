@@ -3,6 +3,10 @@ import {
   useState,
 } from "react";
 
+const API_URL =
+  import.meta.env
+    .VITE_API_URL;
+
 import {
   useNavigate,
   useLocation,
@@ -124,7 +128,7 @@ export default function Search() {
           const res =
             await fetch(
 
-              `/api/listing/get?${searchQuery}`
+              `${API_URL}/api/listing/get?${searchQuery}`
 
             );
 
@@ -350,7 +354,7 @@ export default function Search() {
         const res =
           await fetch(
 
-            `/api/listing/get?${urlParams.toString()}`
+          `${API_URL}/api/listing/get?${urlParams.toString()}`,  
 
           );
 

@@ -3,6 +3,10 @@ import {
   useState,
 } from "react";
 
+const API_URL =
+  import.meta.env
+    .VITE_API_URL;
+
 import axios from "axios";
 
 import {
@@ -93,7 +97,7 @@ const UpdateListing = () => {
           const res =
             await fetch(
 
-              `http://localhost:8000/api/listing/get/${listingId}`
+              `${API_URL}/api/listing/get/${listingId}`
 
             );
 
@@ -270,7 +274,7 @@ const UpdateListing = () => {
           const res =
             await axios.post(
 
-              "http://localhost:8000/post",
+              `${API_URL}/post`,
 
               imageData,
 
@@ -394,7 +398,7 @@ const UpdateListing = () => {
         const res =
           await fetch(
 
-            `http://localhost:8000/api/listing/update/${listingId}`,
+            `${API_URL}/api/listing/update/${listingId}`,
 
             {
 
