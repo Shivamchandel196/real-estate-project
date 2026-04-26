@@ -15,11 +15,11 @@ const CreateListing = () => {
     address: "",
     contactNumber: "",
     contactEmail: "",
+    regularPrice: "",
+    discountPrice: "",
     type: "rent",
     bedrooms: 1,
     bathrooms: 1,
-    regularPrice: "",
-    discountPrice: "",
     offer: false,
     parking: false,
     furnished: false,
@@ -52,6 +52,7 @@ const CreateListing = () => {
 
   const handleImageSubmit =
     async () => {
+
       if (files.length === 0) {
         return setImageUploadError(
           "Please select images"
@@ -59,6 +60,7 @@ const CreateListing = () => {
       }
 
       try {
+
         setUploading(true);
         setImageUploadError("");
 
@@ -69,6 +71,7 @@ const CreateListing = () => {
           i < files.length;
           i++
         ) {
+
           const imageData =
             new FormData();
 
@@ -96,15 +99,14 @@ const CreateListing = () => {
 
         setFormData((prev) => ({
           ...prev,
-          imageUrls: [
-            ...prev.imageUrls,
-            ...uploadedUrls,
-          ],
+          imageUrls:
+            uploadedUrls,
         }));
 
         setUploading(false);
 
       } catch {
+
         setUploading(false);
 
         setImageUploadError(
@@ -115,9 +117,11 @@ const CreateListing = () => {
 
   const handleSubmit =
     async (e) => {
+
       e.preventDefault();
 
       try {
+
         setLoading(true);
         setError("");
 
@@ -136,8 +140,10 @@ const CreateListing = () => {
 
             body: JSON.stringify({
               ...formData,
+
               userRef:
-                currentUser._id,
+                currentUser?._id ||
+                currentUser?.id,
             }),
           }
         );
@@ -150,6 +156,7 @@ const CreateListing = () => {
         if (
           data.success === false
         ) {
+
           return setError(
             data.message
           );
@@ -170,13 +177,14 @@ const CreateListing = () => {
     };
 
   return (
+
     <main className="min-h-screen bg-gradient-to-b from-black via-[#020617] to-black text-white px-4 py-10">
 
       <div className="max-w-5xl mx-auto bg-[#08122b] border border-yellow-500/10 rounded-[35px] p-6 md:p-10 shadow-[0_0_40px_rgba(255,196,0,0.08)]">
 
         <div className="mb-10">
 
-          <h1 className="text-4xl md:text-5xl font-black text-white">
+          <h1 className="text-4xl md:text-5xl font-black">
             Create Listing
           </h1>
 
@@ -207,7 +215,7 @@ const CreateListing = () => {
                 onChange={
                   handleChange
                 }
-                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 outline-none px-5 py-4 rounded-2xl transition-all"
+                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
               />
 
             </div>
@@ -228,7 +236,7 @@ const CreateListing = () => {
                 onChange={
                   handleChange
                 }
-                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 outline-none px-5 py-4 rounded-2xl transition-all"
+                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
               />
 
             </div>
@@ -251,7 +259,7 @@ const CreateListing = () => {
               onChange={
                 handleChange
               }
-              className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 outline-none px-5 py-4 rounded-2xl transition-all resize-none"
+              className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl resize-none"
             />
 
           </div>
@@ -274,7 +282,7 @@ const CreateListing = () => {
                 onChange={
                   handleChange
                 }
-                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 outline-none px-5 py-4 rounded-2xl transition-all"
+                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
               />
 
             </div>
@@ -295,7 +303,53 @@ const CreateListing = () => {
                 onChange={
                   handleChange
                 }
-                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 outline-none px-5 py-4 rounded-2xl transition-all"
+                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
+              />
+
+            </div>
+
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+
+            <div>
+
+              <label className="text-sm text-zinc-400 mb-2 block">
+                Regular Price
+              </label>
+
+              <input
+                id="regularPrice"
+                type="number"
+                placeholder="Enter regular price"
+                value={
+                  formData.regularPrice
+                }
+                onChange={
+                  handleChange
+                }
+                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
+              />
+
+            </div>
+
+            <div>
+
+              <label className="text-sm text-zinc-400 mb-2 block">
+                Discount Price
+              </label>
+
+              <input
+                id="discountPrice"
+                type="number"
+                placeholder="Enter discount price"
+                value={
+                  formData.discountPrice
+                }
+                onChange={
+                  handleChange
+                }
+                className="w-full bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none px-5 py-4 rounded-2xl"
               />
 
             </div>
@@ -312,6 +366,7 @@ const CreateListing = () => {
               type="file"
               multiple
               onChange={(e) => {
+
                 const selectedFiles =
                   Array.from(
                     e.target.files
@@ -320,53 +375,17 @@ const CreateListing = () => {
                 setFiles(
                   selectedFiles
                 );
+
               }}
               className="w-full bg-zinc-900 border border-zinc-700 p-4 rounded-2xl text-zinc-300"
             />
-
-            {/* Preview Images Before Upload */}
-
-            {
-              files.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-
-                  {
-                    files.map(
-                      (
-                        file,
-                        index
-                      ) => (
-
-                        <div
-                          key={index}
-                          className="relative"
-                        >
-
-                          <img
-                            src={URL.createObjectURL(file)}
-                            alt="preview"
-                            className="h-36 w-full object-cover rounded-2xl border border-zinc-700"
-                          />
-
-                          <p className="text-xs text-zinc-400 mt-2 truncate">
-                            {file.name}
-                          </p>
-
-                        </div>
-                      )
-                    )
-                  }
-
-                </div>
-              )
-            }
 
             <button
               type="button"
               onClick={
                 handleImageSubmit
               }
-              className="w-full mt-6 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:scale-[1.01] text-black font-black py-4 rounded-2xl transition-all duration-300"
+              className="w-full mt-6 bg-yellow-400 hover:bg-yellow-300 text-black font-black py-4 rounded-2xl transition-all"
             >
 
               {uploading
@@ -375,11 +394,12 @@ const CreateListing = () => {
 
             </button>
 
-            {/* Uploaded Images */}
+            {/* ONLY SHOW AFTER UPLOAD */}
 
             {
               formData.imageUrls
                 .length > 0 && (
+
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
 
                   {
@@ -439,7 +459,7 @@ const CreateListing = () => {
 
           <button
             type="submit"
-            className="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-black text-lg py-4 rounded-2xl transition-all duration-300"
+            className="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-black text-lg py-4 rounded-2xl transition-all"
           >
 
             {loading
