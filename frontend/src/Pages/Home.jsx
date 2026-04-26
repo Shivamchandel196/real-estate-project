@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import SwiperCore from "swiper";
 import "swiper/css/bundle";
-import ListingItem from "../components/ListingItem";
+import ListingItem from "../components/ListingItem.jsx";
 import { FaHome, FaSearch, FaBuilding, FaShieldAlt } from "react-icons/fa";
 import Footer from '../components/Footer.jsx'
 
@@ -337,16 +337,16 @@ function InjectStyles() {
 }
 
 const ICON_COLORS = {
-  home:    "#c9a84c",
-  search:  "#4a8fe8",
-  build:   "#9b6fe8",
-  shield:  "#e86b6b",
+  home: "#c9a84c",
+  search: "#4a8fe8",
+  build: "#9b6fe8",
+  shield: "#e86b6b",
 };
 
 export default function Home() {
   const [offerListings, setOfferListings] = useState([]);
-  const [saleListings,  setSaleListings]  = useState([]);
-  const [rentListings,  setRentListings]  = useState([]);
+  const [saleListings, setSaleListings] = useState([]);
+  const [rentListings, setRentListings] = useState([]);
 
   SwiperCore.use([Navigation, Autoplay]);
 
@@ -362,8 +362,8 @@ export default function Home() {
           offerRes.json(), rentRes.json(), saleRes.json(),
         ]);
         setOfferListings(Array.isArray(offerData) ? offerData : []);
-        setRentListings(Array.isArray(rentData)  ? rentData  : []);
-        setSaleListings(Array.isArray(saleData)  ? saleData  : []);
+        setRentListings(Array.isArray(rentData) ? rentData : []);
+        setSaleListings(Array.isArray(saleData) ? saleData : []);
       } catch (error) {
         console.log(error);
       }
@@ -416,10 +416,10 @@ export default function Home() {
 
         <div className="re-features-grid">
           {[
-            { icon: <FaHome />,      color: ICON_COLORS.home,   title: "Premium Homes",     desc: "Luxury apartments, villas & bungalows curated for refined living." },
-            { icon: <FaSearch />,    color: ICON_COLORS.search,  title: "Smart Search",      desc: "Advanced filters to find exactly what you're looking for, fast." },
-            { icon: <FaBuilding />,  color: ICON_COLORS.build,   title: "Buy & Rent",        desc: "Flexible options — explore both rental and sale properties easily." },
-            { icon: <FaShieldAlt />, color: ICON_COLORS.shield,  title: "Trusted Platform",  desc: "Verified listings & secure transactions you can count on." },
+            { icon: <FaHome />, color: ICON_COLORS.home, title: "Premium Homes", desc: "Luxury apartments, villas & bungalows curated for refined living." },
+            { icon: <FaSearch />, color: ICON_COLORS.search, title: "Smart Search", desc: "Advanced filters to find exactly what you're looking for, fast." },
+            { icon: <FaBuilding />, color: ICON_COLORS.build, title: "Buy & Rent", desc: "Flexible options — explore both rental and sale properties easily." },
+            { icon: <FaShieldAlt />, color: ICON_COLORS.shield, title: "Trusted Platform", desc: "Verified listings & secure transactions you can count on." },
           ].map(({ icon, color, title, desc }) => (
             <div className="re-feature-card" key={title}>
               <span className="re-feature-icon" style={{ color }}>{icon}</span>
@@ -518,9 +518,9 @@ export default function Home() {
             </div>
           </section>
         )}
-         
+
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
