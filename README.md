@@ -13,6 +13,11 @@ A modern full-stack real estate platform built with React, Node.js, MongoDB, and
 🔗 Live Website: [Visit Here](https://real-estate-project-hazel-tau.vercel.app/)
 
 
+
+## 📸 Screenshots
+<img width="1920" height="867" alt="image" src="https://github.com/user-attachments/assets/97b322df-70b0-4307-bb27-ab970ae88856" />
+
+
 ## ✨ Features
 
 - 🔐 User Authentication with Firebase
@@ -88,10 +93,6 @@ npm start
 
 - ▲ Frontend deployed on Vercel
 - 🚂 Backend deployed on Render
-
-## 📸 Screenshots
-<img width="1920" height="867" alt="image" src="https://github.com/user-attachments/assets/97b322df-70b0-4307-bb27-ab970ae88856" />
-
 
 ## 🚧 Future Improvements
 
