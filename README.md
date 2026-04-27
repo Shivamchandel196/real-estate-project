@@ -96,11 +96,8 @@ npm start
 
 ## 🚧 Future Improvements
 
-- 💬 Real-time chat between buyers and sellers
 - 📍 Interactive maps with property locations
 - 🔔 Email & push notifications
-- 📊 Advanced search filters
-- 💳 Secure payment integration
 - 🔐 OTP-based Email Authentication
 
 
