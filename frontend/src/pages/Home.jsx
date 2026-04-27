@@ -31,9 +31,11 @@ export default function Home() {
     const fetchListings = async () => {
       try {
         const [offerRes, rentRes, saleRes] = await Promise.all([
-          fetch("/api/listing/get?offer=true&limit=4"),
-          fetch("/api/listing/get?type=rent&limit=4"),
-          fetch("/api/listing/get?type=sale&limit=4"),
+    fetch(`${import.meta.env.VITE_API_URL}/api/listing/get?offer=true&limit=4`),
+
+fetch(`${import.meta.env.VITE_API_URL}/api/listing/get?type=rent&limit=4`),
+
+fetch(`${import.meta.env.VITE_API_URL}/api/listing/get?type=sale&limit=4`),
         ]);
 
         const [offerData, rentData, saleData] = await Promise.all([
