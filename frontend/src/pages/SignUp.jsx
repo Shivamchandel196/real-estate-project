@@ -127,7 +127,7 @@ const SignUp = () => {
 
   return (
 
-    <main className="min-h-screen bg-black text-white flex items-center justify-center px-4">
+<main className="min-h-screen bg-black text-white flex items-center justify-center px-4 pt-32 pb-10">
 
       <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-[2rem] p-8 shadow-2xl">
 

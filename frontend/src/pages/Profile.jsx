@@ -436,7 +436,7 @@ export default function Profile() {
 
   return (
 
-    <div className="min-h-screen bg-gradient-to-br from-black via-[#020617] to-[#111827] text-white px-4 py-10">
+  <div className="min-h-screen bg-gradient-to-br from-black via-[#020617] to-[#111827] text-white px-4 pt-32 pb-10">
 
       <div className="max-w-4xl mx-auto bg-[#08122b] border border-yellow-500/10 rounded-[35px] p-8 md:p-10 shadow-[0_0_40px_rgba(255,196,0,0.08)]">
 

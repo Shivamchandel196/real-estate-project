@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 
 import {
   useState,
-  useEffect,
 } from "react";
 
 const Header = () => {
@@ -24,11 +23,6 @@ const Header = () => {
 
   const location =
     useLocation();
-
-  const [
-    scrolled,
-    setScrolled,
-  ] = useState(false);
 
   const urlParams =
     new URLSearchParams(
@@ -46,35 +40,6 @@ const Header = () => {
   ] = useState(
     searchTermFromUrl
   );
-
-  useEffect(() => {
-
-    const onScroll = () => {
-
-      setScrolled(
-        window.scrollY > 20
-      );
-
-    };
-
-    window.addEventListener(
-      "scroll",
-      onScroll,
-      {
-        passive: true,
-      }
-    );
-
-    return () => {
-
-      window.removeEventListener(
-        "scroll",
-        onScroll
-      );
-
-    };
-
-  }, []);
 
   const handleSubmit =
     (e) => {
@@ -104,15 +69,7 @@ const Header = () => {
   return (
 
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 border-b border-yellow-900/20
-
-      ${
-        scrolled
-          ? "bg-[#0b0c0e]/95 shadow-[0_4px_30px_rgba(0,0,0,0.6)]"
-          : "bg-[#0b0c0e]/80"
-      }
-
-      backdrop-blur-xl`}
+      className="fixed top-0 left-0 w-full z-50 bg-[#111318] border-b border-yellow-900/20 shadow-[0_4px_30px_rgba(0,0,0,0.6)]"
     >
 
       <div className="flex justify-between items-center max-w-7xl mx-auto px-6 h-[85px]">
