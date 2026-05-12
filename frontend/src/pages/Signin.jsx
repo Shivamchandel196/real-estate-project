@@ -66,34 +66,34 @@ const SignIn = () => {
           signInStart()
         );
 
-       
-          const res =
-  await fetch(
 
-    `${import.meta.env.VITE_API_URL}/api/auth/signin`,
+        const res =
+          await fetch(
 
-    {
+            `${import.meta.env.VITE_API_URL}/api/auth/signin`,
 
-      method: "POST",
+            {
 
-      headers: {
+              method: "POST",
 
-        "Content-Type":
-          "application/json",
+              headers: {
 
-      },
+                "Content-Type":
+                  "application/json",
 
-      credentials:
-        "include",
+              },
 
-      body:
-        JSON.stringify(
-          formData
-        ),
+              credentials:
+                "include",
 
-    }
+              body:
+                JSON.stringify(
+                  formData
+                ),
 
-  );
+            }
+
+          );
 
         const data =
           await res.json();
@@ -141,7 +141,7 @@ const SignIn = () => {
 
     <main className="min-h-screen bg-black text-white flex items-center justify-center px-4 pt-32 pb-10">
 
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-[2rem] p-8 shadow-2xl">
+      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-4xl p-8 shadow-2xl">
 
         <div className="text-center mb-10">
 

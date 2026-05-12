@@ -69,12 +69,12 @@ const Listing = () => {
 
           setLoading(true);
 
-         const res =
-  await fetch(
+          const res =
+            await fetch(
 
-    `${import.meta.env.VITE_API_URL}/api/listing/get/${params.listingId}`
+              `${import.meta.env.VITE_API_URL}/api/listing/get/${params.listingId}`
 
-  );
+            );
 
           const data =
             await res.json();
@@ -200,7 +200,7 @@ const Listing = () => {
 
                     <div
 
-                      className="h-[650px] bg-cover bg-center relative"
+                      className="h-162.5 bg-cover bg-center relative"
 
                       style={{
 
@@ -212,7 +212,7 @@ const Listing = () => {
 
                     >
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                      <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent"></div>
 
                     </div>
 
@@ -271,7 +271,7 @@ const Listing = () => {
 
           <section className="max-w-5xl mx-auto px-4 -mt-20 relative z-10">
 
-            <div className="bg-zinc-900 border border-zinc-800 rounded-[2rem] p-8 md:p-12 shadow-2xl">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-4xl p-8 md:p-12 shadow-2xl">
 
               <p className="uppercase tracking-[0.3em] text-yellow-500 text-xs font-semibold mb-4">
 
@@ -285,7 +285,7 @@ const Listing = () => {
 
               </h1>
 
-             
+
 
               <div className="flex flex-wrap gap-4 mb-6">
 
@@ -297,14 +297,14 @@ const Listing = () => {
                     listing.offer
 
                       ? (
-                          listing.discountPrice ||
-                          0
-                        )
+                        listing.discountPrice ||
+                        0
+                      )
 
                       : (
-                          listing.regularPrice ||
-                          0
-                        )
+                        listing.regularPrice ||
+                        0
+                      )
 
                   ).toLocaleString(
                     "en-IN"
@@ -313,13 +313,13 @@ const Listing = () => {
                   {listing.type ===
                     "rent" && (
 
-                    <span className="text-sm opacity-70 ml-2">
+                      <span className="text-sm opacity-70 ml-2">
 
-                      / month
+                        / month
 
-                    </span>
+                      </span>
 
-                  )}
+                    )}
 
                 </div>
 
@@ -354,26 +354,25 @@ const Listing = () => {
 
               </div>
 
-             
+
 
               <div className="flex flex-wrap gap-3 mb-6">
 
                 <span
 
-                  className={`px-5 py-2 rounded-xl text-sm uppercase tracking-wider font-semibold ${
-                    listing.type ===
-                    "rent"
+                  className={`px-5 py-2 rounded-xl text-sm uppercase tracking-wider font-semibold ${listing.type ===
+                      "rent"
 
                       ? "bg-blue-500/10 text-blue-400 border border-blue-500/20"
 
                       : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
 
-                  }`}
+                    }`}
 
                 >
 
                   {listing.type ===
-                  "rent"
+                    "rent"
 
                     ? "For Rent"
 
