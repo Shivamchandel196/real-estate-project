@@ -8,6 +8,7 @@ import {
   FaUsers,
   FaShieldAlt,
 } from "react-icons/fa";
+import Footer from "../components/Footer";
 
 const features = [
 
@@ -278,6 +279,8 @@ const About = () => {
         </div>
 
       </section>
+
+      <Footer />
 
     </main>
 

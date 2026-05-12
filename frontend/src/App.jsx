@@ -12,6 +12,9 @@ const CreateListing = lazy(() => import("./pages/CreateListing"));
 const UpdateListing = lazy(() => import("./pages/UpdateListing"));
 const Listing = lazy(() => import("./pages/Listing"));
 const Search = lazy(() => import("./pages/Search"));
+const LegalPage = lazy(() => import("./pages/T&C"));
+const SellerProfile = lazy(() => import("./pages/SellerProfile"));
+const Compare = lazy(() => import("./pages/Compare"));
 
 const LoadingFallback = () => <div className="flex items-center justify-center min-h-screen bg-black"><div className="text-center"><div className="w-12 h-12 border-2 border-yellow-500/20 border-t-yellow-500 rounded-full animate-spin mx-auto mb-4"></div><p className="text-zinc-500 uppercase tracking-[0.2em] text-sm">Loading...</p></div></div>;
 
@@ -27,6 +30,10 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/listing/:listingId" element={<Listing />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/terms" element={<LegalPage />} />
+          <Route path="/privacy" element={<LegalPage />} />
+          <Route path="/seller/:sellerId" element={<SellerProfile />} />
+          <Route path="/compare" element={<Compare />} />
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/create-listing" element={<CreateListing />} />

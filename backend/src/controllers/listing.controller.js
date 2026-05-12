@@ -216,8 +216,18 @@ export const getListings = async (
       req.query.order ||
       "desc";
 
+    const userRef =
+      req.query.userRef;
+
+    const userFilter =
+      userRef
+        ? { userRef }
+        : {};
+
     const listings =
       await Listing.find({
+        ...userFilter,
+
         name: {
           $regex: searchTerm,
           $options: "i",

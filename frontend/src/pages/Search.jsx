@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 
 import ListingItem from "../components/ListingItem";
+import Footer from "../components/Footer";
 
 export default function Search() {
 
@@ -400,6 +401,8 @@ export default function Search() {
     };
 
   return (
+
+    <>
 
     <main className="min-h-screen bg-black text-white flex flex-col lg:flex-row">
 
@@ -801,6 +804,10 @@ export default function Search() {
       </section>
 
     </main>
+
+    <Footer />
+
+    </>
 
   );
 

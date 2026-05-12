@@ -15,6 +15,8 @@ import {
 
 import axios from "axios";
 import { Link } from "react-router-dom";
+import ListingItem from "../components/ListingItem";
+import RecentlyViewed from "../components/RecentlyViewed";
 
 const API_URL =
   import.meta.env.VITE_API_URL;
@@ -62,6 +64,21 @@ export default function Profile() {
     userListings,
     setUserListings,
   ] = useState([]);
+
+  const [
+    favoriteListings,
+    setFavoriteListings,
+  ] = useState([]);
+
+  const [
+    showFavoritesError,
+    setShowFavoritesError,
+  ] = useState(false);
+
+  const [
+    favoritesLoading,
+    setFavoritesLoading,
+  ] = useState(false);
 
   const userId =
     currentUser?._id ||
@@ -434,6 +451,68 @@ export default function Profile() {
 
     };
 
+  /* SHOW FAVORITES */
+
+  const handleShowFavorites =
+    async () => {
+
+      try {
+
+        setFavoritesLoading(
+          true
+        );
+
+        setShowFavoritesError(
+          false
+        );
+
+        const res =
+          await fetch(
+            `${API_URL}/api/user/favorites`,
+            {
+              credentials:
+                "include",
+            }
+          );
+
+        const data =
+          await res.json();
+
+        if (
+          data.success ===
+          false
+        ) {
+
+          setShowFavoritesError(
+            true
+          );
+
+          return;
+
+        }
+
+        setFavoriteListings(
+          Array.isArray(data)
+            ? data
+            : []
+        );
+
+      } catch {
+
+        setShowFavoritesError(
+          true
+        );
+
+      } finally {
+
+        setFavoritesLoading(
+          false
+        );
+
+      }
+
+    };
+
   return (
 
   <div className="min-h-screen bg-gradient-to-br from-black via-[#020617] to-[#111827] text-white px-4 pt-32 pb-10">
@@ -627,6 +706,19 @@ export default function Profile() {
 
         </button>
 
+        <button
+          onClick={
+            handleShowFavorites
+          }
+          className="w-full mt-4 bg-pink-600 hover:bg-pink-500 text-white font-black p-4 rounded-2xl transition-all duration-300 uppercase tracking-wider"
+        >
+
+          {favoritesLoading
+            ? "Loading Favorites..."
+            : "My Favorites"}
+
+        </button>
+
         {showListingsError && (
 
           <p className="text-red-500 mt-4 text-center">
@@ -636,6 +728,80 @@ export default function Profile() {
           </p>
 
         )}
+
+        {showFavoritesError && (
+
+          <p className="text-red-500 mt-4 text-center">
+
+            Error showing favorites
+
+          </p>
+
+        )}
+
+        <RecentlyViewed
+          title="Recently Viewed"
+          description="Properties you checked recently"
+          className="mt-10"
+          gridClassName="grid md:grid-cols-2 gap-6"
+        />
+
+        {favoriteListings &&
+          favoriteListings.length >
+            0 && (
+
+            <div className="mt-10">
+
+              <h2 className="text-3xl font-black text-center mb-6">
+
+                My Favorites
+
+              </h2>
+
+              <div className="grid md:grid-cols-2 gap-6">
+
+                {favoriteListings.map(
+                  (
+                    listing
+                  ) => (
+
+                    <ListingItem
+                      key={
+                        listing._id
+                      }
+                      listing={
+                        listing
+                      }
+                      onFavoriteChange={(
+                        data
+                      ) => {
+                        if (
+                          data.isFavorite
+                        ) {
+                          return;
+                        }
+
+                        setFavoriteListings(
+                          (prev) =>
+                            prev.filter(
+                              (
+                                favorite
+                              ) =>
+                                favorite._id !==
+                                listing._id
+                            )
+                        );
+                      }}
+                    />
+
+                  )
+                )}
+
+              </div>
+
+            </div>
+
+          )}
 
         {userListings &&
           userListings.length >

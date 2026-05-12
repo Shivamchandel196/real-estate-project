@@ -2,6 +2,33 @@ import User from "../Model/user.Model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { errorHandler } from "../utils/error.js";
+import sendEmail from "../utils/sendEmail.js";
+
+const notifyAuthEmail = (user, action) => {
+  const isSignup =
+    action === "signup";
+
+  const subject = isSignup
+    ? "Welcome to RoyalEstate"
+    : "Thanks for visiting RoyalEstate";
+
+  const message = `Hi ${user.username || "there"},
+
+${isSignup
+      ? "Thank you for signing up with RoyalEstate."
+      : "Thank you for visiting RoyalEstate again."}
+
+We are happy to help you find your next perfect property.
+
+Regards,
+RoyalEstate Team`;
+
+  sendEmail(
+    user.email,
+    subject,
+    message
+  );
+};
 
 // SIGN UP
 export const signup = async (
@@ -59,6 +86,8 @@ export const signup = async (
 
     newUser.password =
       undefined;
+
+    notifyAuthEmail(newUser, "signup");
 
     return res.status(201).json({
       success: true,
@@ -143,6 +172,8 @@ export const signin = async (
       ...rest
     } = validUser._doc;
 
+    notifyAuthEmail(validUser, "signin");
+
     res
       .status(200)
       .cookie(
@@ -160,7 +191,7 @@ export const signin = async (
           sameSite:
             process.env
               .NODE_ENV ===
-            "production"
+              "production"
               ? "none"
               : "lax",
 
@@ -210,6 +241,8 @@ export const google = async (
         ...rest
       } = user._doc;
 
+      notifyAuthEmail(user, "signin");
+
       return res
         .status(200)
         .cookie(
@@ -226,7 +259,7 @@ export const google = async (
             sameSite:
               process.env
                 .NODE_ENV ===
-              "production"
+                "production"
                 ? "none"
                 : "lax",
 
@@ -296,6 +329,8 @@ export const google = async (
       ...rest
     } = newUser._doc;
 
+    notifyAuthEmail(newUser, "signup");
+
     return res
       .status(200)
       .cookie(
@@ -312,7 +347,7 @@ export const google = async (
           sameSite:
             process.env
               .NODE_ENV ===
-            "production"
+              "production"
               ? "none"
               : "lax",
 

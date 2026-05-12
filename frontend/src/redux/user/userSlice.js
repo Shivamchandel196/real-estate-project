@@ -72,6 +72,19 @@ const userSlice = createSlice({
       state.error = action.payload;
     },
 
+    updateUserFavorites: (state, action) => {
+      const favorites =
+        action.payload;
+
+      if (state.currentUser?.user) {
+        state.currentUser.user.favorites =
+          favorites;
+      } else if (state.currentUser) {
+        state.currentUser.favorites =
+          favorites;
+      }
+    },
+
   },
 });
 
@@ -92,6 +105,8 @@ export const {
   signOutUserStart,
   signOutUserSuccess,
   signOutUserFailure,
+
+  updateUserFavorites,
 
 } = userSlice.actions;
 

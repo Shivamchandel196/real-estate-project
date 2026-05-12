@@ -12,6 +12,7 @@ import {
   FaShieldAlt,
 } from "react-icons/fa";
 import Footer from "../components/Footer.jsx";
+import RecentlyViewed from "../components/RecentlyViewed.jsx";
 
 const ICON_COLORS = {
   home: "#c9a84c",
@@ -336,6 +337,12 @@ const Home = memo(() => {
 
       {/* LISTINGS */}
       <div className="max-w-7xl mx-auto px-6 md:px-10 pb-24 flex flex-col gap-24">
+        <RecentlyViewed
+          title="Recently Viewed"
+          description="Pick up where you left off"
+          limit={3}
+        />
+
         {loading ? (
           <ListingSkeletonGrid />
         ) : error ? (

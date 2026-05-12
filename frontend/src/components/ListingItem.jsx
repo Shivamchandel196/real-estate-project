@@ -1,14 +1,140 @@
-import { memo } from "react";
-import { Link } from "react-router-dom";
+import { memo, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { MdLocationOn } from "react-icons/md";
-import { FaBath, FaBed, FaHeart, FaShareAlt } from "react-icons/fa";
+import { FaBath, FaBed, FaBalanceScale, FaHeart } from "react-icons/fa";
+import { updateUserFavorites } from "../redux/user/userSlice";
+import {
+  isListingCompared,
+  toggleCompareListing,
+} from "../utils/compareListings";
 
 const FALLBACK_IMAGE =
   "https://53.fs1.hubspotusercontent-na1.net/hub/53/hubfs/Sales_Blog/real-estate-business-compressor.jpg";
 
-function ListingItem({ listing }) {
+function ListingItem({
+  listing,
+  onFavoriteChange,
+}) {
+  const navigate =
+    useNavigate();
+
+  const dispatch =
+    useDispatch();
+
+  const { currentUser } =
+    useSelector(
+      (state) => state.user
+    );
+
   const listingPath = `/listing/${listing._id}`;
   const coverImage = listing.imageUrls?.[0] || FALLBACK_IMAGE;
+  const [
+    compared,
+    setCompared,
+  ] = useState(false);
+  const [
+    compareMessage,
+    setCompareMessage,
+  ] = useState("");
+  const authUser =
+    currentUser?.user ||
+    currentUser;
+
+  const favoriteIds =
+    authUser?.favorites?.map(
+      (favorite) =>
+        favorite?._id ||
+        favorite?.toString()
+    ) || [];
+
+  const isSaved =
+    favoriteIds.includes(
+      listing._id
+    );
+
+  useEffect(() => {
+    setCompared(
+      isListingCompared(
+        listing._id
+      )
+    );
+  }, [listing._id]);
+
+  const handleFavoriteClick =
+    async () => {
+      if (!authUser) {
+        navigate("/sign-in");
+        return;
+      }
+
+      try {
+        const res =
+          await fetch(
+            `${import.meta.env.VITE_API_URL}/api/user/favorites/${listing._id}`,
+            {
+              method:
+                "POST",
+              credentials:
+                "include",
+            }
+          );
+
+        const data =
+          await res.json();
+
+        if (
+          data.success ===
+          false
+        ) {
+          return;
+        }
+
+        dispatch(
+          updateUserFavorites(
+            data.favorites
+          )
+        );
+
+        onFavoriteChange?.(
+          data
+        );
+      } catch (error) {
+        console.log(
+          error.message
+        );
+      }
+    };
+
+  const handleCompareClick = () => {
+    const result =
+      toggleCompareListing(
+        listing
+      );
+
+    if (result.limitReached) {
+      setCompareMessage(
+        "Max 3 properties"
+      );
+      window.setTimeout(
+        () => setCompareMessage(""),
+        1800
+      );
+      return;
+    }
+
+    setCompared(result.added);
+    setCompareMessage(
+      result.added
+        ? "Added to compare"
+        : "Removed"
+    );
+
+    window.setTimeout(
+      () => setCompareMessage(""),
+      1400
+    );
+  };
 
   return (
     <div className="group relative w-full overflow-hidden rounded-[14px] border border-[rgba(255,255,255,0.06)] bg-[#1a1d24] font-sans transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1.5 hover:border-[rgba(201,168,76,0.45)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.55)]">
@@ -79,21 +205,61 @@ function ListingItem({ listing }) {
 
           <div className="flex gap-2">
             <button
-              className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[rgba(255,255,255,0.07)] bg-[#22262f] transition-[transform,border-color,background-color] duration-200 hover:scale-110 hover:border-[#c9a84c] hover:bg-[#c9a84c]/25"
+              onClick={
+                handleFavoriteClick
+              }
+              className={`flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border transition-[transform,border-color,background-color] duration-200 hover:scale-110 hover:border-[#c9a84c] ${
+                isSaved
+                  ? "border-[#e86b6b]/60 bg-[#e86b6b]/20"
+                  : "border-[rgba(255,255,255,0.07)] bg-[#22262f] hover:bg-[#c9a84c]/25"
+              }`}
               type="button"
-              aria-label="Save listing"
+              aria-label={
+                isSaved
+                  ? "Remove saved listing"
+                  : "Save listing"
+              }
             >
-              <FaHeart className="text-[0.85rem] text-[#e86b6b]" />
+              <FaHeart
+                className={`text-[0.85rem] ${
+                  isSaved
+                    ? "text-[#ff8a8a]"
+                    : "text-[#e86b6b]"
+                }`}
+              />
             </button>
             <button
-              className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[rgba(255,255,255,0.07)] bg-[#22262f] transition-[transform,border-color,background-color] duration-200 hover:scale-110 hover:border-[#c9a84c] hover:bg-[#c9a84c]/25"
+              onClick={
+                handleCompareClick
+              }
+              className={`flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border transition-[transform,border-color,background-color] duration-200 hover:scale-110 hover:border-[#c9a84c] ${
+                compared
+                  ? "border-[#c9a84c]/70 bg-[#c9a84c]/20"
+                  : "border-[rgba(255,255,255,0.07)] bg-[#22262f] hover:bg-[#c9a84c]/25"
+              }`}
               type="button"
-              aria-label="Share listing"
+              aria-label={
+                compared
+                  ? "Remove from compare"
+                  : "Add to compare"
+              }
             >
-              <FaShareAlt className="text-[0.85rem] text-[#8a8d96]" />
+              <FaBalanceScale
+                className={`text-[0.85rem] ${
+                  compared
+                    ? "text-[#c9a84c]"
+                    : "text-[#8a8d96]"
+                }`}
+              />
             </button>
           </div>
         </div>
+
+        {compareMessage && (
+          <p className="rounded-md border border-[#c9a84c]/20 bg-[#c9a84c]/10 px-3 py-2 text-center text-xs font-bold uppercase tracking-wider text-[#c9a84c]">
+            {compareMessage}
+          </p>
+        )}
 
         <Link to={listingPath} className="block no-underline">
           <div className="flex gap-2.5">

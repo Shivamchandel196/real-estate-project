@@ -3,7 +3,7 @@ import React, {
   useEffect,
 } from "react";
 
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import {
   Swiper,
@@ -26,9 +26,12 @@ import {
   FaParking,
   FaShare,
   FaTag,
+  FaUserTie,
 } from "react-icons/fa";
 
 import Contact from "../components/Contact";
+import Footer from "../components/Footer";
+import { saveRecentlyViewedListing } from "../utils/recentlyViewed";
 
 const Listing = () => {
 
@@ -95,6 +98,10 @@ const Listing = () => {
           }
 
           setListing(data);
+
+          saveRecentlyViewedListing(
+            data
+          );
 
           setError(false);
 
@@ -406,6 +413,49 @@ const Listing = () => {
 
               </div>
 
+              {listing.userRef && (
+
+                <Link
+                  to={`/seller/${listing.userRef}`}
+                  className="mb-10 flex items-center justify-between gap-4 rounded-2xl border border-yellow-500/20 bg-yellow-500/10 p-5 transition hover:border-yellow-500/50 hover:bg-yellow-500/15"
+                >
+
+                  <div className="flex items-center gap-4">
+
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-500 text-black">
+
+                      <FaUserTie />
+
+                    </div>
+
+                    <div>
+
+                      <p className="text-sm uppercase tracking-[0.2em] text-yellow-500">
+
+                        Listed By
+
+                      </p>
+
+                      <h2 className="text-xl font-bold text-white">
+
+                        View Seller Profile
+
+                      </h2>
+
+                    </div>
+
+                  </div>
+
+                  <span className="text-sm font-bold text-yellow-500">
+
+                    View All Listings
+
+                  </span>
+
+                </Link>
+
+              )}
+
               <div className="border-t border-zinc-800 my-10"></div>
 
               {/* DESCRIPTION */}
@@ -615,6 +665,8 @@ const Listing = () => {
         </>
 
       )}
+
+      <Footer />
 
     </main>
 

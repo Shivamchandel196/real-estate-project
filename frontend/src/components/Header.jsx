@@ -22,6 +22,7 @@ const navLinks = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
   { to: "/search", label: "Explore" },
+  { to: "/compare", label: "Compare" },
 ];
 
 const getUserDetails = (currentUser) => {

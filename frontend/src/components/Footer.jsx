@@ -34,7 +34,7 @@ const Footer = memo(() => {
               <li><Link to="/" className="text-gray-400 hover:text-[#c9a84c] transition-colors">Home</Link></li>
               <li><Link to="/search" className="text-gray-400 hover:text-[#c9a84c] transition-colors">Browse Listings</Link></li>
               <li><Link to="/about" className="text-gray-400 hover:text-[#c9a84c] transition-colors">About Us</Link></li>
-              <li><a href="#" className="text-gray-400 hover:text-[#c9a84c] transition-colors">Blog</a></li>
+              <li><Link to="/terms" className="text-gray-400 hover:text-[#c9a84c] transition-colors">Terms</Link></li>
             </ul>
           </div>
 
@@ -45,7 +45,7 @@ const Footer = memo(() => {
               <li><a href="#" className="text-gray-400 hover:text-[#c9a84c] transition-colors">Buying Guide</a></li>
               <li><a href="#" className="text-gray-400 hover:text-[#c9a84c] transition-colors">Investment Tips</a></li>
               <li><a href="#" className="text-gray-400 hover:text-[#c9a84c] transition-colors">Market Trends</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-[#c9a84c] transition-colors">FAQs</a></li>
+              <li><Link to="/privacy" className="text-gray-400 hover:text-[#c9a84c] transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
 
@@ -80,7 +80,7 @@ const Footer = memo(() => {
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-gray-600 text-sm">
-            © 2026 RoyalEstate. All rights reserved.
+            Copyright 2026 RoyalEstate. All rights reserved.
           </p>
 
           {/* Social Icons */}
@@ -97,7 +97,7 @@ const Footer = memo(() => {
           </div>
 
           <p className="text-gray-600 text-sm">
-            Built with ❤️ for real estate enthusiasts
+            Built for real estate enthusiasts
           </p>
         </div>
 
