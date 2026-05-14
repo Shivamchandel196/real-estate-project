@@ -69,43 +69,36 @@ export default function Search() {
     const newSidebarData = {
 
       searchTerm:
-
         urlParams.get(
           "searchTerm"
         ) || "",
 
       type:
-
         urlParams.get(
           "type"
         ) || "all",
 
       parking:
-
         urlParams.get(
           "parking"
         ) === "true",
 
       furnished:
-
         urlParams.get(
           "furnished"
         ) === "true",
 
       offer:
-
         urlParams.get(
           "offer"
         ) === "true",
 
       sort:
-
         urlParams.get(
           "sort"
         ) || "createdAt",
 
       order:
-
         urlParams.get(
           "order"
         ) || "desc",
@@ -128,9 +121,7 @@ export default function Search() {
 
           const res =
             await fetch(
-
               `${API_URL}/api/listing/get?${searchQuery}`
-
             );
 
           if (!res.ok) {
@@ -181,7 +172,6 @@ export default function Search() {
   ) => {
 
     if (
-
       [
         "all",
         "rent",
@@ -189,7 +179,6 @@ export default function Search() {
       ].includes(
         e.target.id
       )
-
     ) {
 
       setSidebarData(
@@ -224,7 +213,6 @@ export default function Search() {
     }
 
     if (
-
       [
         "parking",
         "furnished",
@@ -232,7 +220,6 @@ export default function Search() {
       ].includes(
         e.target.id
       )
-
     ) {
 
       setSidebarData(
@@ -241,7 +228,6 @@ export default function Search() {
           ...prev,
 
           [e.target.id]:
-
             e.target.checked,
 
         })
@@ -327,9 +313,7 @@ export default function Search() {
     );
 
     navigate(
-
       `/search?${urlParams.toString()}`
-
     );
 
   };
@@ -354,9 +338,7 @@ export default function Search() {
 
         const res =
           await fetch(
-
-          `${API_URL}/api/listing/get?${urlParams.toString()}`,  
-
+            `${API_URL}/api/listing/get?${urlParams.toString()}`
           );
 
         if (!res.ok) {
@@ -372,11 +354,8 @@ export default function Search() {
 
         setListings(
           (prev) => [
-
             ...prev,
-
             ...data,
-
           ]
         );
 
@@ -404,408 +383,325 @@ export default function Search() {
 
     <>
 
-    <main className="min-h-screen bg-black text-white flex flex-col lg:flex-row">
+      {/* MAIN */}
+      <main className="min-h-screen bg-black text-white flex flex-col lg:flex-row pt-28 overflow-x-hidden">
 
-      {/* SIDEBAR */}
+        {/* SIDEBAR */}
+        <aside className="w-full lg:w-[340px] border-b lg:border-r border-zinc-800 bg-zinc-950 p-6 sm:p-8">
 
-      <aside className="w-full lg:w-[340px] border-b lg:border-r border-zinc-800 bg-zinc-950 p-8">
-
-        <div className="mb-10">
-
-          <p className="uppercase tracking-[0.3em] text-yellow-500 text-xs font-semibold mb-4">
-
-            Advanced Search
-
-          </p>
-
-          <h1 className="text-4xl font-black">
-
-            Find Your
-            <br />
-
-            Dream Home
-
-          </h1>
-
-        </div>
-
-        <form
-
-          onSubmit={
-            handleSubmit
-          }
-
-          className="flex flex-col gap-8"
-
-        >
-
-          <div>
-
-            <label className="block text-sm uppercase tracking-wider text-zinc-400 mb-3">
-
-              Search
-
-            </label>
-
-            <input
-
-              type="text"
-
-              id="searchTerm"
-
-              placeholder="Search properties..."
-
-              value={
-                sidebarData.searchTerm
-              }
-
-              onChange={
-                handleChange
-              }
-
-              className="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
-
-            />
-
-          </div>
-
-          <div>
-
-            <label className="block text-sm uppercase tracking-wider text-zinc-400 mb-4">
-
-              Property Type
-
-            </label>
-
-            <div className="flex flex-col gap-4">
-
-              {[
-                "all",
-                "rent",
-                "sale",
-              ].map(
-                (
-                  item
-                ) => (
-
-                  <label
-
-                    key={
-                      item
-                    }
-
-                    className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition ${
-                      sidebarData.type ===
-                      item
-
-                        ? "border-yellow-500 bg-yellow-500/10"
-
-                        : "border-zinc-800 bg-zinc-900"
-
-                    }`}
-
-                  >
-
-                    <span className="capitalize">
-
-                      {item ===
-                      "all"
-
-                        ? "Rent & Sale"
-
-                        : item}
-
-                    </span>
-
-                    <input
-
-                      type="checkbox"
-
-                      id={item}
-
-                      checked={
-                        sidebarData.type ===
-                        item
-                      }
-
-                      onChange={
-                        handleChange
-                      }
-
-                      className="accent-yellow-500"
-
-                    />
-
-                  </label>
-
-                )
-
-              )}
-
-            </div>
-
-          </div>
-
-          <div>
-
-            <label className="block text-sm uppercase tracking-wider text-zinc-400 mb-4">
-
-              Amenities
-
-            </label>
-
-            <div className="flex flex-col gap-4">
-
-              {[
-                "parking",
-                "furnished",
-                "offer",
-              ].map(
-                (
-                  item
-                ) => (
-
-                  <label
-
-                    key={
-                      item
-                    }
-
-                    className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition ${
-                      sidebarData[
-                        item
-                      ]
-
-                        ? "border-yellow-500 bg-yellow-500/10"
-
-                        : "border-zinc-800 bg-zinc-900"
-
-                    }`}
-
-                  >
-
-                    <span className="capitalize">
-
-                      {item}
-
-                    </span>
-
-                    <input
-
-                      type="checkbox"
-
-                      id={item}
-
-                      checked={
-                        sidebarData[
-                          item
-                        ]
-                      }
-
-                      onChange={
-                        handleChange
-                      }
-
-                      className="accent-yellow-500"
-
-                    />
-
-                  </label>
-
-                )
-
-              )}
-
-            </div>
-
-          </div>
-
-          <div>
-
-            <label className="block text-sm uppercase tracking-wider text-zinc-400 mb-3">
-
-              Sort By
-
-            </label>
-
-            <select
-
-              id="sort_order"
-
-              value={`${sidebarData.sort}_${sidebarData.order}`}
-
-              onChange={
-                handleChange
-              }
-
-              className="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
-
-            >
-
-              <option value="regularPrice_desc">
-
-                Price High to Low
-
-              </option>
-
-              <option value="regularPrice_asc">
-
-                Price Low to High
-
-              </option>
-
-              <option value="createdAt_desc">
-
-                Latest
-
-              </option>
-
-              <option value="createdAt_asc">
-
-                Oldest
-
-              </option>
-
-            </select>
-
-          </div>
-
-          <button
-
-            className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-[0.2em] p-5 rounded-2xl transition"
-
-          >
-
-            Search
-
-          </button>
-
-        </form>
-
-      </aside>
-
-      {/* RESULTS */}
-
-      <section className="flex-1 p-6 md:p-10">
-
-        <div className="flex items-end justify-between border-b border-zinc-800 pb-6 mb-10">
-
-          <div>
+          <div className="mb-10">
 
             <p className="uppercase tracking-[0.3em] text-yellow-500 text-xs font-semibold mb-4">
 
-              Properties
+              Advanced Search
 
             </p>
 
-            <h2 className="text-5xl font-black">
+            <h1 className="text-3xl sm:text-4xl font-black leading-tight break-words">
 
-              Search Results
+              Find Your
+              <br />
 
-            </h2>
+              Dream Home
 
-          </div>
-
-          <p className="text-zinc-500">
-
-            {
-              listings.length
-            } Listings Found
-
-          </p>
-
-        </div>
-
-        {loading && (
-
-          <div className="flex justify-center py-20">
-
-            <div className="w-12 h-12 border-2 border-yellow-500/20 border-t-yellow-500 rounded-full animate-spin"></div>
+            </h1>
 
           </div>
 
-        )}
+          <form
+            onSubmit={
+              handleSubmit
+            }
+            className="flex flex-col gap-8"
+          >
 
-        {!loading &&
-          listings.length ===
-            0 && (
+            {/* SEARCH */}
+            <div>
 
-            <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-10 text-center">
+              <label className="block text-sm uppercase tracking-wider text-zinc-400 mb-3">
 
-              <h3 className="text-3xl font-bold mb-4">
+                Search
 
-                No Listings Found
+              </label>
 
-              </h3>
-
-              <p className="text-zinc-500">
-
-                Try changing your filters
-
-              </p>
-
-            </div>
-
-          )}
-
-        {!loading &&
-          listings.length >
-            0 && (
-
-            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-
-              {listings.map(
-                (
-                  listing
-                ) => (
-
-                  <ListingItem
-
-                    key={
-                      listing._id
-                    }
-
-                    listing={
-                      listing
-                    }
-
-                  />
-
-                )
-
-              )}
+              <input
+                type="text"
+                id="searchTerm"
+                placeholder="Search properties..."
+                value={
+                  sidebarData.searchTerm
+                }
+                onChange={
+                  handleChange
+                }
+                className="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
+              />
 
             </div>
 
-          )}
+            {/* TYPE */}
+            <div>
 
-        {showMore && (
+              <label className="block text-sm uppercase tracking-wider text-zinc-400 mb-4">
 
-          <div className="flex justify-center mt-14">
+                Property Type
 
-            <button
+              </label>
 
-              onClick={
-                onShowMoreClick
-              }
+              <div className="flex flex-col gap-4">
 
-              className="border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black px-8 py-4 rounded-2xl font-semibold transition"
+                {[
+                  "all",
+                  "rent",
+                  "sale",
+                ].map(
+                  (item) => (
 
-            >
+                    <label
+                      key={item}
+                      className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition ${
+                        sidebarData.type === item
+                          ? "border-yellow-500 bg-yellow-500/10"
+                          : "border-zinc-800 bg-zinc-900"
+                      }`}
+                    >
 
-              Show More
+                      <span className="capitalize">
+                        {item === "all"
+                          ? "Rent & Sale"
+                          : item}
+                      </span>
+
+                      <input
+                        type="checkbox"
+                        id={item}
+                        checked={
+                          sidebarData.type === item
+                        }
+                        onChange={
+                          handleChange
+                        }
+                        className="accent-yellow-500"
+                      />
+
+                    </label>
+
+                  )
+                )}
+
+              </div>
+
+            </div>
+
+            {/* AMENITIES */}
+            <div>
+
+              <label className="block text-sm uppercase tracking-wider text-zinc-400 mb-4">
+
+                Amenities
+
+              </label>
+
+              <div className="flex flex-col gap-4">
+
+                {[
+                  "parking",
+                  "furnished",
+                  "offer",
+                ].map(
+                  (item) => (
+
+                    <label
+                      key={item}
+                      className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition ${
+                        sidebarData[item]
+                          ? "border-yellow-500 bg-yellow-500/10"
+                          : "border-zinc-800 bg-zinc-900"
+                      }`}
+                    >
+
+                      <span className="capitalize">
+                        {item}
+                      </span>
+
+                      <input
+                        type="checkbox"
+                        id={item}
+                        checked={
+                          sidebarData[item]
+                        }
+                        onChange={
+                          handleChange
+                        }
+                        className="accent-yellow-500"
+                      />
+
+                    </label>
+
+                  )
+                )}
+
+              </div>
+
+            </div>
+
+            {/* SORT */}
+            <div>
+
+              <label className="block text-sm uppercase tracking-wider text-zinc-400 mb-3">
+
+                Sort By
+
+              </label>
+
+              <select
+                id="sort_order"
+                value={`${sidebarData.sort}_${sidebarData.order}`}
+                onChange={
+                  handleChange
+                }
+                className="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
+              >
+
+                <option value="regularPrice_desc">
+                  Price High to Low
+                </option>
+
+                <option value="regularPrice_asc">
+                  Price Low to High
+                </option>
+
+                <option value="createdAt_desc">
+                  Latest
+                </option>
+
+                <option value="createdAt_asc">
+                  Oldest
+                </option>
+
+              </select>
+
+            </div>
+
+            {/* BUTTON */}
+            <button className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-[0.2em] p-5 rounded-2xl transition">
+
+              Search
 
             </button>
 
+          </form>
+
+        </aside>
+
+        {/* RESULTS */}
+        <section className="flex-1 p-4 sm:p-6 md:p-10 overflow-hidden">
+
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 border-b border-zinc-800 pb-6 mb-10">
+
+            <div>
+
+              <p className="uppercase tracking-[0.3em] text-yellow-500 text-xs font-semibold mb-4">
+
+                Properties
+
+              </p>
+
+              <h2 className="text-3xl sm:text-5xl font-black break-words leading-tight">
+
+                Search Results
+
+              </h2>
+
+            </div>
+
+            <p className="text-zinc-500 text-sm sm:text-base">
+
+              {listings.length} Listings Found
+
+            </p>
+
           </div>
 
-        )}
+          {/* LOADING */}
+          {loading && (
 
-      </section>
+            <div className="flex justify-center py-20">
 
-    </main>
+              <div className="w-12 h-12 border-2 border-yellow-500/20 border-t-yellow-500 rounded-full animate-spin"></div>
 
-    <Footer />
+            </div>
+
+          )}
+
+          {/* EMPTY */}
+          {!loading &&
+            listings.length === 0 && (
+
+              <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-10 text-center">
+
+                <h3 className="text-3xl font-bold mb-4">
+
+                  No Listings Found
+
+                </h3>
+
+                <p className="text-zinc-500">
+
+                  Try changing your filters
+
+                </p>
+
+              </div>
+
+            )}
+
+          {/* LISTINGS */}
+          {!loading &&
+            listings.length > 0 && (
+
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+                {listings.map(
+                  (listing) => (
+
+                    <ListingItem
+                      key={listing._id}
+                      listing={listing}
+                    />
+
+                  )
+                )}
+
+              </div>
+
+            )}
+
+          {/* SHOW MORE */}
+          {showMore && (
+
+            <div className="flex justify-center mt-14">
+
+              <button
+                onClick={
+                  onShowMoreClick
+                }
+                className="border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black px-8 py-4 rounded-2xl font-semibold transition"
+              >
+
+                Show More
+
+              </button>
+
+            </div>
+
+          )}
+
+        </section>
+
+      </main>
+
+      <Footer />
 
     </>
 
