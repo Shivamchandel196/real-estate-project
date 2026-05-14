@@ -18,67 +18,24 @@ import { Link } from "react-router-dom";
 import ListingItem from "../components/ListingItem";
 import RecentlyViewed from "../components/RecentlyViewed";
 
-const API_URL =
-  import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Profile() {
-
   const fileRef = useRef(null);
 
-  const {
-    currentUser,
-    loading,
-  } = useSelector(
-    (state) => state.user
-  );
+  const { currentUser, loading } = useSelector((state) => state.user);
 
-  const dispatch =
-    useDispatch();
+  const dispatch = useDispatch();
 
-  const [
-    filePerc,
-    setFilePerc,
-  ] = useState(0);
-
-  const [
-    fileUploadError,
-    setFileUploadError,
-  ] = useState(false);
-
-  const [
-    formData,
-    setFormData,
-  ] = useState({});
-
-  const [
-    updateSuccess,
-    setUpdateSuccess,
-  ] = useState(false);
-
-  const [
-    showListingsError,
-    setShowListingsError,
-  ] = useState(false);
-
-  const [
-    userListings,
-    setUserListings,
-  ] = useState([]);
-
-  const [
-    favoriteListings,
-    setFavoriteListings,
-  ] = useState([]);
-
-  const [
-    showFavoritesError,
-    setShowFavoritesError,
-  ] = useState(false);
-
-  const [
-    favoritesLoading,
-    setFavoritesLoading,
-  ] = useState(false);
+  const [filePerc, setFilePerc] = useState(0);
+  const [fileUploadError, setFileUploadError] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [showListingsError, setShowListingsError] = useState(false);
+  const [userListings, setUserListings] = useState([]);
+  const [favoriteListings, setFavoriteListings] = useState([]);
+  const [showFavoritesError, setShowFavoritesError] = useState(false);
+  const [favoritesLoading, setFavoritesLoading] = useState(false);
 
   const userId =
     currentUser?._id ||
@@ -86,452 +43,266 @@ export default function Profile() {
     currentUser?.user?._id;
 
   /* IMAGE UPLOAD */
+  const handleFileUpload = async (file) => {
+    try {
+      setFileUploadError(false);
+      setFilePerc(20);
 
-  const handleFileUpload =
-    async (file) => {
+      const imageData = new FormData();
+      imageData.append("image", file);
 
-      try {
+      const res = await axios.post(
+        `${API_URL}/post`,
+        imageData,
+        {
+          headers: {
+            "Content-Type":
+              "multipart/form-data",
+          },
+        }
+      );
 
-        setFileUploadError(
-          false
-        );
+      setFilePerc(100);
 
-        setFilePerc(20);
-
-        const imageData =
-          new FormData();
-
-        imageData.append(
-          "image",
-          file
-        );
-
-        const res =
-          await axios.post(
-            `${API_URL}/post`,
-            imageData,
-            {
-              headers: {
-                "Content-Type":
-                  "multipart/form-data",
-              },
-            }
-          );
-
-        setFilePerc(100);
-
-        setFormData(
-          (prev) => ({
-            ...prev,
-
-            avatar:
-              res.data.imageUrl,
-          })
-        );
-
-      } catch (error) {
-
-        setFileUploadError(
-          true
-        );
-
-        setFilePerc(0);
-
-        console.log(error);
-
-      }
-
-    };
+      setFormData((prev) => ({
+        ...prev,
+        avatar: res.data.imageUrl,
+      }));
+    } catch (error) {
+      setFileUploadError(true);
+      setFilePerc(0);
+      console.log(error);
+    }
+  };
 
   /* HANDLE CHANGE */
-
-  const handleChange =
-    (e) => {
-
-      setFormData({
-        ...formData,
-
-        [e.target.id]:
-          e.target.value,
-      });
-
-    };
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]:
+        e.target.value,
+    });
+  };
 
   /* UPDATE USER */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const handleSubmit =
-    async (e) => {
+    try {
+      dispatch(updateUserStart());
 
-      e.preventDefault();
-
-      try {
-
-        dispatch(
-          updateUserStart()
-        );
-
-        const res =
-          await fetch(
-            `${API_URL}/api/user/update/${userId}`,
-            {
-              method:
-                "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/json",
-              },
-
-              credentials:
-                "include",
-
-              body:
-                JSON.stringify(
-                  formData
-                ),
-            }
-          );
-
-        const data =
-          await res.json();
-
-        if (
-          data.success ===
-          false
-        ) {
-
-          dispatch(
-            updateUserFailure(
-              data.message
-            )
-          );
-
-          return;
-
+      const res = await fetch(
+        `${API_URL}/api/user/update/${userId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(formData),
         }
+      );
 
-        dispatch(
-          updateUserSuccess(
-            data
-          )
-        );
+      const data = await res.json();
 
-        setUpdateSuccess(
-          true
-        );
-
-      } catch (error) {
-
+      if (data.success === false) {
         dispatch(
           updateUserFailure(
-            error.message
+            data.message
           )
         );
-
+        return;
       }
 
-    };
+      dispatch(
+        updateUserSuccess(data)
+      );
+
+      setUpdateSuccess(true);
+    } catch (error) {
+      dispatch(
+        updateUserFailure(
+          error.message
+        )
+      );
+    }
+  };
 
   /* DELETE USER */
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUserStart());
 
-  const handleDeleteUser =
-    async () => {
-
-      try {
-
-        dispatch(
-          deleteUserStart()
-        );
-
-        const res =
-          await fetch(
-            `${API_URL}/api/user/delete/${userId}`,
-            {
-              method:
-                "DELETE",
-
-              credentials:
-                "include",
-            }
-          );
-
-        const data =
-          await res.json();
-
-        if (
-          data.success ===
-          false
-        ) {
-
-          dispatch(
-            deleteUserFailure(
-              data.message
-            )
-          );
-
-          return;
-
+      const res = await fetch(
+        `${API_URL}/api/user/delete/${userId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
         }
+      );
 
-        dispatch(
-          deleteUserSuccess(
-            data
-          )
-        );
+      const data = await res.json();
 
-      } catch (error) {
-
+      if (data.success === false) {
         dispatch(
           deleteUserFailure(
-            error.message
+            data.message
           )
         );
-
+        return;
       }
 
-    };
+      dispatch(
+        deleteUserSuccess(data)
+      );
+    } catch (error) {
+      dispatch(
+        deleteUserFailure(
+          error.message
+        )
+      );
+    }
+  };
 
   /* SIGN OUT */
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart());
 
-  const handleSignOut =
-    async () => {
-
-      try {
-
-        dispatch(
-          signOutUserStart()
-        );
-
-        const res =
-          await fetch(
-            `${API_URL}/api/auth/signout`,
-            {
-              credentials:
-                "include",
-            }
-          );
-
-        const data =
-          await res.json();
-
-        if (
-          data.success ===
-          false
-        ) {
-
-          dispatch(
-            signOutUserFailure(
-              data.message
-            )
-          );
-
-          return;
-
+      const res = await fetch(
+        `${API_URL}/api/auth/signout`,
+        {
+          credentials: "include",
         }
+      );
 
-        dispatch(
-          signOutUserSuccess(
-            data
-          )
-        );
+      const data = await res.json();
 
-      } catch (error) {
-
+      if (data.success === false) {
         dispatch(
           signOutUserFailure(
-            error.message
+            data.message
           )
         );
-
+        return;
       }
 
-    };
+      dispatch(
+        signOutUserSuccess(data)
+      );
+    } catch (error) {
+      dispatch(
+        signOutUserFailure(
+          error.message
+        )
+      );
+    }
+  };
 
   /* SHOW LISTINGS */
+  const handleShowListings = async () => {
+    try {
+      setShowListingsError(false);
 
-  const handleShowListings =
-    async () => {
-
-      try {
-
-        setShowListingsError(
-          false
-        );
-
-        const res =
-          await fetch(
-            `${API_URL}/api/user/listings/${userId}`,
-            {
-              credentials:
-                "include",
-            }
-          );
-
-        const data =
-          await res.json();
-
-        if (
-          data.success ===
-          false
-        ) {
-
-          setShowListingsError(
-            true
-          );
-
-          return;
-
+      const res = await fetch(
+        `${API_URL}/api/user/listings/${userId}`,
+        {
+          credentials: "include",
         }
+      );
 
-        setUserListings(
-          data
-        );
+      const data = await res.json();
 
-      } catch {
-
-        setShowListingsError(
-          true
-        );
-
+      if (data.success === false) {
+        setShowListingsError(true);
+        return;
       }
 
-    };
+      setUserListings(data);
+    } catch {
+      setShowListingsError(true);
+    }
+  };
 
   /* DELETE LISTING */
-
-  const handleListingDelete =
-    async (
-      listingId
-    ) => {
-
-      try {
-
-        const res =
-          await fetch(
-            `${API_URL}/api/listing/delete/${listingId}`,
-            {
-              method:
-                "DELETE",
-
-              credentials:
-                "include",
-            }
-          );
-
-        const data =
-          await res.json();
-
-        if (
-          data.success ===
-          false
-        ) {
-
-          return;
-
+  const handleListingDelete = async (
+    listingId
+  ) => {
+    try {
+      const res = await fetch(
+        `${API_URL}/api/listing/delete/${listingId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
         }
+      );
 
-        setUserListings(
-          (prev) =>
-            prev.filter(
-              (
-                listing
-              ) =>
-                listing._id !==
-                listingId
-            )
-        );
+      const data = await res.json();
 
-      } catch (error) {
+      if (data.success === false)
+        return;
 
-        console.log(
-          error.message
-        );
-
-      }
-
-    };
+      setUserListings((prev) =>
+        prev.filter(
+          (listing) =>
+            listing._id !==
+            listingId
+        )
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   /* SHOW FAVORITES */
+  const handleShowFavorites = async () => {
+    try {
+      setFavoritesLoading(true);
+      setShowFavoritesError(false);
 
-  const handleShowFavorites =
-    async () => {
-
-      try {
-
-        setFavoritesLoading(
-          true
-        );
-
-        setShowFavoritesError(
-          false
-        );
-
-        const res =
-          await fetch(
-            `${API_URL}/api/user/favorites`,
-            {
-              credentials:
-                "include",
-            }
-          );
-
-        const data =
-          await res.json();
-
-        if (
-          data.success ===
-          false
-        ) {
-
-          setShowFavoritesError(
-            true
-          );
-
-          return;
-
+      const res = await fetch(
+        `${API_URL}/api/user/favorites`,
+        {
+          credentials: "include",
         }
+      );
 
-        setFavoriteListings(
-          Array.isArray(data)
-            ? data
-            : []
-        );
+      const data = await res.json();
 
-      } catch {
-
-        setShowFavoritesError(
-          true
-        );
-
-      } finally {
-
-        setFavoritesLoading(
-          false
-        );
-
+      if (data.success === false) {
+        setShowFavoritesError(true);
+        return;
       }
 
-    };
+      setFavoriteListings(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+    } catch {
+      setShowFavoritesError(true);
+    } finally {
+      setFavoritesLoading(false);
+    }
+  };
 
   return (
+    <div className="min-h-screen bg-gradient-to-br from-black via-[#020617] to-[#111827] text-white px-4 pt-32 pb-10 overflow-x-hidden">
 
-  <div className="min-h-screen bg-gradient-to-br from-black via-[#020617] to-[#111827] text-white px-4 pt-32 pb-10">
+      {/* MAIN CONTAINER */}
+      <div className="max-w-4xl mx-auto bg-[#08122b] border border-yellow-500/10 rounded-[35px] p-4 sm:p-8 md:p-10 shadow-[0_0_40px_rgba(255,196,0,0.08)] overflow-hidden">
 
-      <div className="max-w-4xl mx-auto bg-[#08122b] border border-yellow-500/10 rounded-[35px] p-8 md:p-10 shadow-[0_0_40px_rgba(255,196,0,0.08)]">
-
-        <h1 className="text-5xl font-black text-center mb-10">
-
+        {/* HEADING */}
+        <h1 className="text-3xl sm:text-5xl font-black text-center mb-10 break-words">
           My Profile
-
         </h1>
 
+        {/* FORM */}
         <form
-          onSubmit={
-            handleSubmit
-          }
+          onSubmit={handleSubmit}
           className="flex flex-col gap-6"
         >
-
           <input
             onChange={(e) =>
               handleFileUpload(
@@ -544,8 +315,8 @@ export default function Profile() {
             accept="image/*"
           />
 
+          {/* PROFILE IMAGE */}
           <div className="flex justify-center">
-
             <img
               onClick={() =>
                 fileRef.current.click()
@@ -556,45 +327,31 @@ export default function Profile() {
                 "/profile.png"
               }
               alt="profile"
-              className="rounded-full h-36 w-36 object-cover cursor-pointer border-4 border-yellow-400 shadow-lg hover:scale-105 transition duration-300"
+              className="rounded-full h-32 w-32 sm:h-36 sm:w-36 object-cover cursor-pointer border-4 border-yellow-400 shadow-lg hover:scale-105 transition duration-300"
             />
-
           </div>
 
-          <p className="text-center text-sm">
-
+          {/* IMAGE STATUS */}
+          <p className="text-center text-sm break-words">
             {fileUploadError ? (
-
               <span className="text-red-500">
-
                 Error uploading image
-
               </span>
-
             ) : filePerc > 0 &&
               filePerc < 100 ? (
-
               <span className="text-yellow-400">
-
                 Uploading {filePerc}%
-
               </span>
-
-            ) : filePerc ===
-              100 ? (
-
+            ) : filePerc === 100 ? (
               <span className="text-green-500">
-
                 Image uploaded successfully
-
               </span>
-
             ) : (
               ""
             )}
-
           </p>
 
+          {/* INPUTS */}
           <input
             type="text"
             placeholder="Username"
@@ -602,10 +359,8 @@ export default function Profile() {
               currentUser?.username
             }
             id="username"
-            className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none p-4 rounded-2xl"
-            onChange={
-              handleChange
-            }
+            className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none p-4 rounded-2xl w-full"
+            onChange={handleChange}
           />
 
           <input
@@ -615,292 +370,221 @@ export default function Profile() {
             defaultValue={
               currentUser?.email
             }
-            className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none p-4 rounded-2xl"
-            onChange={
-              handleChange
-            }
+            className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none p-4 rounded-2xl w-full"
+            onChange={handleChange}
           />
 
           <input
             type="password"
             placeholder="New Password"
             id="password"
-            className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none p-4 rounded-2xl"
-            onChange={
-              handleChange
-            }
+            className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none p-4 rounded-2xl w-full"
+            onChange={handleChange}
           />
 
+          {/* UPDATE BUTTON */}
           <button
             disabled={loading}
-            className="bg-yellow-400 hover:bg-yellow-300 text-black font-black p-4 rounded-2xl transition-all duration-300 uppercase tracking-wider"
+            className="bg-yellow-400 hover:bg-yellow-300 text-black font-black p-4 rounded-2xl transition-all duration-300 uppercase tracking-wider w-full"
           >
-
             {loading
               ? "Loading..."
               : "Update Profile"}
-
           </button>
 
-          <Link
-            to={"/create-listing"}
-          >
-
+          {/* CREATE LISTING */}
+          <Link to={"/create-listing"}>
             <button
               type="button"
               className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black p-4 rounded-2xl transition-all duration-300 uppercase tracking-wider"
             >
-
               Create Listing
-
             </button>
-
           </Link>
-
         </form>
 
-        <div className="flex justify-between mt-8 text-sm">
-
+        {/* ACTIONS */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8 text-sm">
           <span
-            onClick={
-              handleDeleteUser
-            }
+            onClick={handleDeleteUser}
             className="text-red-500 cursor-pointer hover:underline"
           >
-
             Delete Account
-
           </span>
 
           <span
-            onClick={
-              handleSignOut
-            }
+            onClick={handleSignOut}
             className="text-red-400 cursor-pointer hover:underline"
           >
-
             Sign Out
-
           </span>
-
         </div>
 
+        {/* SUCCESS */}
         {updateSuccess && (
-
-          <p className="text-green-500 mt-5 text-center">
-
+          <p className="text-green-500 mt-5 text-center break-words">
             Profile updated successfully!
-
           </p>
-
         )}
 
+        {/* BUTTONS */}
         <button
-          onClick={
-            handleShowListings
-          }
+          onClick={handleShowListings}
           className="w-full mt-8 bg-blue-600 hover:bg-blue-500 text-white font-black p-4 rounded-2xl transition-all duration-300 uppercase tracking-wider"
         >
-
           Show Listings
-
         </button>
 
         <button
-          onClick={
-            handleShowFavorites
-          }
+          onClick={handleShowFavorites}
           className="w-full mt-4 bg-pink-600 hover:bg-pink-500 text-white font-black p-4 rounded-2xl transition-all duration-300 uppercase tracking-wider"
         >
-
           {favoritesLoading
             ? "Loading Favorites..."
             : "My Favorites"}
-
         </button>
 
+        {/* ERRORS */}
         {showListingsError && (
-
           <p className="text-red-500 mt-4 text-center">
-
             Error showing listings
-
           </p>
-
         )}
 
         {showFavoritesError && (
-
           <p className="text-red-500 mt-4 text-center">
-
             Error showing favorites
-
           </p>
-
         )}
 
+        {/* RECENTLY VIEWED */}
         <RecentlyViewed
           title="Recently Viewed"
           description="Properties you checked recently"
           className="mt-10"
-          gridClassName="grid md:grid-cols-2 gap-6"
+          gridClassName="grid grid-cols-1 md:grid-cols-2 gap-6"
         />
 
+        {/* FAVORITES */}
         {favoriteListings &&
           favoriteListings.length >
             0 && (
-
             <div className="mt-10">
-
-              <h2 className="text-3xl font-black text-center mb-6">
-
+              <h2 className="text-3xl font-black text-center mb-6 break-words">
                 My Favorites
-
               </h2>
 
-              <div className="grid md:grid-cols-2 gap-6">
-
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {favoriteListings.map(
-                  (
-                    listing
-                  ) => (
-
+                  (listing) => (
                     <ListingItem
-                      key={
-                        listing._id
-                      }
-                      listing={
-                        listing
-                      }
+                      key={listing._id}
+                      listing={listing}
                       onFavoriteChange={(
                         data
                       ) => {
                         if (
                           data.isFavorite
-                        ) {
+                        )
                           return;
-                        }
 
                         setFavoriteListings(
                           (prev) =>
                             prev.filter(
-                              (
-                                favorite
-                              ) =>
-                                favorite._id !==
+                              (fav) =>
+                                fav._id !==
                                 listing._id
                             )
                         );
                       }}
                     />
-
                   )
                 )}
-
               </div>
-
             </div>
-
           )}
 
+        {/* USER LISTINGS */}
         {userListings &&
           userListings.length >
             0 && (
-
             <div className="mt-10 flex flex-col gap-5">
 
-              <h2 className="text-3xl font-black text-center">
-
+              <h2 className="text-3xl font-black text-center break-words">
                 Your Listings
-
               </h2>
 
               {userListings.map(
-                (
-                  listing
-                ) => (
-
+                (listing) => (
                   <div
                     key={
                       listing._id
                     }
-                    className="bg-black/40 border border-zinc-700 rounded-3xl p-4 flex items-center justify-between gap-4 hover:border-yellow-400 transition-all"
+                    className="w-full bg-black/40 border border-zinc-700 rounded-3xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 hover:border-yellow-400 transition-all overflow-hidden"
                   >
 
-                    <Link
-                      to={`/listing/${listing._id}`}
-                    >
+                    {/* LEFT */}
+                    <div className="flex flex-col sm:flex-row items-center gap-4 w-full overflow-hidden">
 
-                      <img
-                        src={
-                          listing
-                            ?.imageUrls?.[0]
-                        }
-                        alt="listing"
-                        className="h-24 w-24 rounded-2xl object-cover"
-                      />
+                      {/* IMAGE */}
+                      <Link
+                        to={`/listing/${listing._id}`}
+                        className="w-full sm:w-auto shrink-0"
+                      >
+                        <img
+                          src={
+                            listing
+                              ?.imageUrls?.[0]
+                          }
+                          alt="listing"
+                          className="h-40 sm:h-24 w-full sm:w-24 rounded-2xl object-cover"
+                        />
+                      </Link>
 
-                    </Link>
+                      {/* TITLE */}
+                      <Link
+                        to={`/listing/${listing._id}`}
+                        className="flex-1 w-full overflow-hidden text-center sm:text-left"
+                      >
+                        <p className="text-lg sm:text-xl font-bold hover:text-yellow-400 transition-all break-words leading-relaxed">
+                          {
+                            listing.name
+                          }
+                        </p>
+                      </Link>
+                    </div>
 
-                    <Link
-                      to={`/listing/${listing._id}`}
-                      className="flex-1"
-                    >
+                    {/* BUTTONS */}
+                    <div className="flex flex-col gap-3 w-full sm:w-auto">
 
-                      <p className="text-lg font-bold hover:text-yellow-400 truncate transition-all">
-
-                        {
-                          listing.name
-                        }
-
-                      </p>
-
-                    </Link>
-
-                    <div className="flex flex-col gap-3">
-
+                      {/* DELETE */}
                       <button
                         onClick={() =>
                           handleListingDelete(
                             listing._id
                           )
                         }
-                        className="bg-red-600 hover:bg-red-500 px-4 py-2 rounded-xl text-sm uppercase font-bold"
+                        className="bg-red-600 hover:bg-red-500 px-5 py-3 rounded-xl text-sm uppercase font-bold w-full sm:min-w-[120px] transition-all duration-300"
                       >
-
                         Delete
-
                       </button>
 
+                      {/* EDIT */}
                       <Link
                         to={`/update-listing/${listing._id}`}
+                        className="w-full"
                       >
-
-                        <button
-                          className="bg-green-600 hover:bg-green-500 px-4 py-2 rounded-xl text-sm uppercase font-bold w-full"
-                        >
-
+                        <button className="bg-green-600 hover:bg-green-500 px-5 py-3 rounded-xl text-sm uppercase font-bold w-full sm:min-w-[120px] transition-all duration-300">
                           Edit
-
                         </button>
-
                       </Link>
-
                     </div>
-
                   </div>
-
                 )
               )}
-
             </div>
-
           )}
-
       </div>
-
     </div>
-
   );
-
 }
