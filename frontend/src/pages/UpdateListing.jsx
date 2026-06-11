@@ -466,9 +466,9 @@ const UpdateListing = () => {
 
   return (
 
-    <main className="min-h-screen bg-black text-white px-4 py-10">
+    <main className="min-h-screen bg-black px-4 pb-12 pt-32 text-white">
 
-      <div className="max-w-5xl mx-auto bg-gradient-to-b from-zinc-900 to-zinc-950 border border-zinc-800 rounded-[2rem] p-8 md:p-10 shadow-2xl">
+      <div className="mx-auto max-w-5xl rounded-3xl border border-white/10 bg-zinc-950 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.45)] md:p-10">
 
         <div className="mb-10 text-center">
 
@@ -478,7 +478,7 @@ const UpdateListing = () => {
 
           </p>
 
-          <h1 className="text-5xl font-black mb-3">
+          <h1 className="mb-3 font-serif text-5xl font-black">
 
             Update{" "}
 
@@ -521,7 +521,7 @@ const UpdateListing = () => {
               onChange={
                 handleChange
               }
-              className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
+              className="rounded-xl border border-white/10 bg-black/35 p-4 outline-none transition placeholder:text-zinc-600 focus:border-yellow-500"
             />
 
             <textarea
@@ -534,7 +534,7 @@ const UpdateListing = () => {
               onChange={
                 handleChange
               }
-              className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 min-h-[140px] outline-none focus:border-yellow-500"
+              className="min-h-[140px] rounded-xl border border-white/10 bg-black/35 p-4 outline-none transition placeholder:text-zinc-600 focus:border-yellow-500"
             />
 
             <input
@@ -548,7 +548,7 @@ const UpdateListing = () => {
               onChange={
                 handleChange
               }
-              className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
+              className="rounded-xl border border-white/10 bg-black/35 p-4 outline-none transition placeholder:text-zinc-600 focus:border-yellow-500"
             />
 
             <div className="grid grid-cols-2 gap-4">
@@ -563,7 +563,7 @@ const UpdateListing = () => {
                 onChange={
                   handleChange
                 }
-                className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
+                className="rounded-xl border border-white/10 bg-black/35 p-4 outline-none transition placeholder:text-zinc-600 focus:border-yellow-500"
               />
 
               <input
@@ -576,7 +576,7 @@ const UpdateListing = () => {
                 onChange={
                   handleChange
                 }
-                className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
+                className="rounded-xl border border-white/10 bg-black/35 p-4 outline-none transition placeholder:text-zinc-600 focus:border-yellow-500"
               />
 
             </div>
@@ -593,7 +593,7 @@ const UpdateListing = () => {
                 onChange={
                   handleChange
                 }
-                className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
+                className="rounded-xl border border-white/10 bg-black/35 p-4 outline-none transition placeholder:text-zinc-600 focus:border-yellow-500"
               />
 
               {formData.offer && (
@@ -608,7 +608,7 @@ const UpdateListing = () => {
                   onChange={
                     handleChange
                   }
-                  className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
+                  className="rounded-xl border border-white/10 bg-black/35 p-4 outline-none transition placeholder:text-zinc-600 focus:border-yellow-500"
                 />
 
               )}
@@ -641,13 +641,13 @@ const UpdateListing = () => {
 
                   }
 
-                  className={`flex-1 p-4 rounded-2xl border font-semibold uppercase transition ${
+                  className={`flex-1 rounded-xl border p-4 font-semibold uppercase transition ${
                     formData.type ===
                     type
 
                       ? "bg-yellow-500 text-black border-yellow-500"
 
-                      : "bg-zinc-800 border-zinc-700"
+                      : "border-white/10 bg-black/35"
 
                   }`}
 
@@ -673,12 +673,12 @@ const UpdateListing = () => {
 
                   key={item}
 
-                  className={`px-5 py-3 rounded-2xl border capitalize cursor-pointer transition ${
+                  className={`cursor-pointer rounded-xl border px-5 py-3 capitalize transition ${
                     formData[item]
 
                       ? "bg-yellow-500 text-black border-yellow-500"
 
-                      : "bg-zinc-800 border-zinc-700"
+                      : "border-white/10 bg-black/35"
 
                   }`}
 
@@ -704,7 +704,7 @@ const UpdateListing = () => {
 
             </div>
 
-            <div className="bg-zinc-800 border-2 border-dashed border-zinc-700 rounded-3xl p-8 text-center">
+            <div className="rounded-2xl border border-dashed border-white/15 bg-black/30 p-8 text-center">
 
               <input
                 type="file"
@@ -744,7 +744,7 @@ const UpdateListing = () => {
                 uploading
               }
 
-              className="bg-blue-600 hover:bg-blue-500 rounded-2xl p-4 font-bold transition"
+              className="rounded-xl bg-blue-600 p-4 font-bold transition hover:bg-blue-500"
 
             >
 
@@ -769,14 +769,14 @@ const UpdateListing = () => {
 
                     key={index}
 
-                    className="flex items-center justify-between bg-zinc-800 border border-zinc-700 rounded-2xl p-4"
+                    className="flex items-center justify-between rounded-xl border border-white/10 bg-black/35 p-4"
 
                   >
 
                     <img
                       src={url}
                       alt="listing"
-                      className="w-24 h-24 rounded-xl object-cover"
+                      className="h-24 w-24 rounded-xl object-cover"
                     />
 
                     <button
@@ -791,7 +791,7 @@ const UpdateListing = () => {
 
                       }
 
-                      className="bg-red-600 hover:bg-red-500 px-4 py-2 rounded-xl transition"
+                      className="rounded-xl bg-red-600 px-4 py-2 transition hover:bg-red-500"
 
                     >
 
@@ -809,7 +809,7 @@ const UpdateListing = () => {
 
             {imageUploadError && (
 
-              <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-2xl">
+              <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-red-400">
 
                 {
                   imageUploadError
@@ -821,7 +821,7 @@ const UpdateListing = () => {
 
             {error && (
 
-              <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-2xl">
+              <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-red-400">
 
                 {error}
 
@@ -836,7 +836,7 @@ const UpdateListing = () => {
                 uploading
               }
 
-              className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-[0.2em] rounded-2xl p-5 transition"
+              className="rounded-xl bg-yellow-500 p-5 font-bold uppercase tracking-[0.2em] text-black transition hover:bg-yellow-400"
 
             >
 

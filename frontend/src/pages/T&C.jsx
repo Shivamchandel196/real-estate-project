@@ -86,13 +86,13 @@ const LegalPage = () => {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <section className="border-b border-yellow-500/10 px-6 pb-16 pt-32">
+      <section className="border-b border-yellow-500/10 px-4 pb-16 pt-32 sm:px-6">
         <div className="mx-auto max-w-5xl">
           <p className="mb-5 text-xs font-semibold uppercase tracking-[0.3em] text-yellow-500">
             {content.eyebrow}
           </p>
 
-          <h1 className="mb-6 text-5xl font-black leading-tight md:text-7xl">
+          <h1 className="mb-6 font-serif text-5xl font-black leading-tight md:text-7xl">
             {content.title}
           </h1>
 
@@ -106,11 +106,11 @@ const LegalPage = () => {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-5xl gap-6 px-6 py-16">
+      <section className="mx-auto grid max-w-5xl gap-6 px-4 py-16 sm:px-6">
         {content.sections.map((section, index) => (
           <article
             key={section.title}
-            className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 transition hover:border-yellow-500/30 md:p-8"
+            className="rounded-2xl border border-white/10 bg-zinc-950 p-6 shadow-[0_18px_45px_rgba(0,0,0,0.25)] transition hover:border-yellow-500/30 md:p-8"
           >
             <div className="mb-5 flex items-center gap-4">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-yellow-500 text-sm font-black text-black">
@@ -129,7 +129,7 @@ const LegalPage = () => {
         ))}
       </section>
 
-      <section className="border-y border-zinc-900 px-6 py-12">
+      <section className="border-y border-white/10 px-4 py-12 sm:px-6">
         <div className="mx-auto flex max-w-5xl flex-col gap-4 rounded-2xl border border-yellow-500/20 bg-yellow-500/10 p-6 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-2xl font-bold">

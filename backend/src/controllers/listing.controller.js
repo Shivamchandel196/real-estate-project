@@ -1,252 +1,167 @@
 import Listing from "../Model/listing.model.js";
 import { errorHandler } from "../utils/error.js";
 
-export const createlisting = async (
-  req,
-  res,
-  next
-) => {
+export const createlisting = async (req, res, next) => {
   try {
-    const listing = await Listing.create(
-      req.body
-    );
+    const listing = await Listing.create(req.body);
 
-    return res
-      .status(201)
-      .json(listing);
+    return res.status(201).json(listing);
   } catch (error) {
     next(error);
   }
 };
 
-export const deleteListing = async (
-  req,
-  res,
-  next
-) => {
+export const deleteListing = async (req, res, next) => {
   try {
-    const listing =
-      await Listing.findById(
-        req.params.id
-      );
+    const listing = await Listing.findById(req.params.id);
 
     if (!listing) {
-      return next(
-        errorHandler(
-          404,
-          "Listing not found"
-        )
-      );
+      return next(errorHandler(404, "Listing not found"));
     }
 
-    if (
-      req.user.id !==
-      listing.userRef.toString()
-    ) {
-      return next(
-        errorHandler(
-          401,
-          "You can only delete your own listing"
-        )
-      );
+    if (req.user.id !== listing.userRef.toString()) {
+      return next(errorHandler(401, "You can only delete your own listing"));
     }
 
-    await Listing.findByIdAndDelete(
-      req.params.id
-    );
+    await Listing.findByIdAndDelete(req.params.id);
 
-    res.status(200).json(
-      "Listing deleted successfully"
-    );
+    res.status(200).json("Listing deleted successfully");
   } catch (error) {
     next(error);
   }
 };
 
-export const updateListing = async (
-  req,
-  res,
-  next
-) => {
+export const updateListing = async (req, res, next) => {
   try {
-    const listing =
-      await Listing.findById(
-        req.params.id
-      );
+    const listing = await Listing.findById(req.params.id);
 
     if (!listing) {
-      return next(
-        errorHandler(
-          404,
-          "Listing not found"
-        )
-      );
+      return next(errorHandler(404, "Listing not found"));
     }
 
-    if (
-      req.user.id !==
-      listing.userRef.toString()
-    ) {
-      return next(
-        errorHandler(
-          401,
-          "You can only update your own listing"
-        )
-      );
+    if (req.user.id !== listing.userRef.toString()) {
+      return next(errorHandler(401, "You can only update your own listing"));
     }
 
-    const updatedListing =
-      await Listing.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        {
-          new: true,
-        }
-      );
-
-    res.status(200).json(
-      updatedListing
+    const updatedListing = await Listing.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+      },
     );
+
+    res.status(200).json(updatedListing);
   } catch (error) {
     next(error);
   }
 };
 
-export const getListing = async (
-  req,
-  res,
-  next
-) => {
+export const getListing = async (req, res, next) => {
   try {
-    const listing =
-      await Listing.findById(
-        req.params.id
-      );
+    const listing = await Listing.findById(req.params.id);
 
     if (!listing) {
-      return next(
-        errorHandler(
-          404,
-          "Listing not found"
-        )
-      );
+      return next(errorHandler(404, "Listing not found"));
     }
 
-    res.status(200).json(
-      listing
-    );
+    res.status(200).json(listing);
   } catch (error) {
     next(error);
   }
 };
 
-export const getListings = async (
-  req,
-  res,
-  next
-) => {
+export const getListings = async (req, res, next) => {
   try {
-    const limit =
-      parseInt(req.query.limit) || 9;
+    // Get pagination params from middleware or query
+    const limit = Math.min(
+      parseInt(req.query.limit) || req.pagination?.limit || 9,
+      100,
+    );
 
-    const startIndex =
-      parseInt(
-        req.query.startIndex
-      ) || 0;
+    const page = parseInt(req.query.page) || req.pagination?.page || 1;
+    const skip = (page - 1) * limit;
 
-    let offer =
-      req.query.offer;
+    let offer = req.query.offer;
 
-    if (
-      offer === undefined ||
-      offer === "false"
-    ) {
+    if (offer === undefined || offer === "false") {
       offer = {
         $in: [false, true],
       };
     }
 
-    let furnished =
-      req.query.furnished;
+    let furnished = req.query.furnished;
 
-    if (
-      furnished === undefined ||
-      furnished === "false"
-    ) {
+    if (furnished === undefined || furnished === "false") {
       furnished = {
         $in: [false, true],
       };
     }
 
-    let parking =
-      req.query.parking;
+    let parking = req.query.parking;
 
-    if (
-      parking === undefined ||
-      parking === "false"
-    ) {
+    if (parking === undefined || parking === "false") {
       parking = {
         $in: [false, true],
       };
     }
 
-    let type =
-      req.query.type;
+    let type = req.query.type;
 
-    if (
-      type === undefined ||
-      type === "all"
-    ) {
+    if (type === undefined || type === "all") {
       type = {
-        $in: [
-          "sale",
-          "rent",
-        ],
+        $in: ["sale", "rent"],
       };
     }
 
-    const searchTerm =
-      req.query.searchTerm || "";
+    const searchTerm = req.query.searchTerm || "";
 
-    const sort =
-      req.query.sort ||
-      "createdAt";
+    const sort = req.query.sort || "createdAt";
 
-    const order =
-      req.query.order ||
-      "desc";
+    const order = req.query.order === "asc" ? 1 : -1;
 
-    const userRef =
-      req.query.userRef;
+    const userRef = req.query.userRef;
 
-    const userFilter =
-      userRef
-        ? { userRef }
-        : {};
+    const userFilter = userRef ? { userRef } : {};
 
-    const listings =
-      await Listing.find({
-        ...userFilter,
+    // Build filter object
+    const filter = {
+      ...userFilter,
+      name: {
+        $regex: searchTerm,
+        $options: "i",
+      },
+      offer,
+      furnished,
+      parking,
+      type,
+    };
 
-        name: {
-          $regex: searchTerm,
-          $options: "i",
-        },
+    // Get total count for pagination
+    const total = await Listing.countDocuments(filter);
 
-        offer,
-        furnished,
-        parking,
-        type,
+    // Get listings with pagination
+    const listings = await Listing.find(filter)
+      .sort({
+        [sort]: order,
       })
-        .sort({
-          [sort]: order,
-        })
-        .limit(limit)
-        .skip(startIndex);
+      .limit(limit)
+      .skip(skip)
+      .lean(); // Optimize by returning plain objects
 
-    return res
-      .status(200)
-      .json(listings);
+    const totalPages = Math.ceil(total / limit);
+
+    return res.status(200).json({
+      success: true,
+      data: listings,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasMore: page < totalPages,
+      },
+    });
   } catch (error) {
     next(error);
   }

@@ -1,291 +1,164 @@
-import React from "react";
-
 import {
-  FaHome,
-  FaHandshake,
-  FaSearchLocation,
   FaBuilding,
-  FaUsers,
+  FaHandshake,
+  FaHome,
+  FaSearchLocation,
   FaShieldAlt,
+  FaUsers,
 } from "react-icons/fa";
 import Footer from "../components/Footer";
 
 const features = [
-
   {
     icon: <FaHome />,
     title: "Smart Property Listings",
-
     desc:
-      "Explore premium properties with detailed descriptions, pricing, and advanced search features.",
-
-    color:
-      "text-yellow-500",
-
-    bg:
-      "bg-yellow-500/10",
-
+      "Explore premium properties with clear pricing, rich details, and useful discovery tools.",
+    color: "text-yellow-500",
+    bg: "bg-yellow-500/10",
   },
-
   {
-    icon:
-      <FaSearchLocation />,
-
-    title:
-      "Easy Property Search",
-
+    icon: <FaSearchLocation />,
+    title: "Easy Property Search",
     desc:
-      "Search and filter properties based on location, type, pricing, and facilities.",
-
-    color:
-      "text-blue-400",
-
-    bg:
-      "bg-blue-500/10",
-
+      "Filter by location, property type, pricing, amenities, and availability.",
+    color: "text-blue-500",
+    bg: "bg-blue-500/10",
   },
-
   {
-    icon:
-      <FaBuilding />,
-
-    title:
-      "Buy • Sell • Rent",
-
+    icon: <FaBuilding />,
+    title: "Buy / Sell / Rent",
     desc:
       "List properties for sale or rent and connect directly with interested clients.",
-
-    color:
-      "text-violet-400",
-
-    bg:
-      "bg-violet-500/10",
-
+    color: "text-violet-500",
+    bg: "bg-violet-500/10",
   },
-
   {
-    icon:
-      <FaHandshake />,
-
-    title:
-      "Trusted Experience",
-
+    icon: <FaHandshake />,
+    title: "Trusted Experience",
     desc:
-      "A reliable platform designed to build trust between buyers and sellers.",
-
-    color:
-      "text-orange-400",
-
-    bg:
-      "bg-orange-500/10",
-
+      "A focused platform designed to build confidence between buyers, renters, and sellers.",
+    color: "text-orange-500",
+    bg: "bg-orange-500/10",
   },
-
   {
-    icon:
-      <FaUsers />,
-
-    title:
-      "User Friendly",
-
+    icon: <FaUsers />,
+    title: "User Friendly",
     desc:
-      "Clean design and smooth navigation for a better user experience.",
-
-    color:
-      "text-pink-400",
-
-    bg:
-      "bg-pink-500/10",
-
+      "Clean navigation, readable information, and smooth workflows across devices.",
+    color: "text-pink-500",
+    bg: "bg-pink-500/10",
   },
-
   {
-    icon:
-      <FaShieldAlt />,
-
-    title:
-      "Secure Platform",
-
+    icon: <FaShieldAlt />,
+    title: "Secure Platform",
     desc:
-      "Protected routes and authentication keep accounts and listings secure.",
-
-    color:
-      "text-red-400",
-
-    bg:
-      "bg-red-500/10",
-
+      "Authentication, protected routes, and account controls help keep listings safe.",
+    color: "text-red-500",
+    bg: "bg-red-500/10",
   },
-
 ];
 
 const About = () => {
-
   return (
-
-    <main className="min-h-screen bg-black text-white">
-
-      <section className="border-b border-yellow-500/10 px-6 py-24">
-
-        <div className="max-w-6xl mx-auto">
-
-          <p className="uppercase tracking-[0.3em] text-yellow-500 text-xs font-semibold mb-6">
-
+    <main className="min-h-screen bg-white text-black transition-colors duration-300 dark:bg-black dark:text-white">
+      
+      {/* Hero Section */}
+      <section className="border-b border-zinc-200 px-4 pb-16 pt-32 dark:border-yellow-500/10 sm:px-6 lg:pb-20">
+        <div className="mx-auto max-w-7xl">
+          <p className="mb-5 text-xs font-semibold uppercase tracking-[0.3em] text-yellow-500">
             Who We Are
-
           </p>
 
-          <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
-
-            About{" "}
-
-            <span className="text-yellow-500">
-
-              RoyalEstate
-
-            </span>
-
+          <h1 className="max-w-5xl font-serif text-5xl font-black leading-[0.98] sm:text-6xl lg:text-7xl">
+            About <span className="text-yellow-500">RoyalEstate</span>
           </h1>
 
-          <p className="text-zinc-400 text-lg leading-8 max-w-3xl">
-
-            RoyalEstate is a modern real estate platform built to simplify the way people buy, sell, and rent properties. We connect property owners with buyers and renters through a fast, secure, and user-friendly experience.
-
+          <p className="mt-7 max-w-3xl text-base leading-8 text-zinc-600 dark:text-zinc-400 sm:text-lg">
+            RoyalEstate is a modern real estate platform built to simplify how
+            people buy, sell, and rent properties. We connect property owners
+            with buyers and renters through a fast, secure, and user-friendly
+            experience.
           </p>
-
         </div>
-
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-8">
+      {/* Mission Section */}
+      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:py-20">
+        {[
+          {
+            title: "Our Mission",
+            body:
+              "Make real estate simple, transparent, and accessible for everyone. Whether you are searching for a dream home, rental property, or planning to sell, RoyalEstate gives you the tools to move confidently.",
+          },
+          {
+            title: "Why Choose Us?",
+            body:
+              "We focus on trusted listings, secure communication, easy property management, and a smooth browsing experience that helps users make better property decisions.",
+          },
+        ].map((item) => (
+          <article
+            key={item.title}
+            className="rounded-2xl border border-zinc-200 bg-white p-7 shadow-lg transition duration-300 hover:-translate-y-1 hover:border-yellow-500/35 dark:border-white/10 dark:bg-zinc-950 dark:shadow-[0_18px_45px_rgba(0,0,0,0.32)] sm:p-8"
+          >
+            <div className="mb-6 h-1 w-12 rounded-full bg-yellow-500" />
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 hover:border-yellow-500/30 transition">
-
-          <div className="w-12 h-1 bg-yellow-500 rounded mb-6"></div>
-
-          <h2 className="text-3xl font-bold mb-4">
-
-            Our Mission
-
-          </h2>
-
-          <p className="text-zinc-400 leading-8">
-
-            Our mission is to make real estate simple, transparent, and accessible for everyone. Whether you're searching for your dream home, rental property, or planning to sell, RoyalEstate provides all the tools you need.
-
-          </p>
-
-        </div>
-
-        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 hover:border-yellow-500/30 transition">
-
-          <div className="w-12 h-1 bg-yellow-500 rounded mb-6"></div>
-
-          <h2 className="text-3xl font-bold mb-4">
-
-            Why Choose Us?
-
-          </h2>
-
-          <p className="text-zinc-400 leading-8">
-
-            We focus on trusted listings, secure communication, easy property management, and a smooth browsing experience to help users make confident real estate decisions.
-
-          </p>
-
-        </div>
-
-      </section>
-
-      <section className="border-t border-zinc-900 px-6 py-20">
-
-        <div className="max-w-6xl mx-auto">
-
-          <div className="text-center mb-14">
-
-            <p className="uppercase tracking-[0.3em] text-yellow-500 text-xs font-semibold mb-4">
-
-              What We Offer
-
-            </p>
-
-            <h2 className="text-5xl font-bold mb-4">
-
-              Platform Features
-
+            <h2 className="font-serif text-3xl font-bold text-zinc-900 dark:text-white">
+              {item.title}
             </h2>
 
-            <p className="text-zinc-500">
+            <p className="mt-4 leading-8 text-zinc-600 dark:text-zinc-400">
+              {item.body}
+            </p>
+          </article>
+        ))}
+      </section>
 
-              Everything you need to find or manage properties
-
+      {/* Features */}
+      <section className="border-t border-zinc-200 px-4 py-14 dark:border-white/10 sm:px-6 lg:py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 text-center">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-yellow-500">
+              What We Offer
             </p>
 
+            <h2 className="font-serif text-4xl font-black text-zinc-900 dark:text-white sm:text-5xl">
+              Platform Features
+            </h2>
+
+            <p className="mx-auto mt-4 max-w-2xl text-zinc-600 dark:text-zinc-500">
+              Everything you need to find, compare, or manage properties.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            {features.map(
-              (
-                feature
-              ) => (
-
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {features.map((feature) => (
+              <article
+                key={feature.title}
+                className="rounded-2xl border border-zinc-200 bg-white p-7 shadow-md transition duration-300 hover:-translate-y-1 hover:border-yellow-500/30 dark:border-white/10 dark:bg-zinc-950 dark:hover:bg-zinc-900"
+              >
                 <div
-
-                  key={
-                    feature.title
-                  }
-
-                  className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 hover:-translate-y-2 hover:border-yellow-500/20 transition duration-300"
-
+                  className={`mb-6 flex h-14 w-14 items-center justify-center rounded-2xl text-2xl ${feature.bg} ${feature.color}`}
                 >
-
-                  <div
-
-                    className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-6 ${feature.bg} ${feature.color}`}
-
-                  >
-
-                    {
-                      feature.icon
-                    }
-
-                  </div>
-
-                  <h3 className="text-2xl font-semibold mb-4">
-
-                    {
-                      feature.title
-                    }
-
-                  </h3>
-
-                  <p className="text-zinc-400 leading-7">
-
-                    {
-                      feature.desc
-                    }
-
-                  </p>
-
+                  {feature.icon}
                 </div>
 
-              )
+                <h3 className="text-2xl font-bold text-zinc-900 dark:text-white">
+                  {feature.title}
+                </h3>
 
-            )}
-
+                <p className="mt-4 leading-7 text-zinc-600 dark:text-zinc-400">
+                  {feature.desc}
+                </p>
+              </article>
+            ))}
           </div>
-
         </div>
-
       </section>
 
       <Footer />
-
     </main>
-
   );
-
 };
 
 export default About;

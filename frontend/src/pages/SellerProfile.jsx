@@ -110,7 +110,7 @@ const SellerProfile = () => {
   if (error) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-black px-4 text-white">
-        <div className="max-w-md rounded-2xl border border-red-500/20 bg-red-500/10 p-8 text-center">
+        <div className="max-w-md rounded-2xl border border-red-500/20 bg-red-500/10 p-8 text-center shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
           <h1 className="text-3xl font-black">
             Seller Not Available
           </h1>
@@ -130,7 +130,7 @@ const SellerProfile = () => {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <section className="border-b border-yellow-500/10 px-6 pb-16 pt-32">
+      <section className="border-b border-yellow-500/10 px-4 pb-16 pt-32 sm:px-6">
         <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-[auto_1fr] md:items-center">
           <img
             src={seller?.avatar || "/profile.png"}
@@ -139,7 +139,7 @@ const SellerProfile = () => {
               e.currentTarget.onerror = null;
               e.currentTarget.src = "/profile.png";
             }}
-            className="h-36 w-36 rounded-full border-4 border-yellow-500 object-cover shadow-[0_0_40px_rgba(234,179,8,0.18)]"
+            className="h-36 w-36 rounded-full border-4 border-yellow-500 object-cover shadow-[0_18px_45px_rgba(234,179,8,0.18)]"
           />
 
           <div>
@@ -147,7 +147,7 @@ const SellerProfile = () => {
               Seller Profile
             </p>
 
-            <h1 className="text-5xl font-black leading-tight md:text-7xl">
+            <h1 className="font-serif text-5xl font-black leading-tight md:text-7xl">
               {seller?.username}
             </h1>
 
@@ -166,8 +166,8 @@ const SellerProfile = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-12">
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 md:flex md:items-center md:justify-between md:p-8">
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+        <div className="rounded-2xl border border-white/10 bg-zinc-950 p-6 shadow-[0_24px_70px_rgba(0,0,0,0.35)] md:flex md:items-center md:justify-between md:p-8">
           <div>
             <h2 className="text-2xl font-bold">
               Contact Seller
@@ -187,7 +187,7 @@ const SellerProfile = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 pb-20">
+      <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
         <div className="mb-8 border-b border-white/10 pb-6">
           <div className="mb-4 h-1 w-12 rounded bg-yellow-500" />
           <h2 className="font-serif text-4xl font-bold">
@@ -208,7 +208,7 @@ const SellerProfile = () => {
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-10 text-center">
+          <div className="rounded-2xl border border-white/10 bg-zinc-950 p-10 text-center">
             <h3 className="text-2xl font-bold">
               No active listings
             </h3>

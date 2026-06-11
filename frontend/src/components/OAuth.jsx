@@ -107,7 +107,7 @@ const OAuth = () => {
 
       type="button"
 
-      className="w-full flex items-center justify-center gap-3 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-yellow-500 text-white font-semibold uppercase tracking-wider rounded-xl p-4 transition duration-300"
+      className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-black/30 p-4 font-semibold uppercase tracking-wider text-white transition duration-300 hover:border-yellow-500/50 hover:bg-zinc-900"
 
     >
 

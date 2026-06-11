@@ -384,10 +384,10 @@ export default function Search() {
     <>
 
       {/* MAIN */}
-      <main className="min-h-screen bg-black text-white flex flex-col lg:flex-row pt-28 overflow-x-hidden">
+      <main className="min-h-screen overflow-x-hidden bg-black pt-24 text-white lg:flex">
 
         {/* SIDEBAR */}
-        <aside className="w-full lg:w-[340px] border-b lg:border-r border-zinc-800 bg-zinc-950 p-6 sm:p-8">
+        <aside className="w-full border-b border-white/10 bg-zinc-950 p-5 sm:p-7 lg:sticky lg:top-20 lg:h-[calc(100vh-5rem)] lg:w-[360px] lg:overflow-y-auto lg:border-b-0 lg:border-r">
 
           <div className="mb-10">
 
@@ -397,7 +397,7 @@ export default function Search() {
 
             </p>
 
-            <h1 className="text-3xl sm:text-4xl font-black leading-tight break-words">
+            <h1 className="font-serif text-3xl font-black leading-tight sm:text-4xl">
 
               Find Your
               <br />
@@ -412,7 +412,7 @@ export default function Search() {
             onSubmit={
               handleSubmit
             }
-            className="flex flex-col gap-8"
+            className="flex flex-col gap-7"
           >
 
             {/* SEARCH */}
@@ -434,7 +434,7 @@ export default function Search() {
                 onChange={
                   handleChange
                 }
-                className="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
+                className="w-full rounded-xl border border-white/10 bg-black/35 p-4 text-white outline-none transition placeholder:text-zinc-600 focus:border-yellow-500"
               />
 
             </div>
@@ -459,10 +459,10 @@ export default function Search() {
 
                     <label
                       key={item}
-                      className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition ${
+                      className={`flex cursor-pointer items-center justify-between rounded-xl border p-4 transition ${
                         sidebarData.type === item
-                          ? "border-yellow-500 bg-yellow-500/10"
-                          : "border-zinc-800 bg-zinc-900"
+                          ? "border-yellow-500 bg-yellow-500/10 text-yellow-400"
+                          : "border-white/10 bg-black/35 text-zinc-300 hover:border-yellow-500/30"
                       }`}
                     >
 
@@ -513,10 +513,10 @@ export default function Search() {
 
                     <label
                       key={item}
-                      className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition ${
+                      className={`flex cursor-pointer items-center justify-between rounded-xl border p-4 transition ${
                         sidebarData[item]
-                          ? "border-yellow-500 bg-yellow-500/10"
-                          : "border-zinc-800 bg-zinc-900"
+                          ? "border-yellow-500 bg-yellow-500/10 text-yellow-400"
+                          : "border-white/10 bg-black/35 text-zinc-300 hover:border-yellow-500/30"
                       }`}
                     >
 
@@ -560,7 +560,7 @@ export default function Search() {
                 onChange={
                   handleChange
                 }
-                className="w-full bg-zinc-900 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
+                className="w-full rounded-xl border border-white/10 bg-black/35 p-4 text-white outline-none transition focus:border-yellow-500"
               >
 
                 <option value="regularPrice_desc">
@@ -584,7 +584,7 @@ export default function Search() {
             </div>
 
             {/* BUTTON */}
-            <button className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-[0.2em] p-5 rounded-2xl transition">
+            <button className="rounded-xl bg-yellow-500 p-4 font-black uppercase tracking-[0.18em] text-black transition hover:-translate-y-0.5 hover:bg-yellow-400">
 
               Search
 
@@ -595,9 +595,9 @@ export default function Search() {
         </aside>
 
         {/* RESULTS */}
-        <section className="flex-1 p-4 sm:p-6 md:p-10 overflow-hidden">
+        <section className="flex-1 overflow-hidden p-4 sm:p-6 lg:p-10">
 
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 border-b border-zinc-800 pb-6 mb-10">
+          <div className="mb-10 flex flex-col gap-4 border-b border-white/10 pb-6 sm:flex-row sm:items-end sm:justify-between">
 
             <div>
 
@@ -607,7 +607,7 @@ export default function Search() {
 
               </p>
 
-              <h2 className="text-3xl sm:text-5xl font-black break-words leading-tight">
+              <h2 className="font-serif text-3xl font-black leading-tight sm:text-5xl">
 
                 Search Results
 
@@ -615,7 +615,7 @@ export default function Search() {
 
             </div>
 
-            <p className="text-zinc-500 text-sm sm:text-base">
+            <p className="rounded-full border border-white/10 bg-zinc-950 px-4 py-2 text-sm text-zinc-500 sm:text-base">
 
               {listings.length} Listings Found
 
@@ -638,7 +638,7 @@ export default function Search() {
           {!loading &&
             listings.length === 0 && (
 
-              <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-10 text-center">
+              <div className="rounded-2xl border border-white/10 bg-zinc-950 p-10 text-center shadow-[0_24px_70px_rgba(0,0,0,0.35)]">
 
                 <h3 className="text-3xl font-bold mb-4">
 
@@ -660,7 +660,7 @@ export default function Search() {
           {!loading &&
             listings.length > 0 && (
 
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 2xl:grid-cols-3">
 
                 {listings.map(
                   (listing) => (
@@ -686,7 +686,7 @@ export default function Search() {
                 onClick={
                   onShowMoreClick
                 }
-                className="border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black px-8 py-4 rounded-2xl font-semibold transition"
+                className="rounded-xl border border-yellow-500 px-8 py-4 font-bold text-yellow-500 transition hover:bg-yellow-500 hover:text-black"
               >
 
                 Show More

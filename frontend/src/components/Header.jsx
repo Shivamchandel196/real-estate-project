@@ -8,6 +8,7 @@ import {
   FaTimes,
   FaUser,
 } from "react-icons/fa";
+import ThemeButton from "./ThemeButton";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -37,25 +38,32 @@ const getUserDetails = (currentUser) => {
 
 const navClassName = ({ isActive }) =>
   [
-    "rounded-xl px-4 py-2 text-sm font-semibold tracking-wide transition-all duration-300",
+    "rounded-xl px-3.5 py-2 text-sm font-semibold tracking-wide transition-all duration-300 xl:px-4",
     isActive
-      ? "bg-yellow-500/10 text-yellow-400"
-      : "text-slate-400 hover:bg-yellow-500/10 hover:text-yellow-400",
+      ? "border border-yellow-500/20 bg-yellow-500/15 text-yellow-400 shadow-[0_8px_28px_rgba(234,179,8,0.08)]"
+      : "border border-transparent text-gray-700 dark:text-slate-400 hover:border-yellow-500/15 hover:bg-yellow-500/10 hover:text-yellow-400",
   ].join(" ");
 
-const SearchForm = ({ searchTerm, setSearchTerm, onSubmit, compact = false }) => (
+const SearchForm = ({
+  searchTerm,
+  setSearchTerm,
+  onSubmit,
+  compact = false,
+}) => (
   <form
     onSubmit={onSubmit}
     className={[
-      "flex items-center rounded-full border border-white/[0.07] bg-[#1a1d24] transition-all duration-300",
-      "focus-within:border-yellow-500/50 focus-within:shadow-[0_0_0_3px_rgba(201,168,76,0.15)]",
-      compact ? "px-4 py-2" : "px-5 py-2",
+      "flex items-center rounded-full border border-white/[0.08] bg-white dark:bg-zinc-950/80 transition-all duration-300",
+
+     "focus-within:border-yellow-500/55 focus-within:bg-white dark:focus-within:bg-zinc-950 focus-within:shadow-[0_0_0_3px_rgba(234,179,8,0.14)]",
+
+      compact ? "px-4 py-2" : "px-4 py-2 xl:px-5",
     ].join(" ")}
   >
     <input
       type="text"
       placeholder="Search properties..."
-      className="w-full bg-transparent text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none"
+      className="w-full bg-transparent text-sm text-gray-900 dark:text-slate-200 placeholder:text-gray-500 dark:placeholder:text-slate-500 focus:outline-none"
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
     />
@@ -64,7 +72,7 @@ const SearchForm = ({ searchTerm, setSearchTerm, onSubmit, compact = false }) =>
       type="submit"
       aria-label="Search properties"
       className={[
-        "ml-2 flex items-center justify-center rounded-full text-black transition-all duration-200",
+        "ml-2 flex shrink-0 items-center justify-center rounded-full text-black transition-all duration-200",
         compact
           ? "h-9 w-9 bg-yellow-500 text-sm hover:bg-yellow-400"
           : "h-10 w-10 bg-yellow-500 hover:scale-110 hover:bg-yellow-400",
@@ -86,10 +94,7 @@ const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const userDetails = useMemo(
-    () => getUserDetails(currentUser),
-    [currentUser]
-  );
+  const userDetails = useMemo(() => getUserDetails(currentUser), [currentUser]);
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -151,23 +156,25 @@ const Header = () => {
       className={[
         "fixed left-0 top-0 z-50 w-full border-b transition-all duration-300",
         scrolled
-          ? "border-yellow-900/30 bg-[#111318]/90 shadow-[0_4px_30px_rgba(0,0,0,0.65)] backdrop-blur-xl"
-          : "border-yellow-900/20 bg-[#111318] shadow-[0_4px_30px_rgba(0,0,0,0.6)]",
+          ?  "border-gray-200 dark:border-yellow-500/20 bg-white/90 dark:bg-zinc-950/88 shadow-[0_14px_45px_rgba(0,0,0,0.55)] backdrop-blur-xl"
+          : "border-gray-200 dark:border-white/10 bg-white/95 dark:bg-zinc-950/95 shadow-[0_10px_35px_rgba(0,0,0,0.45)] backdrop-blur",
       ].join(" ")}
     >
-      <div className="mx-auto flex h-[85px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link to="/" className="flex min-w-fit flex-col gap-0.5 leading-none">
-          <h1 className="font-serif text-2xl font-black tracking-wide sm:text-3xl">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 xl:h-[86px]">
+        <Link to="/" className="flex min-w-fit flex-col gap-1 leading-none">
+          <h1 className="font-serif text-[1.65rem] font-black tracking-wide sm:text-3xl">
             <span className="text-yellow-500">Royal</span>
-            <span className="text-white">Estate</span>
+            <span className="text-gray-900 dark:text-white">
+  Estate
+</span>
           </h1>
-          <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-slate-500">
+          <span className="hidden text-[10px] font-medium uppercase tracking-[0.26em] text-slate-500 sm:block">
             Find Your Dream Home
           </span>
         </Link>
 
-        <div className="hidden min-w-[260px] flex-1 justify-center md:flex">
-          <div className="w-full max-w-xl">
+        <div className="hidden min-w-[220px] flex-1 justify-center md:flex">
+          <div className="w-full max-w-lg xl:max-w-xl">
             <SearchForm
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
@@ -176,7 +183,7 @@ const Header = () => {
           </div>
         </div>
 
-        <nav className="hidden items-center gap-2 lg:flex">
+        <nav className="hidden items-center gap-1.5 lg:flex xl:gap-2">
           {navLinks.map((item) => (
             <NavLink key={item.to} to={item.to} className={navClassName} end>
               {item.label}
@@ -184,7 +191,8 @@ const Header = () => {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <ThemeButton />
           {currentUser ? (
             <div className="relative">
               <button
@@ -192,7 +200,7 @@ const Header = () => {
                 aria-label="Open profile menu"
                 aria-expanded={profileOpen}
                 onClick={() => setProfileOpen((open) => !open)}
-                className="flex items-center gap-2 rounded-full border border-yellow-500/30 bg-yellow-500/5 p-1 pr-2 transition-all duration-300 hover:border-yellow-500/60 hover:bg-yellow-500/10"
+                className="flex items-center gap-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 p-1 pr-2 transition-all duration-300 hover:border-yellow-500/60 hover:bg-yellow-500/15"
               >
                 <img
                   src={userDetails.avatar}
@@ -201,7 +209,7 @@ const Header = () => {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src = "/profile.png";
                   }}
-                  className="h-11 w-11 rounded-full border-2 border-yellow-500 object-cover"
+                  className="h-10 w-10 rounded-full border-2 border-yellow-500 object-cover sm:h-11 sm:w-11"
                 />
                 <FaChevronDown
                   className={[
@@ -212,8 +220,8 @@ const Header = () => {
               </button>
 
               {profileOpen && (
-                <div className="absolute right-0 top-[calc(100%+14px)] z-50 w-64 rounded-2xl border border-yellow-500/20 bg-[#111827] p-4 shadow-[0_20px_60px_rgba(0,0,0,0.7)]">
-                  <div className="absolute -top-2 right-6 h-4 w-4 rotate-45 border-l border-t border-yellow-500/20 bg-[#111827]" />
+                <div className="absolute right-0 top-[calc(100%+14px)] z-50 w-64 rounded-2xl border border-gray-200 dark:border-yellow-500/20 bg-white dark:bg-zinc-950 p-4 shadow-[0_24px_70px_rgba(0,0,0,0.72)]">
+                  <div className="absolute -top-2 right-6 h-4 w-4 rotate-45 border-l border-t border-gray-200 dark:border-yellow-500/20 bg-white dark:bg-zinc-950" />
 
                   <div className="flex items-center gap-3">
                     <img
@@ -226,27 +234,27 @@ const Header = () => {
                       className="h-12 w-12 rounded-full border border-yellow-500 object-cover"
                     />
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-bold text-white">
+                      <p className="truncate text-sm font-bold text-gray-900 dark:text-white">
                         {userDetails.username}
                       </p>
-                      <p className="mt-1 truncate text-xs text-slate-400">
+                      <p className="mt-1 truncate text-xs text-gray-700 dark:text-slate-400">
                         {userDetails.email}
                       </p>
                     </div>
                   </div>
 
-                  <div className="my-4 border-t border-white/10" />
+                  <div className="my-4 border-t border-gray-200 dark:border-white/10" />
 
                   <Link
                     to="/profile"
-                    className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-slate-300 transition hover:bg-yellow-500/10 hover:text-yellow-400"
+                    className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-gray-700 dark:text-slate-300 transition hover:bg-yellow-500/10 hover:text-yellow-400"
                   >
                     <FaUser className="text-xs" />
                     Profile
                   </Link>
                   <Link
                     to="/create-listing"
-                    className="mt-1 flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-slate-300 transition hover:bg-yellow-500/10 hover:text-yellow-400"
+                    className="mt-1 flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold  text-gray-700 dark:text-slate-300 transition hover:bg-yellow-500/10 hover:text-yellow-400"
                   >
                     <FaPlus className="text-xs" />
                     Create Listing
@@ -265,7 +273,7 @@ const Header = () => {
           ) : (
             <Link
               to="/sign-in"
-              className="hidden rounded-xl border border-yellow-500/50 px-5 py-2 text-sm font-bold tracking-wide text-yellow-500 transition-all duration-300 hover:bg-yellow-500 hover:text-black sm:block"
+              className="hidden rounded-xl border border-yellow-500/45 px-5 py-2.5 text-sm font-bold tracking-wide text-yellow-500 transition-all duration-300 hover:bg-yellow-500 hover:text-black sm:block"
             >
               Sign In
             </Link>
@@ -276,7 +284,7 @@ const Header = () => {
             aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen((open) => !open)}
-            className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-[#1a1d24] text-yellow-500 transition hover:border-yellow-500/50 lg:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white dark:bg-zinc-900 text-yellow-500 transition hover:border-yellow-500/50 lg:hidden"
           >
             {mobileOpen ? <FaTimes /> : <FaBars />}
           </button>
@@ -284,7 +292,7 @@ const Header = () => {
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-white/5 bg-[#0f1117] px-4 pb-5 pt-4 shadow-[0_18px_40px_rgba(0,0,0,0.45)] lg:hidden">
+        <div className="border-t border-gray-200 dark:border-white/10 bg-white dark:bg-zinc-950/98 px-4 pb-5 pt-4 shadow-[0_18px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl lg:hidden">
           <SearchForm
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
@@ -302,7 +310,7 @@ const Header = () => {
                     "rounded-xl px-4 py-3 text-sm font-semibold transition",
                     isActive
                       ? "bg-yellow-500/10 text-yellow-400"
-                      : "text-slate-300 hover:bg-yellow-500/10 hover:text-yellow-400",
+                      : "text-gray-700 dark:text-slate-300 hover:bg-yellow-500/10 hover:text-yellow-400",
                   ].join(" ")
                 }
                 end
@@ -315,13 +323,13 @@ const Header = () => {
               <>
                 <Link
                   to="/profile"
-                  className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-300 transition hover:bg-yellow-500/10 hover:text-yellow-400"
+className="rounded-xl px-4 py-3 text-sm font-semibold text-gray-700 dark:text-slate-300 transition hover:bg-yellow-500/10 hover:text-yellow-400"
                 >
                   Profile
                 </Link>
                 <Link
                   to="/create-listing"
-                  className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-300 transition hover:bg-yellow-500/10 hover:text-yellow-400"
+className="rounded-xl px-4 py-3 text-sm font-semibold text-gray-700 dark:text-slate-300 transition hover:bg-yellow-500/10 hover:text-yellow-400"
                 >
                   Create Listing
                 </Link>

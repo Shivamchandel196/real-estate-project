@@ -10,44 +10,63 @@ import {
   deleteListing,
 } from "../controllers/listing.controller.js";
 
+import { validateCreateListing } from "../middleware/validation.middleware.js";
+import { getPaginationParams } from "../middleware/pagination.middleware.js";
+import { cacheMiddleware, invalidateCache } from "../utils/cache.js";
+
 const router = express.Router();
 
 /* CREATE LISTING */
-
 router.post(
   "/create",
   verifyToken,
-  createlisting
+  validateCreateListing,
+  (req, res, next) => {
+    // Invalidate cache after creating listing
+    invalidateCache("/get");
+    next();
+  },
+  createlisting,
 );
 
-/* GET ALL LISTINGS */
-
+/* GET ALL LISTINGS - with pagination and caching */
 router.get(
   "/get",
-  getListings
+  getPaginationParams,
+  cacheMiddleware(3600), // Cache for 1 hour
+  getListings,
 );
 
-/* GET SINGLE LISTING */
-
+/* GET SINGLE LISTING - with caching */
 router.get(
   "/get/:id",
-  getListing
+  cacheMiddleware(7200), // Cache for 2 hours
+  getListing,
 );
 
 /* UPDATE LISTING */
-
 router.post(
   "/update/:id",
   verifyToken,
-  updateListing
+  validateCreateListing,
+  (req, res, next) => {
+    // Invalidate cache after updating
+    invalidateCache("/get");
+    next();
+  },
+  updateListing,
 );
 
 /* DELETE LISTING */
-
 router.delete(
   "/delete/:id",
   verifyToken,
-  deleteListing
+  (req, res, next) => {
+    // Invalidate cache after deleting
+    invalidateCache("/get");
+    next();
+  },
+  deleteListing,
 );
 
 export default router;

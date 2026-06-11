@@ -29,6 +29,11 @@ function ListingItem({
 
   const listingPath = `/listing/${listing._id}`;
   const coverImage = listing.imageUrls?.[0] || FALLBACK_IMAGE;
+  const displayPrice = (
+    listing.offer
+      ? listing.discountPrice
+      : listing.regularPrice
+  )?.toLocaleString("en-IN");
   const [
     compared,
     setCompared,
@@ -137,15 +142,15 @@ function ListingItem({
   };
 
   return (
-    <div className="group relative w-full overflow-hidden rounded-[14px] border border-[rgba(255,255,255,0.06)] bg-[#1a1d24] font-sans transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1.5 hover:border-[rgba(201,168,76,0.45)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.55)]">
-      <div className="pointer-events-none absolute inset-0 z-10 rounded-[14px] bg-linear-to-br from-[#c9a84c]/25 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+    <div className="group relative w-full overflow-hidden rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-zinc-950 font-sans shadow-[0_18px_45px_rgba(0,0,0,0.32)] transition duration-300 hover:-translate-y-1.5 hover:border-yellow-500/45 hover:bg-gray-50 dark:hover:bg-zinc-900 hover:shadow-[0_24px_70px_rgba(0,0,0,0.48)]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px bg-linear-to-r from-transparent via-yellow-500/55 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
       <Link
         to={listingPath}
         aria-label={`View ${listing.name}`}
         className="block no-underline"
       >
-        <div className="relative h-[220px] overflow-hidden">
+        <div className="relative h-[230px] overflow-hidden">
           <img
             src={coverImage}
             alt="listing cover"
@@ -154,49 +159,46 @@ function ListingItem({
             decoding="async"
           />
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-[rgba(11,12,14,0.7)] to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
 
-          <span className="absolute left-3 top-3 z-20 rounded-full bg-[#4a8fe8] px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-white shadow-[0_2px_10px_rgba(0,0,0,0.4)]">
+          <span className="absolute left-3 top-3 z-20 rounded-full border border-blue-400/30 bg-blue-500/90 px-3 py-1 text-[0.65rem] font-black uppercase tracking-[0.14em] text-white shadow-[0_10px_25px_rgba(0,0,0,0.35)]">
             {listing.type === "rent" ? "For Rent" : "For Sale"}
           </span>
 
           {listing.offer && (
-            <span className="absolute right-3 top-3 z-20 rounded-full bg-[#c9a84c] px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[#0b0c0e] shadow-[0_2px_10px_rgba(201,168,76,0.25)]">
+            <span className="absolute right-3 top-3 z-20 rounded-full bg-yellow-500 px-3 py-1 text-[0.65rem] font-black uppercase tracking-[0.1em] text-black shadow-[0_10px_25px_rgba(234,179,8,0.25)]">
               Offer
             </span>
           )}
         </div>
       </Link>
 
-      <div className="relative z-20 flex flex-col gap-3 px-[1.3rem] pb-[1.4rem] pt-[1.3rem]">
+      <div className="relative z-20 flex flex-col gap-3 px-5 pb-5 pt-5">
         <Link to={listingPath} className="block no-underline">
-          <h2 className="overflow-hidden text-ellipsis whitespace-nowrap font-serif text-[1.15rem] font-bold leading-tight text-[#f0ece4]">
+          <h2 className="overflow-hidden text-ellipsis whitespace-nowrap font-serif text-[1.15rem] font-bold leading-tight text-gray-900 dark:text-white">
             {listing.name}
           </h2>
 
-          <div className="mt-3 flex items-center gap-1.5 text-[0.82rem] text-[#8a8d96]">
-            <MdLocationOn className="shrink-0 text-base text-[#4caf82]" />
+          <div className="mt-3 flex items-center gap-1.5 text-[0.82rem] text-gray-600 dark:text-zinc-400">
+            <MdLocationOn className="shrink-0 text-base text-emerald-400" />
             <p className="overflow-hidden text-ellipsis whitespace-nowrap">
               {listing.address}
             </p>
           </div>
 
-          <p className="mt-3 overflow-hidden text-[0.83rem] leading-[1.6] text-[#8a8d96] [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]">
+          <p className="mt-3 overflow-hidden text-[0.83rem] leading-[1.6] text-gray-600 dark:text-zinc-400 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]">
             {listing.description}
           </p>
         </Link>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3 border-t border-gray-200 dark:border-white/10 pt-3">
           <Link to={listingPath} className="block no-underline">
             <div>
-              <p className="font-serif text-2xl font-black leading-none text-[#c9a84c]">
-                $
-                {listing.offer
-                  ? listing.discountPrice?.toLocaleString("en-US")
-                  : listing.regularPrice?.toLocaleString("en-US")}
+              <p className="font-serif text-2xl font-black leading-none text-yellow-500">
+                Rs {displayPrice || "0"}
               </p>
               {listing.type === "rent" && (
-                <p className="mt-1 text-xs font-normal text-[#8a8d96]">
+                <p className="mt-1 text-xs font-normal text-zinc-500">
                   per month
                 </p>
               )}
@@ -210,8 +212,8 @@ function ListingItem({
               }
               className={`flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border transition-[transform,border-color,background-color] duration-200 hover:scale-110 hover:border-[#c9a84c] ${
                 isSaved
-                  ? "border-[#e86b6b]/60 bg-[#e86b6b]/20"
-                  : "border-[rgba(255,255,255,0.07)] bg-[#22262f] hover:bg-[#c9a84c]/25"
+                  ? "border-red-400/60 bg-red-500/20"
+                  : "border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-zinc-900 hover:bg-yellow-500/20"
               }`}
               type="button"
               aria-label={
@@ -223,8 +225,8 @@ function ListingItem({
               <FaHeart
                 className={`text-[0.85rem] ${
                   isSaved
-                    ? "text-[#ff8a8a]"
-                    : "text-[#e86b6b]"
+                    ? "text-red-300"
+                    : "text-red-400"
                 }`}
               />
             </button>
@@ -234,8 +236,8 @@ function ListingItem({
               }
               className={`flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border transition-[transform,border-color,background-color] duration-200 hover:scale-110 hover:border-[#c9a84c] ${
                 compared
-                  ? "border-[#c9a84c]/70 bg-[#c9a84c]/20"
-                  : "border-[rgba(255,255,255,0.07)] bg-[#22262f] hover:bg-[#c9a84c]/25"
+                  ? "border-yellow-500/70 bg-yellow-500/20"
+                  : "border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-zinc-900 hover:bg-yellow-500/20"
               }`}
               type="button"
               aria-label={
@@ -247,8 +249,8 @@ function ListingItem({
               <FaBalanceScale
                 className={`text-[0.85rem] ${
                   compared
-                    ? "text-[#c9a84c]"
-                    : "text-[#8a8d96]"
+                    ? "text-yellow-500"
+                    : "text-zinc-400"
                 }`}
               />
             </button>
@@ -256,26 +258,26 @@ function ListingItem({
         </div>
 
         {compareMessage && (
-          <p className="rounded-md border border-[#c9a84c]/20 bg-[#c9a84c]/10 px-3 py-2 text-center text-xs font-bold uppercase tracking-wider text-[#c9a84c]">
+          <p className="rounded-lg border border-yellow-500/20 bg-yellow-500/10 px-3 py-2 text-center text-xs font-bold uppercase tracking-wider text-yellow-500">
             {compareMessage}
           </p>
         )}
 
         <Link to={listingPath} className="block no-underline">
           <div className="flex gap-2.5">
-            <div className="flex flex-1 items-center justify-center gap-1.5 rounded-md border border-[rgba(255,255,255,0.06)] bg-[#22262f] px-3 py-1.5 text-[0.8rem] font-semibold text-[#8a8d96]">
-              <FaBed className="text-[0.85rem] text-[#4a8fe8]" />
+            <div className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-zinc-900 px-3 py-2 text-[0.8rem] font-semibold text-gray-600 dark:text-zinc-400">
+              <FaBed className="text-[0.85rem] text-blue-400" />
               <span>{listing.bedrooms} Beds</span>
             </div>
-            <div className="flex flex-1 items-center justify-center gap-1.5 rounded-md border border-[rgba(255,255,255,0.06)] bg-[#22262f] px-3 py-1.5 text-[0.8rem] font-semibold text-[#8a8d96]">
-              <FaBath className="text-[0.85rem] text-[#4caf82]" />
+            <div className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-zinc-900 px-3 py-2 text-[0.8rem] font-semibold text-gray-600 dark:text-zinc-400">
+              <FaBath className="text-[0.85rem] text-emerald-400" />
               <span>{listing.bathrooms} Baths</span>
             </div>
           </div>
         </Link>
 
         <Link
-          className="mt-1 block w-full rounded-[7px] border border-[#c9a84c]/35 bg-transparent p-3 text-center text-[0.82rem] font-bold uppercase tracking-[0.1em] text-[#c9a84c] no-underline transition-[transform,border-color,background-color,box-shadow,color] duration-200 hover:-translate-y-0.5 hover:border-[#c9a84c] hover:bg-[#c9a84c] hover:text-[#0b0c0e] hover:shadow-[0_6px_24px_rgba(201,168,76,0.25)]"
+          className="mt-1 block w-full rounded-xl border border-yellow-500/35 bg-transparent p-3 text-center text-[0.82rem] font-bold uppercase tracking-[0.1em] text-yellow-500 no-underline transition duration-200 hover:-translate-y-0.5 hover:border-yellow-500 hover:bg-yellow-500 hover:text-black hover:shadow-[0_14px_30px_rgba(234,179,8,0.18)]"
           to={listingPath}
         >
           View Property

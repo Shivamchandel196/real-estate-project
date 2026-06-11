@@ -14,10 +14,9 @@ import {
 } from "../utils/compareListings";
 
 const formatPrice = (listing) => {
-  const price =
-    listing.offer
-      ? listing.discountPrice
-      : listing.regularPrice;
+  const price = listing.offer
+    ? listing.discountPrice
+    : listing.regularPrice;
 
   return `Rs ${(price || 0).toLocaleString(
     "en-IN"
@@ -25,20 +24,17 @@ const formatPrice = (listing) => {
 };
 
 const getBestValueId = (listings) => {
-  if (listings.length < 2) {
-    return null;
-  }
+  if (listings.length < 2) return null;
 
   return listings.reduce(
     (best, listing) => {
-      const currentPrice =
-        listing.offer
-          ? listing.discountPrice
-          : listing.regularPrice;
-      const bestPrice =
-        best.offer
-          ? best.discountPrice
-          : best.regularPrice;
+      const currentPrice = listing.offer
+        ? listing.discountPrice
+        : listing.regularPrice;
+
+      const bestPrice = best.offer
+        ? best.discountPrice
+        : best.regularPrice;
 
       return (currentPrice || 0) <
         (bestPrice || 0)
@@ -53,14 +49,15 @@ const CompareRow = ({
   label,
   values,
 }) => (
-  <div className="grid min-w-[780px] grid-cols-[180px_repeat(var(--compare-count),minmax(190px,1fr))] border-t border-zinc-800">
-    <div className="bg-zinc-950 p-4 text-sm font-bold uppercase tracking-[0.16em] text-zinc-500">
+  <div className="grid min-w-[780px] grid-cols-[180px_repeat(var(--compare-count),minmax(190px,1fr))] border-t border-zinc-200 dark:border-white/10">
+    <div className="bg-zinc-100 p-4 text-sm font-black uppercase tracking-[0.16em] text-zinc-600 dark:bg-black/35 dark:text-zinc-500">
       {label}
     </div>
+
     {values.map((value, index) => (
       <div
         key={`${label}-${index}`}
-        className="border-l border-zinc-800 p-4 text-sm leading-6 text-zinc-300"
+        className="border-l border-zinc-200 p-4 text-sm leading-6 text-zinc-700 dark:border-white/10 dark:text-zinc-300"
       >
         {value}
       </div>
@@ -102,17 +99,21 @@ const Compare = () => {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      <section className="border-b border-yellow-500/10 px-6 pb-12 pt-32">
+    <main className="min-h-screen bg-white text-black transition-colors duration-300 dark:bg-black dark:text-white">
+      
+      {/* Hero Section */}
+      <section className="border-b border-zinc-200 px-4 pb-14 pt-32 dark:border-yellow-500/10 sm:px-6 lg:pb-16">
         <div className="mx-auto flex max-w-7xl flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-yellow-500">
               Compare
             </p>
-            <h1 className="text-5xl font-black md:text-7xl">
+
+            <h1 className="font-serif text-5xl font-black leading-[0.98] md:text-7xl">
               Compare Properties
             </h1>
-            <p className="mt-4 max-w-2xl text-zinc-400">
+
+            <p className="mt-5 max-w-2xl leading-7 text-zinc-600 dark:text-zinc-400">
               Review price, location, features, and contact details side by side.
             </p>
           </div>
@@ -121,7 +122,7 @@ const Compare = () => {
             <button
               type="button"
               onClick={clearCompare}
-              className="rounded-xl border border-red-500/30 px-5 py-3 text-sm font-bold text-red-400 transition hover:bg-red-500/10"
+              className="rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-3 text-sm font-bold text-red-500 transition hover:bg-red-500/15 dark:text-red-400"
             >
               Clear Compare
             </button>
@@ -129,24 +130,31 @@ const Compare = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-12">
+      {/* Compare Section */}
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-16">
         {listings.length === 0 ? (
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-10 text-center">
-            <h2 className="text-3xl font-black">
+          <div className="rounded-2xl border border-zinc-200 bg-white p-10 text-center shadow-lg dark:border-white/10 dark:bg-zinc-950 dark:shadow-[0_24px_70px_rgba(0,0,0,0.35)]">
+            
+            <div className="mx-auto mb-5 h-1 w-12 rounded-full bg-yellow-500" />
+
+            <h2 className="text-3xl font-black text-zinc-900 dark:text-white">
               No properties selected
             </h2>
-            <p className="mx-auto mt-3 max-w-xl text-zinc-400">
+
+            <p className="mx-auto mt-3 max-w-xl text-zinc-600 dark:text-zinc-400">
               Add properties from listing cards using the compare button.
             </p>
+
             <Link
               to="/search"
-              className="mt-6 inline-block rounded-xl bg-yellow-500 px-6 py-3 font-bold text-black transition hover:bg-yellow-400"
+              className="mt-6 inline-block rounded-xl bg-yellow-500 px-6 py-3 font-bold text-black transition hover:-translate-y-0.5 hover:bg-yellow-400"
             >
               Browse Properties
             </Link>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-900">
+          <div className="overflow-x-auto rounded-2xl border border-zinc-200 bg-white shadow-lg dark:border-white/10 dark:bg-zinc-950 dark:shadow-[0_24px_70px_rgba(0,0,0,0.35)]">
+            
             <div
               className="grid min-w-[780px] grid-cols-[180px_repeat(var(--compare-count),minmax(190px,1fr))]"
               style={{
@@ -154,11 +162,12 @@ const Compare = () => {
                   listings.length,
               }}
             >
-              <div className="bg-zinc-950 p-4" />
+              <div className="bg-zinc-100 dark:bg-black/35 p-4" />
+
               {listings.map((listing) => (
                 <div
                   key={listing._id}
-                  className="relative border-l border-zinc-800 p-4"
+                  className="relative border-l border-zinc-200 p-4 dark:border-white/10"
                 >
                   <button
                     type="button"
@@ -167,8 +176,7 @@ const Compare = () => {
                         listing._id
                       )
                     }
-                    className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/70 text-zinc-300 transition hover:bg-red-500 hover:text-white"
-                    aria-label="Remove from compare"
+                    className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-zinc-200 text-zinc-700 transition hover:bg-red-500 hover:text-white dark:bg-black/75 dark:text-zinc-300"
                   >
                     <FaTimes />
                   </button>
@@ -179,17 +187,18 @@ const Compare = () => {
                       "/bg-img.jpg"
                     }
                     alt={listing.name}
-                    className="h-40 w-full rounded-xl object-cover"
+                    className="h-40 w-full rounded-xl object-cover shadow-md dark:shadow-[0_12px_28px_rgba(0,0,0,0.35)]"
                   />
 
                   <div className="mt-4">
                     <div className="flex flex-wrap gap-2">
-                      <span className="rounded-full bg-blue-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-blue-300">
+                      <span className="rounded-full bg-blue-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-blue-500 dark:text-blue-300">
                         {listing.type ===
                         "rent"
                           ? "Rent"
                           : "Sale"}
                       </span>
+
                       {bestValueId ===
                         listing._id && (
                         <span className="rounded-full bg-yellow-500 px-3 py-1 text-xs font-bold uppercase tracking-wider text-black">
@@ -198,7 +207,7 @@ const Compare = () => {
                       )}
                     </div>
 
-                    <h2 className="mt-3 text-xl font-black">
+                    <h2 className="mt-3 text-xl font-black text-zinc-900 dark:text-white">
                       {listing.name}
                     </h2>
 
@@ -221,10 +230,9 @@ const Compare = () => {
             >
               <CompareRow
                 label="Price"
-                values={listings.map(
-                  formatPrice
-                )}
+                values={listings.map(formatPrice)}
               />
+
               <CompareRow
                 label="Location"
                 values={listings.map(
@@ -232,34 +240,37 @@ const Compare = () => {
                     listing.address
                 )}
               />
+
               <CompareRow
                 label="Beds"
                 values={listings.map(
                   (listing) => (
                     <span className="inline-flex items-center gap-2">
-                      <FaBed className="text-blue-400" />
+                      <FaBed className="text-blue-500" />
                       {listing.bedrooms}
                     </span>
                   )
                 )}
               />
+
               <CompareRow
                 label="Baths"
                 values={listings.map(
                   (listing) => (
                     <span className="inline-flex items-center gap-2">
-                      <FaBath className="text-green-400" />
+                      <FaBath className="text-green-500" />
                       {listing.bathrooms}
                     </span>
                   )
                 )}
               />
+
               <CompareRow
                 label="Parking"
                 values={listings.map(
                   (listing) => (
                     <span className="inline-flex items-center gap-2">
-                      <FaParking className="text-orange-400" />
+                      <FaParking className="text-orange-500" />
                       {listing.parking
                         ? "Yes"
                         : "No"}
@@ -267,12 +278,13 @@ const Compare = () => {
                   )
                 )}
               />
+
               <CompareRow
                 label="Furnished"
                 values={listings.map(
                   (listing) => (
                     <span className="inline-flex items-center gap-2">
-                      <FaChair className="text-violet-400" />
+                      <FaChair className="text-violet-500" />
                       {listing.furnished
                         ? "Yes"
                         : "No"}
@@ -280,6 +292,7 @@ const Compare = () => {
                   )
                 )}
               />
+
               <CompareRow
                 label="Offer"
                 values={listings.map(
@@ -289,6 +302,7 @@ const Compare = () => {
                       : "No"
                 )}
               />
+
               <CompareRow
                 label="Contact"
                 values={listings.map(

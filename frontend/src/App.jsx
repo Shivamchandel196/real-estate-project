@@ -16,7 +16,16 @@ const LegalPage = lazy(() => import("./pages/T&C"));
 const SellerProfile = lazy(() => import("./pages/SellerProfile"));
 const Compare = lazy(() => import("./pages/Compare"));
 
-const LoadingFallback = () => <div className="flex items-center justify-center min-h-screen bg-black"><div className="text-center"><div className="w-12 h-12 border-2 border-yellow-500/20 border-t-yellow-500 rounded-full animate-spin mx-auto mb-4"></div><p className="text-zinc-500 uppercase tracking-[0.2em] text-sm">Loading...</p></div></div>;
+const LoadingFallback = () => (
+  <div className="flex min-h-screen items-center justify-center bg-black">
+    <div className="rounded-3xl border border-white/10 bg-zinc-950 px-10 py-9 text-center shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+      <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-2 border-yellow-500/20 border-t-yellow-500" />
+      <p className="text-sm uppercase tracking-[0.2em] text-zinc-500">
+        Loading...
+      </p>
+    </div>
+  </div>
+);
 
 const App = () => {
   return (

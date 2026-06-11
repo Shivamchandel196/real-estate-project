@@ -60,14 +60,14 @@ const SignUp = () => {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white flex items-center justify-center px-4 pt-32 pb-10">
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-[2rem] p-8 shadow-2xl">
+    <main className="flex min-h-screen items-center justify-center bg-black px-4 pb-10 pt-32 text-white">
+      <div className="w-full max-w-md rounded-3xl border border-white/10 bg-zinc-950 p-7 shadow-[0_24px_80px_rgba(0,0,0,0.45)] sm:p-8">
         <div className="text-center mb-10">
           <p className="uppercase tracking-[0.3em] text-yellow-500 text-xs font-semibold mb-4">
             Get Started
           </p>
 
-          <h1 className="text-5xl font-black mb-3">
+          <h1 className="mb-3 font-serif text-5xl font-black">
             Create <span className="text-yellow-500">Account</span>
           </h1>
 
@@ -80,7 +80,7 @@ const SignUp = () => {
             placeholder="Username"
             id="username"
             onChange={handleChange}
-            className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
+            className="rounded-xl border border-white/10 bg-black/35 p-4 text-white outline-none transition placeholder:text-zinc-600 focus:border-yellow-500"
           />
 
           <input
@@ -88,7 +88,7 @@ const SignUp = () => {
             placeholder="Email Address"
             id="email"
             onChange={handleChange}
-            className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
+            className="rounded-xl border border-white/10 bg-black/35 p-4 text-white outline-none transition placeholder:text-zinc-600 focus:border-yellow-500"
           />
 
           <input
@@ -96,12 +96,12 @@ const SignUp = () => {
             placeholder="Password"
             id="password"
             onChange={handleChange}
-            className="bg-zinc-800 border border-zinc-700 rounded-2xl p-4 outline-none focus:border-yellow-500"
+            className="rounded-xl border border-white/10 bg-black/35 p-4 text-white outline-none transition placeholder:text-zinc-600 focus:border-yellow-500"
           />
 
           <button
             disabled={loading}
-            className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-[0.2em] p-4 rounded-2xl transition disabled:opacity-60"
+            className="rounded-xl bg-yellow-500 p-4 font-bold uppercase tracking-[0.18em] text-black transition hover:bg-yellow-400 disabled:opacity-60"
           >
             {loading ? "Creating Account..." : "Sign Up"}
           </button>

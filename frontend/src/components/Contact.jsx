@@ -16,7 +16,7 @@ const Contact = ({ listing }) => {
 
     <div className="mt-8">
 
-      <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 md:p-8 shadow-2xl">
+      <div className="rounded-2xl border border-white/10 bg-zinc-900 p-6 shadow-[0_18px_45px_rgba(0,0,0,0.32)] md:p-8">
 
         <div className="mb-6">
 
@@ -44,11 +44,11 @@ const Contact = ({ listing }) => {
 
         </div>
 
-        <div className="bg-zinc-800 rounded-2xl p-5 flex flex-col gap-4 mb-6">
+        <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-white/10 bg-black/25 p-5">
 
           <div className="flex items-center gap-4">
 
-            <div className="bg-blue-500/20 text-blue-400 p-3 rounded-xl">
+            <div className="rounded-xl bg-blue-500/20 p-3 text-blue-400">
 
               <FaEnvelope />
 
@@ -62,11 +62,11 @@ const Contact = ({ listing }) => {
 
           </div>
 
-          <div className="border-t border-zinc-700"></div>
+          <div className="border-t border-white/10"></div>
 
           <div className="flex items-center gap-4">
 
-            <div className="bg-green-500/20 text-green-400 p-3 rounded-xl">
+            <div className="rounded-xl bg-green-500/20 p-3 text-green-400">
 
               <FaPhoneAlt />
 
@@ -106,19 +106,19 @@ const Contact = ({ listing }) => {
 
             placeholder="Hi, I'm interested in this property..."
 
-            className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl p-4 text-white outline-none focus:border-yellow-500 resize-none"
+            className="w-full resize-none rounded-xl border border-white/10 bg-black/25 p-4 text-white outline-none transition placeholder:text-zinc-600 focus:border-yellow-500"
 
           />
 
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid gap-4 sm:grid-cols-2">
 
           <a
 
             href={`mailto:${listing.contactEmail}?subject=Regarding ${listing.name}&body=${message}`}
 
-            className="flex items-center justify-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black font-bold p-4 rounded-2xl transition duration-300"
+            className="flex items-center justify-center gap-3 rounded-xl bg-yellow-500 p-4 font-bold text-black transition duration-300 hover:bg-yellow-400"
 
           >
 
@@ -142,7 +142,7 @@ const Contact = ({ listing }) => {
 
             rel="noopener noreferrer"
 
-            className="flex items-center justify-center gap-3 bg-green-600 hover:bg-green-500 text-white font-bold p-4 rounded-2xl transition duration-300"
+            className="flex items-center justify-center gap-3 rounded-xl bg-green-600 p-4 font-bold text-white transition duration-300 hover:bg-green-500"
 
           >
 

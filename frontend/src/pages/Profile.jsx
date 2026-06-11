@@ -288,13 +288,13 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-[#020617] to-[#111827] text-white px-4 pt-32 pb-10 overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden bg-black px-4 pb-12 pt-32 text-white">
 
       {/* MAIN CONTAINER */}
-      <div className="max-w-4xl mx-auto bg-[#08122b] border border-yellow-500/10 rounded-[35px] p-4 sm:p-8 md:p-10 shadow-[0_0_40px_rgba(255,196,0,0.08)] overflow-hidden">
+      <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-zinc-950 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.45)] sm:p-8 md:p-10">
 
         {/* HEADING */}
-        <h1 className="text-3xl sm:text-5xl font-black text-center mb-10 break-words">
+        <h1 className="mb-10 text-center font-serif text-3xl font-black sm:text-5xl">
           My Profile
         </h1>
 
@@ -327,7 +327,7 @@ export default function Profile() {
                 "/profile.png"
               }
               alt="profile"
-              className="rounded-full h-32 w-32 sm:h-36 sm:w-36 object-cover cursor-pointer border-4 border-yellow-400 shadow-lg hover:scale-105 transition duration-300"
+              className="h-32 w-32 cursor-pointer rounded-full border-4 border-yellow-400 object-cover shadow-[0_18px_45px_rgba(234,179,8,0.18)] transition duration-300 hover:scale-105 sm:h-36 sm:w-36"
             />
           </div>
 
@@ -359,7 +359,7 @@ export default function Profile() {
               currentUser?.username
             }
             id="username"
-            className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none p-4 rounded-2xl w-full"
+            className="w-full rounded-xl border border-white/10 bg-black/35 p-4 outline-none transition placeholder:text-zinc-600 focus:border-yellow-400"
             onChange={handleChange}
           />
 
@@ -370,7 +370,7 @@ export default function Profile() {
             defaultValue={
               currentUser?.email
             }
-            className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none p-4 rounded-2xl w-full"
+            className="w-full rounded-xl border border-white/10 bg-black/35 p-4 outline-none transition placeholder:text-zinc-600 focus:border-yellow-400"
             onChange={handleChange}
           />
 
@@ -378,14 +378,14 @@ export default function Profile() {
             type="password"
             placeholder="New Password"
             id="password"
-            className="bg-black/40 border border-zinc-700 focus:border-yellow-400 outline-none p-4 rounded-2xl w-full"
+            className="w-full rounded-xl border border-white/10 bg-black/35 p-4 outline-none transition placeholder:text-zinc-600 focus:border-yellow-400"
             onChange={handleChange}
           />
 
           {/* UPDATE BUTTON */}
           <button
             disabled={loading}
-            className="bg-yellow-400 hover:bg-yellow-300 text-black font-black p-4 rounded-2xl transition-all duration-300 uppercase tracking-wider w-full"
+            className="w-full rounded-xl bg-yellow-500 p-4 font-black uppercase tracking-wider text-black transition-all duration-300 hover:bg-yellow-400"
           >
             {loading
               ? "Loading..."
@@ -396,7 +396,7 @@ export default function Profile() {
           <Link to={"/create-listing"}>
             <button
               type="button"
-              className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black p-4 rounded-2xl transition-all duration-300 uppercase tracking-wider"
+              className="w-full rounded-xl bg-emerald-600 p-4 font-black uppercase tracking-wider text-white transition-all duration-300 hover:bg-emerald-500"
             >
               Create Listing
             </button>
@@ -430,14 +430,14 @@ export default function Profile() {
         {/* BUTTONS */}
         <button
           onClick={handleShowListings}
-          className="w-full mt-8 bg-blue-600 hover:bg-blue-500 text-white font-black p-4 rounded-2xl transition-all duration-300 uppercase tracking-wider"
+          className="mt-8 w-full rounded-xl bg-blue-600 p-4 font-black uppercase tracking-wider text-white transition-all duration-300 hover:bg-blue-500"
         >
           Show Listings
         </button>
 
         <button
           onClick={handleShowFavorites}
-          className="w-full mt-4 bg-pink-600 hover:bg-pink-500 text-white font-black p-4 rounded-2xl transition-all duration-300 uppercase tracking-wider"
+          className="mt-4 w-full rounded-xl bg-pink-600 p-4 font-black uppercase tracking-wider text-white transition-all duration-300 hover:bg-pink-500"
         >
           {favoritesLoading
             ? "Loading Favorites..."
@@ -520,7 +520,7 @@ export default function Profile() {
                     key={
                       listing._id
                     }
-                    className="w-full bg-black/40 border border-zinc-700 rounded-3xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 hover:border-yellow-400 transition-all overflow-hidden"
+                    className="flex w-full flex-col gap-5 overflow-hidden rounded-2xl border border-white/10 bg-black/35 p-4 transition-all hover:border-yellow-400 sm:flex-row sm:items-center sm:justify-between"
                   >
 
                     {/* LEFT */}
@@ -537,7 +537,7 @@ export default function Profile() {
                               ?.imageUrls?.[0]
                           }
                           alt="listing"
-                          className="h-40 sm:h-24 w-full sm:w-24 rounded-2xl object-cover"
+                          className="h-40 w-full rounded-xl object-cover sm:h-24 sm:w-24"
                         />
                       </Link>
 
@@ -564,7 +564,7 @@ export default function Profile() {
                             listing._id
                           )
                         }
-                        className="bg-red-600 hover:bg-red-500 px-5 py-3 rounded-xl text-sm uppercase font-bold w-full sm:min-w-[120px] transition-all duration-300"
+                        className="w-full rounded-xl bg-red-600 px-5 py-3 text-sm font-bold uppercase transition-all duration-300 hover:bg-red-500 sm:min-w-[120px]"
                       >
                         Delete
                       </button>
@@ -574,7 +574,7 @@ export default function Profile() {
                         to={`/update-listing/${listing._id}`}
                         className="w-full"
                       >
-                        <button className="bg-green-600 hover:bg-green-500 px-5 py-3 rounded-xl text-sm uppercase font-bold w-full sm:min-w-[120px] transition-all duration-300">
+                        <button className="w-full rounded-xl bg-green-600 px-5 py-3 text-sm font-bold uppercase transition-all duration-300 hover:bg-green-500 sm:min-w-[120px]">
                           Edit
                         </button>
                       </Link>
