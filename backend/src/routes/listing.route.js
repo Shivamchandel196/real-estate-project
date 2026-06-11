@@ -29,14 +29,16 @@ router.post(
   createlisting,
 );
 
-/* GET ALL LISTINGS - with pagination and caching */
+
 router.get(
   "/get",
   getPaginationParams,
-  cacheMiddleware(3600), // Cache for 1 hour
+ cacheMiddleware(3600), // Cache for 1 hour
   getListings,
 );
 
+
+// router.get("/get", getListings);
 /* GET SINGLE LISTING - with caching */
 router.get(
   "/get/:id",

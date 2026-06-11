@@ -182,10 +182,23 @@ const Home = memo(() => {
         rentRes.json(),
         saleRes.json(),
       ]);
+                setOfferListings(
+  Array.isArray(offerData?.data)
+    ? offerData.data
+    : []
+);
 
-      setOfferListings(Array.isArray(offerData) ? offerData : []);
-      setRentListings(Array.isArray(rentData) ? rentData : []);
-      setSaleListings(Array.isArray(saleData) ? saleData : []);
+setRentListings(
+  Array.isArray(rentData?.data)
+    ? rentData.data
+    : []
+);
+
+setSaleListings(
+  Array.isArray(saleData?.data)
+    ? saleData.data
+    : []
+);
     } catch (error) {
       console.error(error);
       setOfferListings([]);
